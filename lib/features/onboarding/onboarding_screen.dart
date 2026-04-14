@@ -116,7 +116,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               child: Text(
                 'Skip',
-                style: GoogleFonts.plusJakartaSans(
+                style: GoogleFonts.inter(
                   color: isDark
                       ? const Color(0xFFAAABAF)
                       : const Color(0xFF77776F),
@@ -237,7 +237,7 @@ class _PageView extends StatelessWidget {
                     ),
                     child: Text(
                       page.tag,
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inter(
                         color: const Color(0xFFFF9800),
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -255,7 +255,7 @@ class _PageView extends StatelessWidget {
                       if (page.title.isNotEmpty)
                         TextSpan(
                           text: page.title,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: GoogleFonts.inter(
                             color: isDark
                                 ? const Color(0xFFF9F9FD)
                                 : const Color(0xFF383833),
@@ -267,7 +267,7 @@ class _PageView extends StatelessWidget {
                         ),
                       TextSpan(
                         text: page.titleBlue,
-                        style: GoogleFonts.plusJakartaSans(
+                        style: GoogleFonts.inter(
                           color: isDark
                               ? const Color(0xFF6CB2FD)
                               : const Color(0xFF0067AD),
@@ -286,7 +286,7 @@ class _PageView extends StatelessWidget {
                 // Body
                 Text(
                   page.body,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: GoogleFonts.inter(
                     color: isDark
                         ? const Color(0xFFAAABAF)
                         : const Color(0xFF77776F),
@@ -483,7 +483,7 @@ class _LearningIllustration extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     'New Level',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: GoogleFonts.inter(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
@@ -520,7 +520,7 @@ class _LearningIllustration extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               d.$1,
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.inter(
                 color: d.$2,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,

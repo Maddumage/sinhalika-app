@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// "The Midnight Playground" (dark) + "The Heritage Playroom" (light).
@@ -34,7 +35,7 @@ class AppTheme {
     final d = b == Brightness.dark;
     final cs = d ? _darkCS : _lightCS;
 
-    final txt = GoogleFonts.plusJakartaSansTextTheme().apply(
+    final txt = GoogleFonts.interTextTheme().apply(
       bodyColor: d ? dMuted : lMuted,
       displayColor: d ? dText : lText,
     );
@@ -57,6 +58,9 @@ class AppTheme {
         scrolledUnderElevation: 0,
         foregroundColor: d ? dText : lText,
         iconTheme: IconThemeData(color: d ? dText : lText),
+        systemOverlayStyle: d
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: (d ? dHst : lSurf).withOpacity(0.92),
@@ -65,7 +69,7 @@ class AppTheme {
         height: 68,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith(
-          (states) => GoogleFonts.plusJakartaSans(
+          (states) => GoogleFonts.inter(
             fontSize: 11,
             fontWeight: states.contains(WidgetState.selected)
                 ? FontWeight.w700
@@ -88,7 +92,7 @@ class AppTheme {
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          textStyle: GoogleFonts.plusJakartaSans(
+          textStyle: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -99,7 +103,7 @@ class AppTheme {
           shape: const StadiumBorder(),
           side: BorderSide(color: d ? dHst : const Color(0xFFD0CEC5)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          textStyle: GoogleFonts.plusJakartaSans(
+          textStyle: GoogleFonts.inter(
             fontSize: 15,
             fontWeight: FontWeight.w600,
           ),

@@ -14,7 +14,7 @@ class LessonsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Lessons',
-          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
+          style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
       ),
       body: Center(
@@ -29,7 +29,7 @@ class LessonsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Lessons Coming Soon',
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -39,7 +39,7 @@ class LessonsScreen extends StatelessWidget {
             Text(
               'Interactive Sinhala lessons\nare on their way.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
               ),

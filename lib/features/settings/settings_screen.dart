@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
@@ -24,7 +23,7 @@ class SettingsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'Settings',
-          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
+          style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
       ),
       body: ListView(
@@ -64,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                             isGuest
                                 ? 'Guest User'
                                 : (user?.displayName ?? 'User'),
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
                               color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -75,7 +74,7 @@ class SettingsScreen extends ConsumerWidget {
                             isGuest
                                 ? 'Sign in to save progress'
                                 : (user?.email ?? ''),
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                             ),
@@ -102,7 +101,7 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     Text(
                       'Theme',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -155,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
                     snap.data != null
                         ? '${snap.data!.version} (${snap.data!.buildNumber})'
                         : '1.0.0',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: GoogleFonts.inter(
                       fontSize: 13,
                       color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                     ),
@@ -194,11 +193,11 @@ class SettingsScreen extends ConsumerWidget {
       builder: (dialogContext) => AlertDialog(
         title: Text(
           'Sign Out',
-          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
+          style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
         content: Text(
           'Are you sure you want to sign out?',
-          style: GoogleFonts.plusJakartaSans(),
+          style: GoogleFonts.inter(),
         ),
         actions: [
           TextButton(
@@ -275,7 +274,7 @@ class _ThemeSelector extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     m.$3,
-                    style: GoogleFonts.plusJakartaSans(
+                    style: GoogleFonts.inter(
                       fontSize: 11,
                       fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                       color: selected
@@ -305,7 +304,7 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4, bottom: 8),
       child: Text(
         label.toUpperCase(),
-        style: GoogleFonts.plusJakartaSans(
+        style: GoogleFonts.inter(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
@@ -363,7 +362,7 @@ class _SettingsTile extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: GoogleFonts.plusJakartaSans(
+        style: GoogleFonts.inter(
           fontWeight: FontWeight.w600,
           fontSize: 15,
           color: labelColor ?? (isDark ? AppTheme.dText : AppTheme.lText),

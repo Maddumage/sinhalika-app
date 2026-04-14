@@ -14,7 +14,7 @@ class GamesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Games',
-          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
+          style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
       ),
       body: Center(
@@ -29,7 +29,7 @@ class GamesScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Games Coming Soon',
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -39,7 +39,7 @@ class GamesScreen extends StatelessWidget {
             Text(
               'Fun vocabulary games\nare almost ready.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
               ),

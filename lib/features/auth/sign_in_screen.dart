@@ -73,7 +73,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   const SizedBox(width: 10),
                   Text(
                     'Sinhala Kids',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: isDark
@@ -96,7 +96,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     // ── Headline ──────────────────────────────────────────
                     Text(
                       'Welcome back.',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inter(
                         fontSize: 36,
                         fontWeight: FontWeight.w800,
                         color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -107,7 +107,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     const SizedBox(height: 12),
                     Text(
                       'Your Sinhala adventure is waiting for you.',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.inter(
                         fontSize: 15,
                         color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                         height: 1.5,
@@ -128,7 +128,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           const SizedBox(width: 12),
                           Text(
                             'Sign in with Google',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               color: const Color(0xFF1F1F1F),
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -158,43 +158,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           const SizedBox(width: 10),
                           Text(
                             'Continue as Guest',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
                               color: isDark ? AppTheme.dText : AppTheme.lText,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    // ── Different account button ──────────────────────────
-                    _AuthButton(
-                      onTap: null, // placeholder
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: isDark
-                          ? AppTheme.dMuted
-                          : AppTheme.lMuted,
-                      border: isDark
-                          ? const Color(0xFF46484B)
-                          : const Color(0xFFD0CEC5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.alternate_email_rounded,
-                            color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'I have a different account',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                             ),
                           ),
                         ],
@@ -222,7 +189,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           const SizedBox(height: 10),
                           Text(
                             'PARENTAL DISCLOSURE',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.2,
@@ -233,7 +200,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Text(
                             'Sinhala Kids prioritizes your child\'s digital safety. We do not sell personal data or display third-party advertisements.',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                               height: 1.5,
@@ -244,7 +211,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             onTap: () {},
                             child: Text(
                               'Child Safety Policy',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: GoogleFonts.inter(
                                 fontSize: 13,
                                 color: isDark
                                     ? AppTheme.electricBlue
@@ -283,14 +250,12 @@ class _AuthButton extends StatelessWidget {
     required this.backgroundColor,
     required this.foregroundColor,
     required this.child,
-    this.border,
   });
 
   final VoidCallback? onTap;
   final Color backgroundColor;
   final Color foregroundColor;
   final Widget child;
-  final Color? border;
 
   @override
   Widget build(BuildContext context) {
@@ -305,9 +270,6 @@ class _AuthButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(9999),
-            border: border != null
-                ? Border.all(color: border!, width: 1)
-                : null,
           ),
           child: child,
         ),

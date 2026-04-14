@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../core/providers/providers.dart';
 
@@ -97,7 +98,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
                 Text(
                   'අනාගතය වෙනුවෙන් අද ඉගෙන ගමු',
-                  style: TextStyle(
+                  style: GoogleFonts.notoSansSinhala(
                     fontSize: 15.5,
                     color: isDark
                         ? const Color(0xFFB0B8C8)
@@ -155,7 +156,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
                 Text(
                   'ලෝඩ් වෙමින් පවතිසි...',
-                  style: TextStyle(
+                  style: GoogleFonts.notoSansSinhala(
                     fontSize: 14.5,
                     color: isDark
                         ? const Color(0xFF888EA0)
