@@ -1,4 +1,4 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +9,9 @@ import '../../features/auth/sign_in_screen.dart';
 import '../../features/shell/main_shell.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/lessons/lessons_screen.dart';
+import '../../features/lessons/hodiya_screen.dart';
+import '../../features/lessons/nouns_screen.dart';
+import '../../features/lessons/phrases_screen.dart';
 import '../../features/games/games_screen.dart';
 import '../../features/settings/settings_screen.dart';
 
@@ -60,6 +63,20 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/lessons',
                 builder: (_, __) => const LessonsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'hodiya',
+                    builder: (_, __) => const HodiyaScreen(),
+                  ),
+                  GoRoute(
+                    path: 'nouns',
+                    builder: (_, __) => const NounsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'phrases',
+                    builder: (_, __) => const PhrasesScreen(),
+                  ),
+                ],
               ),
             ],
           ),

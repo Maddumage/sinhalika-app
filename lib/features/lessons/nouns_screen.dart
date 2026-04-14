@@ -1,0 +1,813 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../core/providers/providers.dart';
+import '../../theme/app_theme.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Data
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _NounData {
+  const _NounData({
+    required this.sinhala,
+    required this.english,
+    required this.pronunciation,
+    required this.emoji,
+    this.exampleSinhala,
+    this.exampleEnglish,
+    this.style = _NounCardStyle.plain,
+    this.accentColor,
+  });
+  final String sinhala;
+  final String english;
+  final String pronunciation;
+  final String emoji;
+  final String? exampleSinhala;
+  final String? exampleEnglish;
+  final _NounCardStyle style;
+  final Color? accentColor;
+}
+
+enum _NounCardStyle { plain, imageTop, withExample, tinted }
+
+const _nouns = [
+  _NounData(
+    sinhala: 'පොත',
+    english: 'Book',
+    pronunciation: '/potha/',
+    emoji: '📖',
+    style: _NounCardStyle.plain,
+    accentColor: AppTheme.oceanBlue,
+  ),
+  _NounData(
+    sinhala: 'මල',
+    english: 'Flower',
+    pronunciation: '/mala/',
+    emoji: '🌺',
+    style: _NounCardStyle.imageTop,
+    accentColor: AppTheme.neonCoral,
+  ),
+  _NounData(
+    sinhala: 'බල්ලා',
+    english: 'Dog',
+    pronunciation: '/balla/',
+    emoji: '🐕',
+    exampleSinhala: 'බල්ලා බුරයි',
+    exampleEnglish: 'The dog barks',
+    style: _NounCardStyle.withExample,
+    accentColor: Color(0xFF2E7D32),
+  ),
+  _NounData(
+    sinhala: 'ගෙදර',
+    english: 'Home / House',
+    pronunciation: '/gedara/',
+    emoji: '🏡',
+    style: _NounCardStyle.tinted,
+    accentColor: Color(0xFF2E7D32),
+  ),
+  _NounData(
+    sinhala: 'ගස',
+    english: 'Tree',
+    pronunciation: '/gasa/',
+    emoji: '🌳',
+    style: _NounCardStyle.plain,
+    accentColor: Color(0xFF2E7D32),
+  ),
+  _NounData(
+    sinhala: 'අහස',
+    english: 'Sky',
+    pronunciation: '/ahasa/',
+    emoji: '🌤️',
+    style: _NounCardStyle.imageTop,
+    accentColor: AppTheme.oceanBlue,
+  ),
+  _NounData(
+    sinhala: 'ඇස',
+    english: 'Eye',
+    pronunciation: '/esa/',
+    emoji: '👁️',
+    exampleSinhala: 'ඇස රතු යි',
+    exampleEnglish: 'The eye is red',
+    style: _NounCardStyle.withExample,
+    accentColor: AppTheme.heritageRed,
+  ),
+  _NounData(
+    sinhala: 'ජලය',
+    english: 'Water',
+    pronunciation: '/jalaya/',
+    emoji: '💧',
+    style: _NounCardStyle.tinted,
+    accentColor: AppTheme.oceanBlue,
+  ),
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Screen
+// ─────────────────────────────────────────────────────────────────────────────
+
+class NounsScreen extends ConsumerStatefulWidget {
+  const NounsScreen({super.key});
+
+  @override
+  ConsumerState<NounsScreen> createState() => _NounsScreenState();
+}
+
+class _NounsScreenState extends ConsumerState<NounsScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1000),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  Animation<double> _stagger(int index) {
+    final start = (index * 0.06).clamp(0.0, 0.9);
+    final end = (start + 0.4).clamp(0.0, 1.0);
+    return CurvedAnimation(
+      parent: _ctrl,
+      curve: Interval(start, end, curve: Curves.easeOut),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
+      floatingActionButton: _SearchFab(),
+      body: CustomScrollView(
+        slivers: [
+          _buildAppBar(isDark),
+          SliverToBoxAdapter(
+            child: _FadeSlide(
+              animation: _stagger(0),
+              child: _buildHeroBanner(isDark),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, i) => Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: _FadeSlide(
+                    animation: _stagger(i + 1),
+                    child: _NounCard(
+                      noun: _nouns[i],
+                      isDark: isDark,
+                      onSpeak: (text) =>
+                          ref.read(ttsServiceProvider).speak(text),
+                    ),
+                  ),
+                ),
+                childCount: _nouns.length,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SliverAppBar _buildAppBar(bool isDark) {
+    return SliverAppBar(
+      floating: true,
+      snap: true,
+      backgroundColor: (isDark ? AppTheme.dBg : AppTheme.lBg).withValues(
+        alpha: 0.95,
+      ),
+      leading: BackButton(color: isDark ? AppTheme.dText : AppTheme.lText),
+      title: Text(
+        'The Heritage Playroom',
+        style: GoogleFonts.inter(
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: AppTheme.heritageRed,
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: CircleAvatar(
+            radius: 18,
+            backgroundColor: isDark ? AppTheme.dHigh : const Color(0xFFE8E8E8),
+            child: Icon(
+              Icons.person_rounded,
+              size: 20,
+              color: isDark ? AppTheme.dText : AppTheme.lText,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroBanner(bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF0A1A2E) : const Color(0xFFE8F0FE),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppTheme.electricBlue.withValues(alpha: 0.2)
+                          : AppTheme.oceanBlue.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'VOCABULARY BUILDERS',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: isDark
+                            ? AppTheme.electricBlue
+                            : AppTheme.oceanBlue,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'නාම පද',
+                    style: GoogleFonts.notoSansSinhala(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? AppTheme.dText : AppTheme.lText,
+                    ),
+                  ),
+                  Text(
+                    'Nouns',
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? AppTheme.dText : AppTheme.lText,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Learn everyday Sinhala nouns with pronunciation.',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text('🌿📚', style: const TextStyle(fontSize: 40)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Noun card — multi-style renderer
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _NounCard extends StatelessWidget {
+  const _NounCard({
+    required this.noun,
+    required this.isDark,
+    required this.onSpeak,
+  });
+  final _NounData noun;
+  final bool isDark;
+  final void Function(String text) onSpeak;
+
+  Color get _accent => noun.accentColor ?? AppTheme.oceanBlue;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TapScale(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onSpeak(noun.sinhala);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: _cardBackground,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: isDark
+              ? []
+              : [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.07),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+        ),
+        child: _buildCardContent(context),
+      ),
+    );
+  }
+
+  Color get _cardBackground {
+    switch (noun.style) {
+      case _NounCardStyle.imageTop:
+        return isDark ? const Color(0xFF1A1016) : const Color(0xFFFDE8E8);
+      case _NounCardStyle.tinted:
+        final color = noun.accentColor ?? AppTheme.oceanBlue;
+        return isDark
+            ? color.withValues(alpha: 0.12)
+            : color.withValues(alpha: 0.08);
+      default:
+        return isDark ? AppTheme.dHigh : AppTheme.lSurf;
+    }
+  }
+
+  Widget _buildCardContent(BuildContext context) {
+    switch (noun.style) {
+      case _NounCardStyle.imageTop:
+        return _ImageTopCard(
+          noun: noun,
+          isDark: isDark,
+          accent: _accent,
+          onSpeak: onSpeak,
+        );
+      case _NounCardStyle.withExample:
+        return _WithExampleCard(
+          noun: noun,
+          isDark: isDark,
+          accent: _accent,
+          onSpeak: onSpeak,
+        );
+      case _NounCardStyle.tinted:
+        return _TintedCard(
+          noun: noun,
+          isDark: isDark,
+          accent: _accent,
+          onSpeak: onSpeak,
+        );
+      default:
+        return _PlainCard(
+          noun: noun,
+          isDark: isDark,
+          accent: _accent,
+          onSpeak: onSpeak,
+        );
+    }
+  }
+}
+
+// Style A — plain white/dark card
+class _PlainCard extends StatelessWidget {
+  const _PlainCard({
+    required this.noun,
+    required this.isDark,
+    required this.accent,
+    required this.onSpeak,
+  });
+  final _NounData noun;
+  final bool isDark;
+  final Color accent;
+  final void Function(String) onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  noun.sinhala,
+                  style: GoogleFonts.notoSansSinhala(
+                    fontSize: 36,
+                    fontWeight: FontWeight.w800,
+                    color: accent,
+                  ),
+                ),
+                Text(
+                  noun.english,
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? AppTheme.dText : AppTheme.lText,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  noun.pronunciation,
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          GestureDetector(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              onSpeak(noun.sinhala);
+            },
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+              child: const Icon(
+                Icons.play_arrow_rounded,
+                color: Colors.white,
+                size: 26,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Style B — image-top card (big emoji fills top half)
+class _ImageTopCard extends StatelessWidget {
+  const _ImageTopCard({
+    required this.noun,
+    required this.isDark,
+    required this.accent,
+    required this.onSpeak,
+  });
+  final _NounData noun;
+  final bool isDark;
+  final Color accent;
+  final void Function(String) onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          height: 130,
+          decoration: BoxDecoration(
+            color: isDark ? AppTheme.dHst : accent.withValues(alpha: 0.15),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Center(
+            child: Text(noun.emoji, style: const TextStyle(fontSize: 64)),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      noun.sinhala,
+                      style: GoogleFonts.notoSansSinhala(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        color: accent,
+                      ),
+                    ),
+                    Text(
+                      noun.english,
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? AppTheme.dText : AppTheme.lText,
+                      ),
+                    ),
+                    Text(
+                      noun.pronunciation,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  onSpeak(noun.sinhala);
+                },
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: accent,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.volume_up_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Style C — with example sentence + Listen button
+class _WithExampleCard extends StatelessWidget {
+  const _WithExampleCard({
+    required this.noun,
+    required this.isDark,
+    required this.accent,
+    required this.onSpeak,
+  });
+  final _NounData noun;
+  final bool isDark;
+  final Color accent;
+  final void Function(String) onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.dHst : accent.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(noun.emoji, style: const TextStyle(fontSize: 28)),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  noun.sinhala,
+                  style: GoogleFonts.notoSansSinhala(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    color: accent,
+                  ),
+                ),
+                Text(
+                  noun.english,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? AppTheme.dText : AppTheme.lText,
+                  ),
+                ),
+                if (noun.exampleSinhala != null) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    '"${noun.exampleSinhala}" — ${noun.exampleEnglish}',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 36,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                      final text = noun.exampleSinhala != null
+                          ? '${noun.sinhala}. ${noun.exampleSinhala}'
+                          : noun.sinhala;
+                      onSpeak(text);
+                    },
+                    icon: const Icon(Icons.hearing_rounded, size: 16),
+                    label: Text(
+                      'Listen',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: accent,
+                      side: BorderSide(color: accent),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Style D — tinted card
+class _TintedCard extends StatelessWidget {
+  const _TintedCard({
+    required this.noun,
+    required this.isDark,
+    required this.accent,
+    required this.onSpeak,
+  });
+  final _NounData noun;
+  final bool isDark;
+  final Color accent;
+  final void Function(String) onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(noun.emoji, style: const TextStyle(fontSize: 40)),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      noun.sinhala,
+                      style: GoogleFonts.notoSansSinhala(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: accent,
+                      ),
+                    ),
+                    Text(
+                      noun.english,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? AppTheme.dText : AppTheme.lText,
+                      ),
+                    ),
+                    Text(
+                      noun.pronunciation,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onSpeak(noun.sinhala);
+              },
+              icon: const Icon(Icons.volume_up_rounded, size: 18),
+              label: Text(
+                'Hear Pronunciation',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: accent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Search FAB
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _SearchFab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => HapticFeedback.mediumImpact(),
+      backgroundColor: AppTheme.oceanBlue,
+      child: const Icon(Icons.search_rounded, color: Colors.white),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Animation helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _FadeSlide extends StatelessWidget {
+  const _FadeSlide({required this.animation, required this.child});
+  final Animation<double> animation;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: animation,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.10),
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _TapScale extends StatefulWidget {
+  const _TapScale({required this.child, required this.onTap});
+  final Widget child;
+  final VoidCallback onTap;
+
+  @override
+  State<_TapScale> createState() => _TapScaleState();
+}
+
+class _TapScaleState extends State<_TapScale>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 100),
+  );
+  late final Animation<double> _scale = Tween<double>(
+    begin: 1.0,
+    end: 0.95,
+  ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => _ctrl.forward(),
+      onTapUp: (_) {
+        _ctrl.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () => _ctrl.reverse(),
+      child: ScaleTransition(scale: _scale, child: widget.child),
+    );
+  }
+}

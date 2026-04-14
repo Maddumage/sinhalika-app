@@ -59,6 +59,9 @@ dependencies:
   # Local notifications
   flutter_local_notifications: ^18.0.1
 
+  # Text-to-speech
+  flutter_tts: ^4.2.0
+
   # App info
   package_info_plus: ^8.1.1
 
