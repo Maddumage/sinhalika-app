@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "436294698593",
+    "project_id": "sinhalika-866ca",
+    "storage_bucket": "sinhalika-866ca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436294698593:android:42ef0e1d3dd02c3a0d8c20",
+        "android_client_info": {
+          "package_name": "com.maddumage.sinhalika"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436294698593-8im7q7dj5lkt66v8l4s7bp8gbcvmtrqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maddumage.sinhalika",
+            "certificate_hash": "6f0b9f59ad95450aa594605ef594484d5739a298"
+          }
+        },
+        {
+          "client_id": "436294698593-4jm0qcjp18u89i4vope0sussrum3sk25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAysl-QNq6ZyN-8340xeyzh7Dh09R26pTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436294698593-4jm0qcjp18u89i4vope0sussrum3sk25.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436294698593-derke8n2u37vb23grp3b0pq10sn6h1kt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.maddumage.sinhalika"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
