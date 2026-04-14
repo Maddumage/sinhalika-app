@@ -72,7 +72,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   _AppLogoMark(isDark: isDark),
                   const SizedBox(width: 10),
                   Text(
-                    'Sinhala Kids',
+                    'සිංහලිකා',
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -95,7 +95,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
                     // ── Headline ──────────────────────────────────────────
                     Text(
-                      'Welcome back.',
+                      'ආයුබෝවන්.',
                       style: GoogleFonts.inter(
                         fontSize: 36,
                         fontWeight: FontWeight.w800,
@@ -198,7 +198,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Sinhala Kids prioritizes your child\'s digital safety. We do not sell personal data or display third-party advertisements.',
+                            'සිංහලිකා prioritizes your child\'s digital safety. We do not sell personal data or display third-party advertisements.',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
                               fontSize: 13,

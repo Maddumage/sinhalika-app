@@ -85,7 +85,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 const SizedBox(height: 44),
 
                 const Text(
-                  'Sinhala Kids',
+                  'සිංහලිකා',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w800,

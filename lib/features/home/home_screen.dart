@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen>
                 color: isDark ? AppTheme.dBg : AppTheme.lBg,
               ),
               title: Text(
-                'Sinhala Kids',
+                'සිංහලිකා',
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w800,
                   fontSize: 20,
@@ -234,7 +234,7 @@ class _GreetingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Ayubowan, $name!',
+            'ආයුබෝවන්, $name!',
             style: GoogleFonts.inter(
               fontSize: 26,
               fontWeight: FontWeight.w800,

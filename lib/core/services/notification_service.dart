@@ -14,7 +14,7 @@ class NotificationService {
   static final instance = NotificationService._();
 
   static const _channelId = 'sinhalika_main';
-  static const _channelName = 'Sinhala Kids';
+  static const _channelName = 'Sinhalika Notifications';
 
   final _fcm = FirebaseMessaging.instance;
   final _local = FlutterLocalNotificationsPlugin();
