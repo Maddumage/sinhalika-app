@@ -14,7 +14,7 @@ class UserPreferencesNotifier extends Notifier<UserPreferences> {
 
     final language = AppLanguage.values.firstWhere(
       (e) => e.name == prefs.getString(_keyLanguage),
-      orElse: () => AppLanguage.en,
+      orElse: () => AppLanguage.si,
     );
 
     final mode = LearningMode.values.firstWhere(

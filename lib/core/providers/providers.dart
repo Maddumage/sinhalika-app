@@ -37,7 +37,7 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
     final saved = ref.read(sharedPrefsProvider).getString(_key);
     return ThemeMode.values.firstWhere(
       (m) => m.name == saved,
-      orElse: () => ThemeMode.system,
+      orElse: () => ThemeMode.light,
     );
   }
 
