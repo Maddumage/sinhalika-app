@@ -15,6 +15,22 @@
 
   "onboardingCtaGetStarted": "ආරම්භ කරන්න",
 
+  "onboardingLangTitle": "ඔබේ භාෂාව තෝරන්න",
+
+  "onboardingLangSubtitle": "ඔබට ඕනෑම වේලාවක සැකසීම් තුළ මෙය වෙනස් කළ හැකිය",
+
+  "onboardingModeTitle": "ඔබ සිංහල දන්නවාද?",
+
+  "onboardingModeSubtitle": "ඔබේ අත්දැකීම පුද්ගලාරෝපණය කිරීමට මෙය ප්‍රයෝජනවත්ය",
+
+  "onboardingModeNativeTitle": "ඔව්, මා සිංහල දනිමි",
+
+  "onboardingModeNativeSubtitle": "සිංහල අන්තර්ගතය පළමුව දර්ශනය කරන්න",
+
+  "onboardingModeLearnerTitle": "මා සිංහල ඉගෙනගනිමි",
+
+  "onboardingModeLearnerSubtitle": "පරිවර්තන සහ ඉඟි සමඟ මාව මෙහෙයවන්න",
+
   "onboardingPage1Tag": "ආයුබෝවන්",
 
   "onboardingPage1Title": "ගවේෂණය කරන්න\n",

@@ -30,6 +30,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingCtaGetStarted => 'Get Started';
 
   @override
+  String get onboardingLangTitle => 'Choose Your Language';
+
+  @override
+  String get onboardingLangSubtitle =>
+      'You can change this anytime in Settings';
+
+  @override
+  String get onboardingModeTitle => 'Do you know Sinhala?';
+
+  @override
+  String get onboardingModeSubtitle =>
+      'This helps us personalise your experience';
+
+  @override
+  String get onboardingModeNativeTitle => 'Yes, I know Sinhala';
+
+  @override
+  String get onboardingModeNativeSubtitle => 'Show me content in Sinhala first';
+
+  @override
+  String get onboardingModeLearnerTitle => 'I’m learning Sinhala';
+
+  @override
+  String get onboardingModeLearnerSubtitle =>
+      'Guide me with translations and hints';
+
+  @override
   String get onboardingPage1Tag => 'AYUBOWAN';
 
   @override

@@ -30,6 +30,34 @@ class AppLocalizationsSi extends AppLocalizations {
   String get onboardingCtaGetStarted => 'ආරම්භ කරන්න';
 
   @override
+  String get onboardingLangTitle => 'ඔබේ භාෂාව තෝරන්න';
+
+  @override
+  String get onboardingLangSubtitle =>
+      'ඔබට ඕනෑම වේලාවක සැකසීම් තුළ මෙය වෙනස් කළ හැකිය';
+
+  @override
+  String get onboardingModeTitle => 'ඔබ සිංහල දන්නවාද?';
+
+  @override
+  String get onboardingModeSubtitle =>
+      'ඔබේ අත්දැකීම පුද්ගලාරෝපණය කිරීමට මෙය ප්‍රයෝජනවත්ය';
+
+  @override
+  String get onboardingModeNativeTitle => 'ඔව්, මා සිංහල දනිමි';
+
+  @override
+  String get onboardingModeNativeSubtitle =>
+      'සිංහල අන්තර්ගතය පළමුව දර්ශනය කරන්න';
+
+  @override
+  String get onboardingModeLearnerTitle => 'මා සිංහල ඉගෙනගනිමි';
+
+  @override
+  String get onboardingModeLearnerSubtitle =>
+      'පරිවර්තන සහ ඉඟි සමඟ මාව මෙහෙයවන්න';
+
+  @override
   String get onboardingPage1Tag => 'ආයුබෝවන්';
 
   @override

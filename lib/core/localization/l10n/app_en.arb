@@ -22,6 +22,30 @@
   "onboardingCtaGetStarted": "Get Started",
   "@onboardingCtaGetStarted": { "description": "CTA on the last onboarding page" },
 
+  "onboardingLangTitle": "Choose Your Language",
+  "@onboardingLangTitle": { "description": "Title on the onboarding language picker page" },
+
+  "onboardingLangSubtitle": "You can change this anytime in Settings",
+  "@onboardingLangSubtitle": { "description": "Subtitle on the onboarding language picker page" },
+
+  "onboardingModeTitle": "Do you know Sinhala?",
+  "@onboardingModeTitle": { "description": "Title on the onboarding mode picker page" },
+
+  "onboardingModeSubtitle": "This helps us personalise your experience",
+  "@onboardingModeSubtitle": { "description": "Subtitle on the onboarding mode picker page" },
+
+  "onboardingModeNativeTitle": "Yes, I know Sinhala",
+  "@onboardingModeNativeTitle": { "description": "Native mode option title in onboarding" },
+
+  "onboardingModeNativeSubtitle": "Show me content in Sinhala first",
+  "@onboardingModeNativeSubtitle": { "description": "Native mode option subtitle in onboarding" },
+
+  "onboardingModeLearnerTitle": "I\u2019m learning Sinhala",
+  "@onboardingModeLearnerTitle": { "description": "Learner mode option title in onboarding" },
+
+  "onboardingModeLearnerSubtitle": "Guide me with translations and hints",
+  "@onboardingModeLearnerSubtitle": { "description": "Learner mode option subtitle in onboarding" },
+
   "onboardingPage1Tag": "AYUBOWAN",
   "@onboardingPage1Tag": { "description": "Tag chip on onboarding page 1" },
 

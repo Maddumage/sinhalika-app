@@ -140,6 +140,54 @@ abstract class AppLocalizations {
   /// **'Get Started'**
   String get onboardingCtaGetStarted;
 
+  /// Title on the onboarding language picker page
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Language'**
+  String get onboardingLangTitle;
+
+  /// Subtitle on the onboarding language picker page
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this anytime in Settings'**
+  String get onboardingLangSubtitle;
+
+  /// Title on the onboarding mode picker page
+  ///
+  /// In en, this message translates to:
+  /// **'Do you know Sinhala?'**
+  String get onboardingModeTitle;
+
+  /// Subtitle on the onboarding mode picker page
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us personalise your experience'**
+  String get onboardingModeSubtitle;
+
+  /// Native mode option title in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, I know Sinhala'**
+  String get onboardingModeNativeTitle;
+
+  /// Native mode option subtitle in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Show me content in Sinhala first'**
+  String get onboardingModeNativeSubtitle;
+
+  /// Learner mode option title in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'I’m learning Sinhala'**
+  String get onboardingModeLearnerTitle;
+
+  /// Learner mode option subtitle in onboarding
+  ///
+  /// In en, this message translates to:
+  /// **'Guide me with translations and hints'**
+  String get onboardingModeLearnerSubtitle;
+
   /// Tag chip on onboarding page 1
   ///
   /// In en, this message translates to:

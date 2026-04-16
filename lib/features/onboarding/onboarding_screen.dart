@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/localization/generated/app_localizations.dart';
+import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
+import '../../core/providers/user_preferences_provider.dart';
 
 // ── Page data ─────────────────────────────────────────────────────────────────
 class _Page {
@@ -54,11 +56,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _ctrl = PageController();
   int _page = 0;
 
+  // Total pages: language picker + 3 intro pages + mode picker
+  static const _totalPages = 5;
+
   void _markSeen() =>
       ref.read(sharedPrefsProvider).setBool('onboarding_seen', true);
 
-  void _next(int pageCount) {
-    if (_page < pageCount - 1) {
+  void _next() {
+    if (_page < _totalPages - 1) {
       _ctrl.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -84,7 +89,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    final pages = _buildPages(l10n);
+    final introPages = _buildPages(l10n);
 
     return Scaffold(
       body: Stack(
@@ -92,9 +97,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           PageView.builder(
             controller: _ctrl,
             onPageChanged: (i) => setState(() => _page = i),
-            itemCount: pages.length,
-            itemBuilder: (_, i) =>
-                _PageView(page: pages[i], index: i, isDark: isDark),
+            itemCount: _totalPages,
+            itemBuilder: (_, i) {
+              if (i == 0) {
+                return _LanguagePickerPage(isDark: isDark);
+              }
+              if (i == _totalPages - 1) {
+                return _ModePickerPage(isDark: isDark);
+              }
+              return _PageView(
+                page: introPages[i - 1],
+                index: i - 1,
+                isDark: isDark,
+              );
+            },
           ),
 
           // Skip
@@ -140,7 +156,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     // Progress dots
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(pages.length, (i) {
+                      children: List.generate(_totalPages, (i) {
                         final active = i == _page;
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
@@ -164,11 +180,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () => _next(pages.length),
+                        onPressed: _next,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(pages[_page].cta),
+                            Text(
+                              _page == _totalPages - 1
+                                  ? l10n.onboardingCtaGetStarted
+                                  : l10n.onboardingCtaNext,
+                            ),
                             const SizedBox(width: 8),
                             const Icon(Icons.arrow_forward_rounded, size: 18),
                           ],
@@ -427,6 +447,259 @@ class _StatItem extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+// ── Language picker page (onboarding step 1) ──────────────────────────────────
+class _LanguagePickerPage extends ConsumerWidget {
+  const _LanguagePickerPage({required this.isDark});
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final currentLang = ref.watch(languageProvider);
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 60, 24, 140),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFF0067AD).withValues(alpha: 0.15)
+                    : const Color(0xFF0067AD).withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.language_rounded,
+                size: 36,
+                color: Color(0xFF0067AD),
+              ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              l10n.onboardingLangTitle,
+              style: GoogleFonts.inter(
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+                letterSpacing: -0.5,
+                color: isDark
+                    ? const Color(0xFFF9F9FD)
+                    : const Color(0xFF383833),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l10n.onboardingLangSubtitle,
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                height: 1.6,
+                color: isDark
+                    ? const Color(0xFFAAABAF)
+                    : const Color(0xFF77776F),
+              ),
+            ),
+            const SizedBox(height: 40),
+            _ChoiceCard(
+              title: l10n.settingsLanguageOptionEn,
+              icon: '🇬🇧',
+              selected: currentLang == AppLanguage.en,
+              isDark: isDark,
+              onTap: () => ref
+                  .read(userPreferencesProvider.notifier)
+                  .setLanguage(AppLanguage.en),
+            ),
+            const SizedBox(height: 12),
+            _ChoiceCard(
+              title: l10n.settingsLanguageOptionSi,
+              icon: '🇱🇰',
+              selected: currentLang == AppLanguage.si,
+              isDark: isDark,
+              onTap: () => ref
+                  .read(userPreferencesProvider.notifier)
+                  .setLanguage(AppLanguage.si),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Mode picker page (onboarding last step) ───────────────────────────────────
+class _ModePickerPage extends ConsumerWidget {
+  const _ModePickerPage({required this.isDark});
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final currentMode = ref.watch(
+      userPreferencesProvider.select((p) => p.mode),
+    );
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 60, 24, 140),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFF0067AD).withValues(alpha: 0.15)
+                    : const Color(0xFF0067AD).withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.psychology_rounded,
+                size: 36,
+                color: Color(0xFF0067AD),
+              ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              l10n.onboardingModeTitle,
+              style: GoogleFonts.inter(
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+                letterSpacing: -0.5,
+                color: isDark
+                    ? const Color(0xFFF9F9FD)
+                    : const Color(0xFF383833),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l10n.onboardingModeSubtitle,
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                height: 1.6,
+                color: isDark
+                    ? const Color(0xFFAAABAF)
+                    : const Color(0xFF77776F),
+              ),
+            ),
+            const SizedBox(height: 40),
+            _ChoiceCard(
+              title: l10n.onboardingModeNativeTitle,
+              subtitle: l10n.onboardingModeNativeSubtitle,
+              icon: '🇱🇰',
+              selected: currentMode == LearningMode.native,
+              isDark: isDark,
+              onTap: () => ref
+                  .read(userPreferencesProvider.notifier)
+                  .setMode(LearningMode.native),
+            ),
+            const SizedBox(height: 12),
+            _ChoiceCard(
+              title: l10n.onboardingModeLearnerTitle,
+              subtitle: l10n.onboardingModeLearnerSubtitle,
+              icon: '📚',
+              selected: currentMode == LearningMode.learner,
+              isDark: isDark,
+              onTap: () => ref
+                  .read(userPreferencesProvider.notifier)
+                  .setMode(LearningMode.learner),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Shared selectable choice card ─────────────────────────────────────────────
+class _ChoiceCard extends StatelessWidget {
+  const _ChoiceCard({
+    required this.title,
+    this.subtitle,
+    required this.icon,
+    required this.selected,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  final String title;
+  final String? subtitle;
+  final String icon;
+  final bool selected;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    const accent = Color(0xFF0067AD);
+    final bgColor = selected
+        ? (isDark
+              ? accent.withValues(alpha: 0.15)
+              : accent.withValues(alpha: 0.08))
+        : (isDark ? const Color(0xFF1D2024) : Colors.white);
+    final borderColor = selected
+        ? accent
+        : (isDark ? const Color(0xFF46484B) : const Color(0xFFD0CEC5));
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: borderColor, width: selected ? 2 : 1),
+        ),
+        child: Row(
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 32)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight:
+                          selected ? FontWeight.w700 : FontWeight.w600,
+                      color: selected
+                          ? accent
+                          : (isDark
+                                ? const Color(0xFFF9F9FD)
+                                : const Color(0xFF383833)),
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle!,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: isDark
+                            ? const Color(0xFFAAABAF)
+                            : const Color(0xFF77776F),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (selected)
+              const Icon(Icons.check_circle_rounded, color: accent, size: 22),
+          ],
+        ),
+      ),
     );
   }
 }
