@@ -5,9 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/adapters/content_adapter.dart';
 import '../../core/models/noun_item.dart';
-import '../../core/models/user_preferences.dart';
+import '../../core/providers/content_providers.dart';
 import '../../core/providers/providers.dart';
-import '../../core/providers/user_preferences_provider.dart';
 import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/nouns_data.dart';
@@ -55,7 +54,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    final prefs = ref.watch(userPreferencesProvider);
+    final displayList = ref.watch(nounDisplayListProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -80,7 +79,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                     child: _NounCard(
                       noun: nounItems[i],
                       isDark: isDark,
-                      prefs: prefs,
+                      display: displayList[i],
                       onSpeak: (text, audioPath) {
                         if (audioPath != null) {
                           ref.read(audioServiceProvider).play(audioPath);
@@ -217,19 +216,18 @@ class _NounCard extends StatelessWidget {
   const _NounCard({
     required this.noun,
     required this.isDark,
-    required this.prefs,
+    required this.display,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
-  final UserPreferences prefs;
+  final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
   Color get _accent => noun.accentColor ?? AppTheme.oceanBlue;
 
   @override
   Widget build(BuildContext context) {
-    final display = ContentAdapter.forNoun(noun, prefs);
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();

@@ -5,9 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/adapters/content_adapter.dart';
 import '../../core/models/hodiya_item.dart';
-import '../../core/models/user_preferences.dart';
+import '../../core/providers/content_providers.dart';
 import '../../core/providers/providers.dart';
-import '../../core/providers/user_preferences_provider.dart';
 import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/hodiya_data.dart';
@@ -55,7 +54,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    final prefs = ref.watch(userPreferencesProvider);
+    final displayList = ref.watch(hodiyaDisplayListProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -73,7 +72,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                   child: _LetterCard(
                     data: hodiyaItems[i],
                     isDark: isDark,
-                    prefs: prefs,
+                    display: displayList[i],
                     onSpeak: (text, audioPath) {
                       if (audioPath != null) {
                         ref.read(audioServiceProvider).play(audioPath);
@@ -200,12 +199,12 @@ class _LetterCard extends StatelessWidget {
   const _LetterCard({
     required this.data,
     required this.isDark,
-    required this.prefs,
+    required this.display,
     required this.onSpeak,
   });
   final HodiyaItem data;
   final bool isDark;
-  final UserPreferences prefs;
+  final HodiyaDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
   Color get _letterColor {
@@ -221,7 +220,6 @@ class _LetterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final display = ContentAdapter.forHodiya(data, prefs);
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();

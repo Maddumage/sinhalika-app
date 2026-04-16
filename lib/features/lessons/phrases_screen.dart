@@ -5,9 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/adapters/content_adapter.dart';
 import '../../core/models/phrase_item.dart';
-import '../../core/models/user_preferences.dart';
+import '../../core/providers/content_providers.dart';
 import '../../core/providers/providers.dart';
-import '../../core/providers/user_preferences_provider.dart';
 import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/phrases_data.dart';
@@ -57,7 +56,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    final prefs = ref.watch(userPreferencesProvider);
+    final displayList = ref.watch(phraseDisplayListProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -82,7 +81,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                     child: _PhraseCard(
                       phrase: phraseItems[i],
                       isDark: isDark,
-                      prefs: prefs,
+                      display: displayList[i],
                       onSpeak: (text, audioPath) {
                         if (audioPath != null) {
                           ref.read(audioServiceProvider).play(audioPath);
@@ -206,20 +205,19 @@ class _PhraseCard extends StatelessWidget {
   const _PhraseCard({
     required this.phrase,
     required this.isDark,
-    required this.prefs,
+    required this.display,
     required this.onSpeak,
     required this.onPractice,
   });
   final PhraseItem phrase;
   final bool isDark;
-  final UserPreferences prefs;
+  final PhraseDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
   final VoidCallback onPractice;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final display = ContentAdapter.forPhrase(phrase, prefs);
     final cat = phrase.category;
     final bgColor = isDark
         ? cat.chipColor.withValues(alpha: 0.10)
