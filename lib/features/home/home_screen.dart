@@ -561,7 +561,12 @@ class _DiscoverMore extends StatelessWidget {
   final bool isDark;
 
   static List<_DiscItem> _buildItems(AppLocalizations l10n) => [
-    _DiscItem(l10n.homeDiscoverWords, 'වජන', Icons.abc_rounded, const Color(0xFFE53935)),
+    _DiscItem(
+      l10n.homeDiscoverWords,
+      'වජන',
+      Icons.abc_rounded,
+      const Color(0xFFE53935),
+    ),
     _DiscItem(
       l10n.homeDiscoverVocabulary,
       'වජන භාගුව',

@@ -38,9 +38,18 @@ class LessonsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
     final titles = [
-      (title: l10n.lessonCategoryAlphabetTitle, subtitle: l10n.lessonCategoryAlphabetSubtitle),
-      (title: l10n.lessonCategoryNounsTitle, subtitle: l10n.lessonCategoryNounsSubtitle),
-      (title: l10n.lessonCategoryPhrasesTitle, subtitle: l10n.lessonCategoryPhrasesSubtitle),
+      (
+        title: l10n.lessonCategoryAlphabetTitle,
+        subtitle: l10n.lessonCategoryAlphabetSubtitle,
+      ),
+      (
+        title: l10n.lessonCategoryNounsTitle,
+        subtitle: l10n.lessonCategoryNounsSubtitle,
+      ),
+      (
+        title: l10n.lessonCategoryPhrasesTitle,
+        subtitle: l10n.lessonCategoryPhrasesSubtitle,
+      ),
     ];
 
     return Scaffold(

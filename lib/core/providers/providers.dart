@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/word_document.dart';
 import '../services/auth_service.dart';
 import '../services/audio_service.dart';
+import '../services/firestore_service.dart';
 import '../services/tts_service.dart';
 
 // ── TTS ───────────────────────────────────────────────────────────────────────
 final ttsServiceProvider = Provider<TtsService>((_) => TtsService.instance);
 
 // ── Audio ─────────────────────────────────────────────────────────────────────
-final audioServiceProvider = Provider<AudioService>((_) => AudioService.instance);
+final audioServiceProvider = Provider<AudioService>(
+  (_) => AudioService.instance,
+);
 
 // ── SharedPreferences (overridden in main) ───────────────────────────────────
 final sharedPrefsProvider = Provider<SharedPreferences>(
@@ -70,4 +74,14 @@ class NotifNotifier extends Notifier<bool> {
 
 final notificationsEnabledProvider = NotifierProvider<NotifNotifier, bool>(
   NotifNotifier.new,
+);
+
+// ── Firestore ─────────────────────────────────────────────────────────────────
+final firestoreServiceProvider = Provider<FirestoreService>(
+  (_) => FirestoreService.instance,
+);
+
+/// Live stream of all `words/{id}` documents.
+final wordsProvider = StreamProvider<List<WordDocument>>(
+  (ref) => ref.read(firestoreServiceProvider).watchWords(),
 );

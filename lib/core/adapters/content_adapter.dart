@@ -112,8 +112,7 @@ class ContentAdapter {
     return HodiyaDisplay(
       letterHint: show ? item.transliteration : null,
       wordLabel: item.word,
-      wordHint:
-          show ? '${item.wordTransliteration} · ${item.english}' : null,
+      wordHint: show ? '${item.wordTransliteration} · ${item.english}' : null,
       ttsText: '${item.letter} ${item.word}',
       audioPath: item.audioPath,
     );

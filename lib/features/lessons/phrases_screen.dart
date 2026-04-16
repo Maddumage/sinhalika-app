@@ -84,12 +84,12 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                       isDark: isDark,
                       prefs: prefs,
                       onSpeak: (text, audioPath) {
-                          if (audioPath != null) {
-                            ref.read(audioServiceProvider).play(audioPath);
-                          } else {
-                            ref.read(ttsServiceProvider).speak(text);
-                          }
-                        },
+                        if (audioPath != null) {
+                          ref.read(audioServiceProvider).play(audioPath);
+                        } else {
+                          ref.read(ttsServiceProvider).speak(text);
+                        }
+                      },
                       onPractice: () {
                         HapticFeedback.mediumImpact();
                         setState(() {

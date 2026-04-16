@@ -74,13 +74,13 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                     data: hodiyaItems[i],
                     isDark: isDark,
                     prefs: prefs,
-                      onSpeak: (text, audioPath) {
-                        if (audioPath != null) {
-                          ref.read(audioServiceProvider).play(audioPath);
-                        } else {
-                          ref.read(ttsServiceProvider).speak(text);
-                        }
-                      },
+                    onSpeak: (text, audioPath) {
+                      if (audioPath != null) {
+                        ref.read(audioServiceProvider).play(audioPath);
+                      } else {
+                        ref.read(ttsServiceProvider).speak(text);
+                      }
+                    },
                   ),
                 );
               }, childCount: hodiyaItems.length),

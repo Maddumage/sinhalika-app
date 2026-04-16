@@ -671,8 +671,7 @@ class _ChoiceCard extends StatelessWidget {
                     title,
                     style: GoogleFonts.inter(
                       fontSize: 16,
-                      fontWeight:
-                          selected ? FontWeight.w700 : FontWeight.w600,
+                      fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
                       color: selected
                           ? accent
                           : (isDark

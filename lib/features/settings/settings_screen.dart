@@ -283,9 +283,8 @@ class _LanguageSelector extends StatelessWidget {
         final accent = isDark ? AppTheme.electricBlue : AppTheme.oceanBlue;
         return Expanded(
           child: GestureDetector(
-            onTap: () => ref
-                .read(userPreferencesProvider.notifier)
-                .setLanguage(opt.$1),
+            onTap: () =>
+                ref.read(userPreferencesProvider.notifier).setLanguage(opt.$1),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -308,8 +307,7 @@ class _LanguageSelector extends StatelessWidget {
                   opt.$2,
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    fontWeight:
-                        selected ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                     color: selected
                         ? accent
                         : (isDark ? AppTheme.dMuted : AppTheme.lMuted),
@@ -339,7 +337,11 @@ class _ThemeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final modes = [
-      (ThemeMode.system, Icons.brightness_auto_rounded, l10n.settingsThemeModeSystem),
+      (
+        ThemeMode.system,
+        Icons.brightness_auto_rounded,
+        l10n.settingsThemeModeSystem,
+      ),
       (ThemeMode.light, Icons.light_mode_rounded, l10n.settingsThemeModeLight),
       (ThemeMode.dark, Icons.dark_mode_rounded, l10n.settingsThemeModeDark),
     ];
