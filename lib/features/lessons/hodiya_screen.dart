@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/adapters/content_adapter.dart';
 import '../../core/models/hodiya_item.dart';
+import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
+import '../../core/providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import 'data/hodiya_data.dart';
 
@@ -50,6 +53,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -67,6 +71,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                   child: _LetterCard(
                     data: hodiyaItems[i],
                     isDark: isDark,
+                    prefs: prefs,
                     onSpeak: (text) => ref.read(ttsServiceProvider).speak(text),
                   ),
                 );
@@ -187,10 +192,12 @@ class _LetterCard extends StatelessWidget {
   const _LetterCard({
     required this.data,
     required this.isDark,
+    required this.prefs,
     required this.onSpeak,
   });
   final HodiyaItem data;
   final bool isDark;
+  final UserPreferences prefs;
   final void Function(String text) onSpeak;
 
   Color get _letterColor {
@@ -206,10 +213,11 @@ class _LetterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final display = ContentAdapter.forHodiya(data, prefs);
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();
-        onSpeak(data.letter);
+        onSpeak(display.ttsText);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -227,15 +235,30 @@ class _LetterCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Large letter centre
+            // Large letter + transliteration hint
             Center(
-              child: Text(
-                data.letter,
-                style: GoogleFonts.notoSansSinhala(
-                  fontSize: 64,
-                  fontWeight: FontWeight.w800,
-                  color: _letterColor,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    data.letter,
+                    style: GoogleFonts.notoSansSinhala(
+                      fontSize: 64,
+                      fontWeight: FontWeight.w800,
+                      color: _letterColor,
+                    ),
+                  ),
+                  if (display.letterHint != null)
+                    Text(
+                      display.letterHint!,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: (isDark ? AppTheme.dMuted : AppTheme.lMuted)
+                            .withValues(alpha: 0.8),
+                      ),
+                    ),
+                ],
               ),
             ),
             // Volume button top-right
@@ -245,7 +268,7 @@ class _LetterCard extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  onSpeak('${data.letter} ${data.word}');
+                  onSpeak(display.ttsText);
                 },
                 child: Container(
                   width: 32,
@@ -278,17 +301,33 @@ class _LetterCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Word label bottom-right
+            // Word label + hint bottom-right
             Positioned(
               bottom: 12,
               right: 12,
-              child: Text(
-                data.word,
-                style: GoogleFonts.notoSansSinhala(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    data.word,
+                    style: GoogleFonts.notoSansSinhala(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    ),
+                  ),
+                  if (display.wordHint != null)
+                    Text(
+                      display.wordHint!,
+                      style: GoogleFonts.inter(
+                        fontSize: 8,
+                        color: (isDark ? AppTheme.dMuted : AppTheme.lMuted)
+                            .withValues(alpha: 0.7),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
               ),
             ),
           ],

@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/adapters/content_adapter.dart';
 import '../../core/models/noun_item.dart';
+import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
+import '../../core/providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import 'data/nouns_data.dart';
 
@@ -50,6 +53,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -74,6 +78,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                     child: _NounCard(
                       noun: nounItems[i],
                       isDark: isDark,
+                      prefs: prefs,
                       onSpeak: (text) =>
                           ref.read(ttsServiceProvider).speak(text),
                     ),
@@ -205,20 +210,23 @@ class _NounCard extends StatelessWidget {
   const _NounCard({
     required this.noun,
     required this.isDark,
+    required this.prefs,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
+  final UserPreferences prefs;
   final void Function(String text) onSpeak;
 
   Color get _accent => noun.accentColor ?? AppTheme.oceanBlue;
 
   @override
   Widget build(BuildContext context) {
+    final display = ContentAdapter.forNoun(noun, prefs);
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();
-        onSpeak(noun.sinhala);
+        onSpeak(display.ttsText);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -234,7 +242,7 @@ class _NounCard extends StatelessWidget {
                   ),
                 ],
         ),
-        child: _buildCardContent(context),
+        child: _buildCardContent(context, display),
       ),
     );
   }
@@ -253,13 +261,14 @@ class _NounCard extends StatelessWidget {
     }
   }
 
-  Widget _buildCardContent(BuildContext context) {
+  Widget _buildCardContent(BuildContext context, NounDisplay display) {
     switch (noun.style) {
       case NounCardStyle.imageTop:
         return _ImageTopCard(
           noun: noun,
           isDark: isDark,
           accent: _accent,
+          display: display,
           onSpeak: onSpeak,
         );
       case NounCardStyle.withExample:
@@ -267,6 +276,7 @@ class _NounCard extends StatelessWidget {
           noun: noun,
           isDark: isDark,
           accent: _accent,
+          display: display,
           onSpeak: onSpeak,
         );
       case NounCardStyle.tinted:
@@ -274,6 +284,7 @@ class _NounCard extends StatelessWidget {
           noun: noun,
           isDark: isDark,
           accent: _accent,
+          display: display,
           onSpeak: onSpeak,
         );
       default:
@@ -281,6 +292,7 @@ class _NounCard extends StatelessWidget {
           noun: noun,
           isDark: isDark,
           accent: _accent,
+          display: display,
           onSpeak: onSpeak,
         );
     }
@@ -293,11 +305,13 @@ class _PlainCard extends StatelessWidget {
     required this.noun,
     required this.isDark,
     required this.accent,
+    required this.display,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
   final Color accent;
+  final NounDisplay display;
   final void Function(String) onSpeak;
 
   @override
@@ -326,14 +340,16 @@ class _PlainCard extends StatelessWidget {
                     color: isDark ? AppTheme.dText : AppTheme.lText,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  noun.transliteration,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                if (display.transliteration != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    display.transliteration!,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -341,7 +357,7 @@ class _PlainCard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               HapticFeedback.selectionClick();
-              onSpeak(noun.sinhala);
+              onSpeak(display.ttsText);
             },
             child: Container(
               width: 48,
@@ -366,11 +382,13 @@ class _ImageTopCard extends StatelessWidget {
     required this.noun,
     required this.isDark,
     required this.accent,
+    required this.display,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
   final Color accent;
+  final NounDisplay display;
   final void Function(String) onSpeak;
 
   @override
@@ -412,20 +430,21 @@ class _ImageTopCard extends StatelessWidget {
                         color: isDark ? AppTheme.dText : AppTheme.lText,
                       ),
                     ),
-                    Text(
-                      noun.transliteration,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    if (display.transliteration != null)
+                      Text(
+                        display.transliteration!,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  onSpeak(noun.sinhala);
+                  onSpeak(display.ttsText);
                 },
                 child: Container(
                   width: 44,
@@ -455,11 +474,13 @@ class _WithExampleCard extends StatelessWidget {
     required this.noun,
     required this.isDark,
     required this.accent,
+    required this.display,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
   final Color accent;
+  final NounDisplay display;
   final void Function(String) onSpeak;
 
   @override
@@ -501,10 +522,10 @@ class _WithExampleCard extends StatelessWidget {
                     color: isDark ? AppTheme.dText : AppTheme.lText,
                   ),
                 ),
-                if (noun.exampleSinhala != null) ...[
+                if (display.exampleLine != null) ...[
                   const SizedBox(height: 6),
                   Text(
-                    '"${noun.exampleSinhala}" — ${noun.exampleEnglish}',
+                    display.exampleLine!,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       fontStyle: FontStyle.italic,
@@ -518,10 +539,7 @@ class _WithExampleCard extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       HapticFeedback.selectionClick();
-                      final text = noun.exampleSinhala != null
-                          ? '${noun.sinhala}. ${noun.exampleSinhala}'
-                          : noun.sinhala;
-                      onSpeak(text);
+                      onSpeak(display.ttsText);
                     },
                     icon: const Icon(Icons.hearing_rounded, size: 16),
                     label: Text(
@@ -555,11 +573,13 @@ class _TintedCard extends StatelessWidget {
     required this.noun,
     required this.isDark,
     required this.accent,
+    required this.display,
     required this.onSpeak,
   });
   final NounItem noun;
   final bool isDark;
   final Color accent;
+  final NounDisplay display;
   final void Function(String) onSpeak;
 
   @override
@@ -593,13 +613,14 @@ class _TintedCard extends StatelessWidget {
                         color: isDark ? AppTheme.dText : AppTheme.lText,
                       ),
                     ),
-                    Text(
-                      noun.transliteration,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                    if (display.transliteration != null)
+                      Text(
+                        display.transliteration!,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -612,7 +633,7 @@ class _TintedCard extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () {
                 HapticFeedback.selectionClick();
-                onSpeak(noun.sinhala);
+                onSpeak(display.ttsText);
               },
               icon: const Icon(Icons.volume_up_rounded, size: 18),
               label: Text(

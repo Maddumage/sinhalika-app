@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/adapters/content_adapter.dart';
 import '../../core/models/phrase_item.dart';
+import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
+import '../../core/providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import 'data/phrases_data.dart';
 
@@ -52,6 +55,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
@@ -76,6 +80,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                     child: _PhraseCard(
                       phrase: phraseItems[i],
                       isDark: isDark,
+                      prefs: prefs,
                       onSpeak: (text) =>
                           ref.read(ttsServiceProvider).speak(text),
                       onPractice: () {
@@ -177,16 +182,19 @@ class _PhraseCard extends StatelessWidget {
   const _PhraseCard({
     required this.phrase,
     required this.isDark,
+    required this.prefs,
     required this.onSpeak,
     required this.onPractice,
   });
   final PhraseItem phrase;
   final bool isDark;
+  final UserPreferences prefs;
   final void Function(String text) onSpeak;
   final VoidCallback onPractice;
 
   @override
   Widget build(BuildContext context) {
+    final display = ContentAdapter.forPhrase(phrase, prefs);
     final cat = phrase.category;
     final bgColor = isDark
         ? cat.chipColor.withValues(alpha: 0.10)
@@ -198,7 +206,7 @@ class _PhraseCard extends StatelessWidget {
         _TapScale(
           onTap: () {
             HapticFeedback.lightImpact();
-            onSpeak(phrase.sinhala);
+            onSpeak(display.ttsText);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -250,7 +258,7 @@ class _PhraseCard extends StatelessWidget {
                       const SizedBox(height: 14),
                       // Sinhala phrase (large)
                       Text(
-                        phrase.sinhala,
+                        display.sinhala,
                         style: GoogleFonts.notoSansSinhala(
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
@@ -258,10 +266,21 @@ class _PhraseCard extends StatelessWidget {
                           height: 1.4,
                         ),
                       ),
+                      if (display.transliteration != null) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          display.transliteration!,
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 6),
                       // English translation
                       Text(
-                        phrase.english,
+                        display.english,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           color: isDark ? AppTheme.dText : AppTheme.lText,
@@ -276,7 +295,7 @@ class _PhraseCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    onSpeak(phrase.sinhala);
+                    onSpeak(display.ttsText);
                   },
                   child: Container(
                     width: 44,
