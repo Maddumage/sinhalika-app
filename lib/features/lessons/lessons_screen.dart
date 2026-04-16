@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 
 class LessonsScreen extends StatelessWidget {
@@ -10,8 +11,6 @@ class LessonsScreen extends StatelessWidget {
 
   static const _categories = [
     (
-      title: 'සිංහල හෝඩිය',
-      subtitle: 'Sinhala Alphabet',
       emoji: '📖',
       route: '/lessons/hodiya',
       accentLight: Color(0xFFFDE8E8),
@@ -19,8 +18,6 @@ class LessonsScreen extends StatelessWidget {
       textColor: AppTheme.heritageRed,
     ),
     (
-      title: 'නාම පද',
-      subtitle: 'Nouns',
       emoji: '🌿',
       route: '/lessons/nouns',
       accentLight: Color(0xFFE8F0FE),
@@ -28,8 +25,6 @@ class LessonsScreen extends StatelessWidget {
       textColor: AppTheme.oceanBlue,
     ),
     (
-      title: 'වාක්‍ය',
-      subtitle: 'Phrases',
       emoji: '💬',
       route: '/lessons/phrases',
       accentLight: Color(0xFFE8F5E9),
@@ -41,12 +36,18 @@ class LessonsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
+    final titles = [
+      (title: l10n.lessonCategoryAlphabetTitle, subtitle: l10n.lessonCategoryAlphabetSubtitle),
+      (title: l10n.lessonCategoryNounsTitle, subtitle: l10n.lessonCategoryNounsSubtitle),
+      (title: l10n.lessonCategoryPhrasesTitle, subtitle: l10n.lessonCategoryPhrasesSubtitle),
+    ];
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
       appBar: AppBar(
         title: Text(
-          'Lessons',
+          l10n.lessonsScreenTitle,
           style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -59,7 +60,7 @@ class LessonsScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
           Text(
-            'What would you like\nto learn today?',
+            l10n.lessonsScreenSubheading,
             style: GoogleFonts.inter(
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -68,19 +69,20 @@ class LessonsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          ..._categories.map(
-            (cat) => Padding(
+          ...List.generate(_categories.length, (i) {
+            final cat = _categories[i];
+            return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _LessonCard(
-                title: cat.title,
-                subtitle: cat.subtitle,
+                title: titles[i].title,
+                subtitle: titles[i].subtitle,
                 emoji: cat.emoji,
                 accentColor: isDark ? cat.accentDark : cat.accentLight,
                 textColor: cat.textColor,
                 onTap: () => context.push(cat.route),
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );

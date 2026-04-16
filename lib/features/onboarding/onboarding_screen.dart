@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
 import '../../core/providers/providers.dart';
 
 // ── Page data ─────────────────────────────────────────────────────────────────
@@ -17,30 +18,27 @@ class _Page {
   final String tag, title, titleBlue, body, cta;
 }
 
-const _pages = [
+List<_Page> _buildPages(AppLocalizations l10n) => [
   _Page(
-    tag: 'ආයුබෝවන්',
-    title: 'Explore the\n',
-    titleBlue: 'Magic of\nSinhala',
-    body:
-        'Start a journey through stories, games, and traditional Sri Lankan culture.',
-    cta: 'Next',
+    tag: l10n.onboardingPage1Tag,
+    title: l10n.onboardingPage1Title,
+    titleBlue: l10n.onboardingPage1TitleBlue,
+    body: l10n.onboardingPage1Body,
+    cta: l10n.onboardingCtaNext,
   ),
   _Page(
     tag: '',
     title: '',
-    titleBlue: 'Learning\nis Play',
-    body:
-        'Master vocabulary and verbs through interactive games designed for kids.',
-    cta: 'Next',
+    titleBlue: l10n.onboardingPage2TitleBlue,
+    body: l10n.onboardingPage2Body,
+    cta: l10n.onboardingCtaNext,
   ),
   _Page(
     tag: '',
-    title: 'Track Your\n',
-    titleBlue: 'Adventure',
-    body:
-        'Earn badges, level up, and celebrate your progress as you learn Sinhala.',
-    cta: 'Get Started',
+    title: l10n.onboardingPage3Title,
+    titleBlue: l10n.onboardingPage3TitleBlue,
+    body: l10n.onboardingPage3Body,
+    cta: l10n.onboardingCtaGetStarted,
   ),
 ];
 
@@ -59,8 +57,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   void _markSeen() =>
       ref.read(sharedPrefsProvider).setBool('onboarding_seen', true);
 
-  void _next() {
-    if (_page < _pages.length - 1) {
+  void _next(int pageCount) {
+    if (_page < pageCount - 1) {
       _ctrl.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -85,6 +83,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
+    final pages = _buildPages(l10n);
 
     return Scaffold(
       body: Stack(
@@ -92,9 +92,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           PageView.builder(
             controller: _ctrl,
             onPageChanged: (i) => setState(() => _page = i),
-            itemCount: _pages.length,
+            itemCount: pages.length,
             itemBuilder: (_, i) =>
-                _PageView(page: _pages[i], index: i, isDark: isDark),
+                _PageView(page: pages[i], index: i, isDark: isDark),
           ),
 
           // Skip
@@ -114,7 +114,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
               ),
               child: Text(
-                'Skip',
+                l10n.onboardingSkip,
                 style: GoogleFonts.inter(
                   color: isDark
                       ? const Color(0xFFAAABAF)
@@ -140,7 +140,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     // Progress dots
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(_pages.length, (i) {
+                      children: List.generate(pages.length, (i) {
                         final active = i == _page;
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
@@ -164,11 +164,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: _next,
+                        onPressed: () => _next(pages.length),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(_pages[_page].cta),
+                            Text(pages[_page].cta),
                             const SizedBox(width: 8),
                             const Icon(Icons.arrow_forward_rounded, size: 18),
                           ],

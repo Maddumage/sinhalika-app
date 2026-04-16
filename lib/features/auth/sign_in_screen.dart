@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
 import '../../core/services/auth_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -58,6 +59,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -95,7 +97,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
                     // ── Headline ──────────────────────────────────────────
                     Text(
-                      'ආයුබෝවන්.',
+                      l10n.signInHeadline,
                       style: GoogleFonts.inter(
                         fontSize: 36,
                         fontWeight: FontWeight.w800,
@@ -106,7 +108,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Your Sinhala adventure is waiting for you.',
+                      l10n.signInSubtitle,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -127,7 +129,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           _GoogleLogo(),
                           const SizedBox(width: 12),
                           Text(
-                            'Sign in with Google',
+                            l10n.signInWithGoogle,
                             style: GoogleFonts.inter(
                               color: const Color(0xFF1F1F1F),
                               fontWeight: FontWeight.w600,
@@ -157,7 +159,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            'Continue as Guest',
+                            l10n.signInContinueAsGuest,
                             style: GoogleFonts.inter(
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -188,7 +190,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'PARENTAL DISCLOSURE',
+                            l10n.parentalDisclosureTitle,
                             style: GoogleFonts.inter(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -198,7 +200,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'සිංහලිකා prioritizes your child\'s digital safety. We do not sell personal data or display third-party advertisements.',
+                            l10n.parentalDisclosureBody,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
                               fontSize: 13,
@@ -210,7 +212,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           GestureDetector(
                             onTap: () {},
                             child: Text(
-                              'Child Safety Policy',
+                              l10n.childSafetyPolicy,
                               style: GoogleFonts.inter(
                                 fontSize: 13,
                                 color: isDark

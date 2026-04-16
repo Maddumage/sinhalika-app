@@ -1,30 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
+
 class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.shell});
   final StatefulNavigationShell shell;
 
   static const _tabs = [
-    (label: 'Home', icon: Icons.home_rounded, path: '/home'),
-    (label: 'Lessons', icon: Icons.menu_book_rounded, path: '/lessons'),
-    (label: 'Games', icon: Icons.sports_esports_rounded, path: '/games'),
-    (label: 'Settings', icon: Icons.settings_rounded, path: '/settings'),
+    (icon: Icons.home_rounded, path: '/home'),
+    (icon: Icons.menu_book_rounded, path: '/lessons'),
+    (icon: Icons.sports_esports_rounded, path: '/games'),
+    (icon: Icons.settings_rounded, path: '/settings'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final labels = [
+      l10n.navHome,
+      l10n.navLessons,
+      l10n.navGames,
+      l10n.navSettings,
+    ];
     return Scaffold(
       body: shell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: shell.currentIndex,
         onDestinationSelected: (i) =>
             shell.goBranch(i, initialLocation: i == shell.currentIndex),
-        destinations: _tabs
-            .map(
-              (t) => NavigationDestination(icon: Icon(t.icon), label: t.label),
-            )
-            .toList(),
+        destinations: List.generate(
+          _tabs.length,
+          (i) => NavigationDestination(
+            icon: Icon(_tabs[i].icon),
+            label: labels[i],
+          ),
+        ),
       ),
     );
   }

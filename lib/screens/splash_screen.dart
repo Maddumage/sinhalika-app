@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../core/localization/generated/app_localizations.dart';
 import '../core/providers/providers.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -53,6 +54,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       body: Container(
@@ -97,7 +99,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 const SizedBox(height: 10),
 
                 Text(
-                  'අනාගතය වෙනුවෙන් අද ඉගෙන ගමු',
+                  l10n.splashTagline,
                   style: GoogleFonts.notoSansSinhala(
                     fontSize: 15.5,
                     color: isDark
@@ -142,9 +144,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
                 const SizedBox(height: 18),
 
-                const Text(
-                  'LOADING',
-                  style: TextStyle(
+                Text(
+                  l10n.splashLoadingLabel,
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF4FC3F7),
@@ -155,7 +157,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 const SizedBox(height: 6),
 
                 Text(
-                  'ලෝඩ් වෙමින් පවතිසි...',
+                  l10n.splashLoadingSubtitle,
                   style: GoogleFonts.notoSansSinhala(
                     fontSize: 14.5,
                     color: isDark

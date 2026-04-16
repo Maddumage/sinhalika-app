@@ -8,6 +8,7 @@ import '../../core/models/hodiya_item.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
 import '../../core/providers/user_preferences_provider.dart';
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/hodiya_data.dart';
 
@@ -53,6 +54,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
@@ -60,8 +62,8 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(isDark),
-          SliverToBoxAdapter(child: _buildHeroBanner(isDark)),
+          _buildAppBar(isDark, l10n),
+          SliverToBoxAdapter(child: _buildHeroBanner(isDark, l10n)),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
             sliver: SliverGrid(
@@ -89,7 +91,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
     );
   }
 
-  SliverAppBar _buildAppBar(bool isDark) {
+  SliverAppBar _buildAppBar(bool isDark, AppLocalizations l10n) {
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -98,7 +100,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
       ),
       leading: BackButton(color: isDark ? AppTheme.dText : AppTheme.lText),
       title: Text(
-        'සිංහල හෝඩිය',
+        l10n.hodiyaScreenTitle,
         style: GoogleFonts.notoSansSinhala(
           fontSize: 20,
           fontWeight: FontWeight.w800,
@@ -117,7 +119,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
     );
   }
 
-  Widget _buildHeroBanner(bool isDark) {
+  Widget _buildHeroBanner(bool isDark, AppLocalizations l10n) {
     return _FadeSlide(
       animation: _stagger(0),
       child: Padding(
@@ -136,7 +138,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'අකුරු හදනාගමු',
+                      l10n.hodiyaBannerTag,
                       style: GoogleFonts.notoSansSinhala(
                         fontSize: 12,
                         color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -144,7 +146,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'ලස්සන සිංහල\nහෝඩිය ඉගෙන ගමු',
+                      l10n.hodiyaBannerTitle,
                       style: GoogleFonts.notoSansSinhala(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,

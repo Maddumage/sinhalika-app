@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -36,11 +37,12 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final user = FirebaseAuth.instance.currentUser;
     final firstName = user?.displayName?.split(' ').first;
     final name = (user?.isAnonymous ?? true)
-        ? 'Explorer'
-        : (firstName ?? 'Learner');
+        ? l10n.homeGuestName
+        : (firstName ?? l10n.homeLearnerName);
 
     return Scaffold(
       floatingActionButton: _FadeSlide(
@@ -98,8 +100,8 @@ class _HomeScreenState extends State<HomeScreen>
                   child: _TapScale(
                     onTap: () {},
                     child: _LetterSection(
-                      title: 'Vowels',
-                      sinhalaLabel: 'ස්වර (Swara)',
+                      title: l10n.homeVowelsTitle,
+                      sinhalaLabel: l10n.homeVowelsSinhalaLabel,
                       letters: 'අ  ආ',
                       accentColor: AppTheme.heritageRed,
                       isDark: isDark,
@@ -113,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen>
                   child: _TapScale(
                     onTap: () {},
                     child: _LetterSection(
-                      title: 'Consonants',
-                      sinhalaLabel: 'ව්‍යංජන (Wyanjana)',
+                      title: l10n.homeConsonantsTitle,
+                      sinhalaLabel: l10n.homeConsonantsSinhalaLabel,
                       letters: 'ක  බ',
                       accentColor: isDark
                           ? AppTheme.electricBlue
@@ -221,6 +223,7 @@ class _GreetingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -234,7 +237,7 @@ class _GreetingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ආයුබෝවන්, $name!',
+            l10n.homeGreeting(name),
             style: GoogleFonts.inter(
               fontSize: 26,
               fontWeight: FontWeight.w800,
@@ -244,7 +247,7 @@ class _GreetingCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Ready to explore your heritage today?',
+            l10n.homeGreetingSubtitle,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -328,6 +331,7 @@ class _GameOfDayCardState extends State<_GameOfDayCard>
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDark;
+    final l10n = AppLocalizations.of(context);
     return _TapScale(
       onTap: () {},
       child: Container(
@@ -388,7 +392,7 @@ class _GameOfDayCardState extends State<_GameOfDayCard>
                       ),
                     ),
                     child: Text(
-                      'GAME OF THE DAY',
+                      l10n.homeGameOfDayChip,
                       style: GoogleFonts.inter(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -399,7 +403,7 @@ class _GameOfDayCardState extends State<_GameOfDayCard>
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'The Lotus Collector',
+                    l10n.homeGameOfDayTitle,
                     style: GoogleFonts.inter(
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
@@ -409,7 +413,7 @@ class _GameOfDayCardState extends State<_GameOfDayCard>
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Match the Sinhala vowels with falling\nlotus flowers to win extra points!',
+                    l10n.homeGameOfDayDescription,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: isDark ? AppTheme.dMuted : const Color(0xFF5A5A55),
@@ -436,7 +440,7 @@ class _GameOfDayCardState extends State<_GameOfDayCard>
                         ),
                       ),
                       icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                      label: const Text('Play Now'),
+                      label: Text(l10n.homeGameOfDayPlayButton),
                     ),
                   ),
                 ],
@@ -556,37 +560,39 @@ class _DiscoverMore extends StatelessWidget {
   const _DiscoverMore({required this.isDark});
   final bool isDark;
 
-  static const _items = [
-    _DiscItem('Words', 'වජන', Icons.abc_rounded, Color(0xFFE53935)),
+  static List<_DiscItem> _buildItems(AppLocalizations l10n) => [
+    _DiscItem(l10n.homeDiscoverWords, 'වජන', Icons.abc_rounded, const Color(0xFFE53935)),
     _DiscItem(
-      'Vocabulary',
+      l10n.homeDiscoverVocabulary,
       'වජන භාගුව',
       Icons.menu_book_rounded,
-      Color(0xFF1565C0),
+      const Color(0xFF1565C0),
     ),
     _DiscItem(
-      'Phrases',
+      l10n.homeDiscoverPhrases,
       'වාකිය',
       Icons.chat_bubble_outline_rounded,
-      Color(0xFF2E7D32),
+      const Color(0xFF2E7D32),
     ),
     _DiscItem(
-      'Culture',
+      l10n.homeDiscoverCulture,
       'සංස්කූතිය',
       Icons.temple_hindu_rounded,
-      Color(0xFFE65100),
+      const Color(0xFFE65100),
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final items = _buildItems(l10n);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Discover More',
+              l10n.homeDiscoverMoreTitle,
               style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -598,7 +604,7 @@ class _DiscoverMore extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'See All',
+                    l10n.homeDiscoverMoreSeeAll,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -625,7 +631,7 @@ class _DiscoverMore extends StatelessWidget {
           mainAxisSpacing: 14,
           crossAxisSpacing: 14,
           childAspectRatio: 1.05,
-          children: _items
+          children: items
               .map((item) => _DiscCard(item: item, isDark: isDark))
               .toList(),
         ),
@@ -728,6 +734,7 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDark;
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
@@ -745,7 +752,7 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'DAILY QUEST',
+                  l10n.homeDailyQuestChip,
                   style: GoogleFonts.inter(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
@@ -755,7 +762,7 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'Greeting 5 People',
+                  l10n.homeDailyQuestTitle,
                   style: GoogleFonts.inter(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
@@ -765,7 +772,7 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Practice your Sinhala greetings with your family or friends today and earn the "Lotus Badge"!',
+                  l10n.homeDailyQuestDescription,
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -793,7 +800,7 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  '2 of 5 completed',
+                  l10n.homeDailyQuestProgress(2, 5),
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: isDark ? AppTheme.dMuted : AppTheme.lMuted,

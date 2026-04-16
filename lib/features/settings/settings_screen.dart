@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
 import '../../core/providers/providers.dart';
 import '../../core/services/auth_service.dart';
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -14,6 +15,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final user = FirebaseAuth.instance.currentUser;
     final themeMode = ref.watch(themeModeProvider);
     final notifsEnabled = ref.watch(notificationsEnabledProvider);
@@ -22,7 +24,7 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Settings',
+          l10n.settingsScreenTitle,
           style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
       ),
@@ -61,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             isGuest
-                                ? 'Guest User'
+                                ? l10n.settingsGuestUserName
                                 : (user?.displayName ?? 'User'),
                             style: GoogleFonts.inter(
                               fontWeight: FontWeight.w700,
@@ -72,7 +74,7 @@ class SettingsScreen extends ConsumerWidget {
                           const SizedBox(height: 2),
                           Text(
                             isGuest
-                                ? 'Sign in to save progress'
+                                ? l10n.settingsGuestSubtitle
                                 : (user?.email ?? ''),
                             style: GoogleFonts.inter(
                               fontSize: 13,
@@ -91,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 20),
 
           // ── Appearance ───────────────────────────────────────────────────
-          _SectionHeader('Appearance', isDark: isDark),
+          _SectionHeader(l10n.settingsSectionAppearance, isDark: isDark),
           _Section(
             children: [
               Padding(
@@ -100,7 +102,7 @@ class SettingsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Theme',
+                      l10n.settingsThemeLabel,
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -122,12 +124,12 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 20),
 
           // ── Preferences ──────────────────────────────────────────────────
-          _SectionHeader('Preferences', isDark: isDark),
+          _SectionHeader(l10n.settingsSectionPreferences, isDark: isDark),
           _Section(
             children: [
               _SettingsTile(
                 icon: Icons.notifications_rounded,
-                label: 'Notifications',
+                label: l10n.settingsNotificationsLabel,
                 isDark: isDark,
                 trailing: Switch(
                   value: notifsEnabled,
@@ -141,12 +143,12 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 20),
 
           // ── About ────────────────────────────────────────────────────────
-          _SectionHeader('About', isDark: isDark),
+          _SectionHeader(l10n.settingsSectionAbout, isDark: isDark),
           _Section(
             children: [
               _SettingsTile(
                 icon: Icons.info_outline_rounded,
-                label: 'App Version',
+                label: l10n.settingsAppVersionLabel,
                 isDark: isDark,
                 trailing: FutureBuilder<PackageInfo>(
                   future: PackageInfo.fromPlatform(),
@@ -167,12 +169,12 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 20),
 
           // ── Account ──────────────────────────────────────────────────────
-          _SectionHeader('Account', isDark: isDark),
+          _SectionHeader(l10n.settingsSectionAccount, isDark: isDark),
           _Section(
             children: [
               _SettingsTile(
                 icon: Icons.logout_rounded,
-                label: 'Sign Out',
+                label: l10n.settingsSignOutLabel,
                 isDark: isDark,
                 iconColor: AppTheme.neonCoral,
                 labelColor: AppTheme.neonCoral,
@@ -188,21 +190,22 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   void _confirmSignOut(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(
-          'Sign Out',
+          l10n.settingsSignOutDialogTitle,
           style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
         content: Text(
-          'Are you sure you want to sign out?',
+          l10n.settingsSignOutConfirmMessage,
           style: GoogleFonts.inter(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.settingsSignOutCancel),
           ),
           TextButton(
             onPressed: () async {
@@ -211,7 +214,7 @@ class SettingsScreen extends ConsumerWidget {
               // Router redirect handles navigation automatically via authStateProvider.
             },
             child: Text(
-              'Sign Out',
+              l10n.settingsSignOutConfirm,
               style: TextStyle(color: AppTheme.neonCoral),
             ),
           ),
@@ -234,10 +237,11 @@ class _ThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final modes = [
-      (ThemeMode.system, Icons.brightness_auto_rounded, 'System'),
-      (ThemeMode.light, Icons.light_mode_rounded, 'Light'),
-      (ThemeMode.dark, Icons.dark_mode_rounded, 'Dark'),
+      (ThemeMode.system, Icons.brightness_auto_rounded, l10n.settingsThemeModeSystem),
+      (ThemeMode.light, Icons.light_mode_rounded, l10n.settingsThemeModeLight),
+      (ThemeMode.dark, Icons.dark_mode_rounded, l10n.settingsThemeModeDark),
     ];
 
     return Row(

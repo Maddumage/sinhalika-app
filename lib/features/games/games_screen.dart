@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 
 class GamesScreen extends StatelessWidget {
@@ -9,11 +10,12 @@ class GamesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Games',
+          l10n.gamesScreenTitle,
           style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
       ),
@@ -28,7 +30,7 @@ class GamesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Games Coming Soon',
+              l10n.gamesComingSoonTitle,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -37,7 +39,7 @@ class GamesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Fun vocabulary games\nare almost ready.',
+              l10n.gamesComingSoonSubtitle,
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 fontSize: 14,

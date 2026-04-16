@@ -8,6 +8,7 @@ import '../../core/models/phrase_item.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
 import '../../core/providers/user_preferences_provider.dart';
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/phrases_data.dart';
 
@@ -55,6 +56,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
@@ -62,11 +64,11 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(isDark),
+          _buildAppBar(isDark, l10n),
           SliverToBoxAdapter(
             child: _FadeSlide(
               animation: _stagger(0),
-              child: _buildHeader(isDark),
+              child: _buildHeader(isDark, l10n),
             ),
           ),
           SliverPadding(
@@ -112,7 +114,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
     );
   }
 
-  SliverAppBar _buildAppBar(bool isDark) {
+  SliverAppBar _buildAppBar(bool isDark, AppLocalizations l10n) {
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -121,7 +123,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
       ),
       leading: BackButton(color: isDark ? AppTheme.dText : AppTheme.lText),
       title: Text(
-        'Phrases (වාක්‍ය)',
+        l10n.phrasesScreenTitle,
         style: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -145,14 +147,14 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
     );
   }
 
-  Widget _buildHeader(bool isDark) {
+  Widget _buildHeader(bool isDark, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Let's talk!",
+            l10n.phrasesHeaderTitle,
             style: GoogleFonts.inter(
               fontSize: 28,
               fontWeight: FontWeight.w800,
@@ -161,7 +163,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
           ),
           const SizedBox(height: 6),
           Text(
-            'Learn common Sinhala phrases for everyday fun.',
+            l10n.phrasesHeaderSubtitle,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -177,6 +179,23 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
 // ─────────────────────────────────────────────────────────────────────────────
 // Phrase card
 // ─────────────────────────────────────────────────────────────────────────────
+
+String _categoryLabel(PhraseCategory cat, AppLocalizations l10n) {
+  switch (cat) {
+    case PhraseCategory.greeting:
+      return l10n.phrasesCategoryGreeting;
+    case PhraseCategory.polite:
+      return l10n.phrasesCategoryPolite;
+    case PhraseCategory.morning:
+      return l10n.phrasesCategoryMorning;
+    case PhraseCategory.daily:
+      return l10n.phrasesCategoryDaily;
+    case PhraseCategory.farewell:
+      return l10n.phrasesCategoryFarewell;
+    case PhraseCategory.question:
+      return l10n.phrasesCategoryQuestion;
+  }
+}
 
 class _PhraseCard extends StatelessWidget {
   const _PhraseCard({
@@ -194,6 +213,7 @@ class _PhraseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final display = ContentAdapter.forPhrase(phrase, prefs);
     final cat = phrase.category;
     final bgColor = isDark
@@ -246,7 +266,7 @@ class _PhraseCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          cat.label,
+                          _categoryLabel(cat, l10n),
                           style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
@@ -335,7 +355,7 @@ class _PhraseCard extends StatelessWidget {
             onPressed: onPractice,
             icon: Icon(Icons.mic_rounded, size: 18, color: cat.chipColor),
             label: Text(
-              'Record Practice',
+              l10n.phrasesRecordPracticeButton,
               style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -371,6 +391,7 @@ class _TodayGoalBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final progress = (practiced / total).clamp(0.0, 1.0);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -393,7 +414,7 @@ class _TodayGoalBanner extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Today's Goal",
+              l10n.phrasesTodayGoalTitle,
               style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -432,8 +453,8 @@ class _TodayGoalBanner extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               practiced >= total
-                  ? '🌟 Goal complete! Amazing work!'
-                  : '${total - practiced} more phrase${total - practiced == 1 ? '' : 's'} to reach your star!',
+                  ? l10n.phrasesGoalComplete
+                  : l10n.phrasesGoalRemaining(total - practiced),
               style: GoogleFonts.inter(
                 fontSize: 12,
                 color: isDark ? AppTheme.dMuted : AppTheme.lMuted,

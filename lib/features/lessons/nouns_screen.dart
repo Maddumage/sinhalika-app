@@ -8,6 +8,7 @@ import '../../core/models/noun_item.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
 import '../../core/providers/user_preferences_provider.dart';
+import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/nouns_data.dart';
 
@@ -53,6 +54,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final prefs = ref.watch(userPreferencesProvider);
 
     return Scaffold(
@@ -60,11 +62,11 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(isDark),
+          _buildAppBar(isDark, l10n),
           SliverToBoxAdapter(
             child: _FadeSlide(
               animation: _stagger(0),
-              child: _buildHeroBanner(isDark),
+              child: _buildHeroBanner(isDark, l10n),
             ),
           ),
           SliverPadding(
@@ -93,7 +95,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
     );
   }
 
-  SliverAppBar _buildAppBar(bool isDark) {
+  SliverAppBar _buildAppBar(bool isDark, AppLocalizations l10n) {
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -102,7 +104,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
       ),
       leading: BackButton(color: isDark ? AppTheme.dText : AppTheme.lText),
       title: Text(
-        'The Heritage Playroom',
+        l10n.nounsScreenTitle,
         style: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -126,7 +128,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
     );
   }
 
-  Widget _buildHeroBanner(bool isDark) {
+  Widget _buildHeroBanner(bool isDark, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Container(
@@ -154,7 +156,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      'VOCABULARY BUILDERS',
+                      l10n.nounsBannerChip,
                       style: GoogleFonts.inter(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
@@ -167,7 +169,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'නාම පද',
+                    l10n.lessonCategoryNounsTitle,
                     style: GoogleFonts.notoSansSinhala(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -175,7 +177,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                     ),
                   ),
                   Text(
-                    'Nouns',
+                    l10n.nounsBannerTitle,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -184,7 +186,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Learn everyday Sinhala nouns with pronunciation.',
+                    l10n.nounsBannerDescription,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -485,6 +487,7 @@ class _WithExampleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -543,7 +546,7 @@ class _WithExampleCard extends StatelessWidget {
                     },
                     icon: const Icon(Icons.hearing_rounded, size: 16),
                     label: Text(
-                      'Listen',
+                      l10n.nounsListenButton,
                       style: GoogleFonts.inter(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
