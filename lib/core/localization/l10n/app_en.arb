@@ -1,0 +1,328 @@
+{
+  "@@locale": "en",
+
+  "appName": "Sinhalika",
+  "@appName": { "description": "Application name" },
+
+  "splashTagline": "Learn today for a better tomorrow",
+  "@splashTagline": { "description": "Tagline shown on the splash screen" },
+
+  "splashLoadingLabel": "LOADING",
+  "@splashLoadingLabel": { "description": "Loading label on splash screen" },
+
+  "splashLoadingSubtitle": "Getting things ready...",
+  "@splashLoadingSubtitle": { "description": "Loading subtitle on splash screen" },
+
+  "onboardingSkip": "Skip",
+  "@onboardingSkip": { "description": "Skip button on onboarding" },
+
+  "onboardingCtaNext": "Next",
+  "@onboardingCtaNext": { "description": "Next CTA on onboarding pages 1 and 2" },
+
+  "onboardingCtaGetStarted": "Get Started",
+  "@onboardingCtaGetStarted": { "description": "CTA on the last onboarding page" },
+
+  "onboardingPage1Tag": "AYUBOWAN",
+  "@onboardingPage1Tag": { "description": "Tag chip on onboarding page 1" },
+
+  "onboardingPage1Title": "Explore the\n",
+  "@onboardingPage1Title": { "description": "White part of title on onboarding page 1" },
+
+  "onboardingPage1TitleBlue": "Magic of\nSinhala",
+  "@onboardingPage1TitleBlue": { "description": "Blue part of title on onboarding page 1" },
+
+  "onboardingPage1Body": "Start a journey through stories, games, and traditional Sri Lankan culture.",
+  "@onboardingPage1Body": { "description": "Body text on onboarding page 1" },
+
+  "onboardingPage2TitleBlue": "Learning\nis Play",
+  "@onboardingPage2TitleBlue": { "description": "Blue title on onboarding page 2" },
+
+  "onboardingPage2Body": "Master vocabulary and verbs through interactive games designed for kids.",
+  "@onboardingPage2Body": { "description": "Body text on onboarding page 2" },
+
+  "onboardingPage3Title": "Track Your\n",
+  "@onboardingPage3Title": { "description": "White part of title on onboarding page 3" },
+
+  "onboardingPage3TitleBlue": "Adventure",
+  "@onboardingPage3TitleBlue": { "description": "Blue part of title on onboarding page 3" },
+
+  "onboardingPage3Body": "Earn badges, level up, and celebrate your progress as you learn Sinhala.",
+  "@onboardingPage3Body": { "description": "Body text on onboarding page 3" },
+
+  "onboardingStatsPointsLabel": "POINTS",
+  "@onboardingStatsPointsLabel": { "description": "Points stat label on onboarding page 3" },
+
+  "onboardingStatsPointsValue": "1,250",
+  "@onboardingStatsPointsValue": { "description": "Points stat value on onboarding page 3" },
+
+  "onboardingStatsStreakLabel": "STREAK",
+  "@onboardingStatsStreakLabel": { "description": "Streak stat label on onboarding page 3" },
+
+  "onboardingStatsStreakValue": "7 Days",
+  "@onboardingStatsStreakValue": { "description": "Streak stat value on onboarding page 3" },
+
+  "signInHeadline": "Welcome.",
+  "@signInHeadline": { "description": "Headline on sign-in screen" },
+
+  "signInSubtitle": "Your Sinhala adventure is waiting for you.",
+  "@signInSubtitle": { "description": "Subtitle on sign-in screen" },
+
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": { "description": "Google sign-in button label" },
+
+  "signInContinueAsGuest": "Continue as Guest",
+  "@signInContinueAsGuest": { "description": "Guest sign-in button label" },
+
+  "parentalDisclosureTitle": "PARENTAL DISCLOSURE",
+  "@parentalDisclosureTitle": { "description": "Parental disclosure box heading" },
+
+  "parentalDisclosureBody": "Sinhalika prioritizes your child's digital safety. We do not sell personal data or display third-party advertisements.",
+  "@parentalDisclosureBody": { "description": "Parental disclosure body text" },
+
+  "childSafetyPolicy": "Child Safety Policy",
+  "@childSafetyPolicy": { "description": "Child safety policy link label" },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Bottom nav Home tab label" },
+
+  "navLessons": "Lessons",
+  "@navLessons": { "description": "Bottom nav Lessons tab label" },
+
+  "navGames": "Games",
+  "@navGames": { "description": "Bottom nav Games tab label" },
+
+  "navSettings": "Settings",
+  "@navSettings": { "description": "Bottom nav Settings tab label" },
+
+  "homeGuestName": "Explorer",
+  "@homeGuestName": { "description": "Fallback name for anonymous users on home screen" },
+
+  "homeLearnerName": "Learner",
+  "@homeLearnerName": { "description": "Fallback name for signed-in users with no display name" },
+
+  "homeGreeting": "ආයුබෝවන්, {name}!",
+  "@homeGreeting": {
+    "description": "Greeting on home screen",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+
+  "homeGreetingSubtitle": "Ready to explore your heritage today?",
+  "@homeGreetingSubtitle": { "description": "Subtitle below greeting on home screen" },
+
+  "homeGameOfDayChip": "GAME OF THE DAY",
+  "@homeGameOfDayChip": { "description": "Game of the day chip label" },
+
+  "homeGameOfDayTitle": "The Lotus Collector",
+  "@homeGameOfDayTitle": { "description": "Game of the day title" },
+
+  "homeGameOfDayDescription": "Match the Sinhala vowels with falling lotus flowers to win extra points!",
+  "@homeGameOfDayDescription": { "description": "Game of the day description" },
+
+  "homeGameOfDayPlayButton": "Play Now",
+  "@homeGameOfDayPlayButton": { "description": "Play Now button on game of the day card" },
+
+  "homeVowelsTitle": "Vowels",
+  "@homeVowelsTitle": { "description": "Vowels section title on home screen" },
+
+  "homeVowelsSinhalaLabel": "ස්වර (Swara)",
+  "@homeVowelsSinhalaLabel": { "description": "Sinhala label for vowels section" },
+
+  "homeConsonantsTitle": "Consonants",
+  "@homeConsonantsTitle": { "description": "Consonants section title on home screen" },
+
+  "homeConsonantsSinhalaLabel": "ව්‍යංජන (Wyanjana)",
+  "@homeConsonantsSinhalaLabel": { "description": "Sinhala label for consonants section" },
+
+  "homeDiscoverMoreTitle": "Discover More",
+  "@homeDiscoverMoreTitle": { "description": "Discover more section heading on home screen" },
+
+  "homeDiscoverMoreSeeAll": "See All",
+  "@homeDiscoverMoreSeeAll": { "description": "See All link on home screen" },
+
+  "homeDiscoverWords": "Words",
+  "@homeDiscoverWords": { "description": "Words discover grid item" },
+
+  "homeDiscoverVocabulary": "Vocabulary",
+  "@homeDiscoverVocabulary": { "description": "Vocabulary discover grid item" },
+
+  "homeDiscoverPhrases": "Phrases",
+  "@homeDiscoverPhrases": { "description": "Phrases discover grid item" },
+
+  "homeDiscoverCulture": "Culture",
+  "@homeDiscoverCulture": { "description": "Culture discover grid item" },
+
+  "homeDailyQuestChip": "DAILY QUEST",
+  "@homeDailyQuestChip": { "description": "Daily quest chip label on home screen" },
+
+  "homeDailyQuestTitle": "Greeting 5 People",
+  "@homeDailyQuestTitle": { "description": "Daily quest title" },
+
+  "homeDailyQuestDescription": "Practice your Sinhala greetings with your family or friends today and earn the \"Lotus Badge\"!",
+  "@homeDailyQuestDescription": { "description": "Daily quest description" },
+
+  "homeDailyQuestProgress": "{done} of {total} completed",
+  "@homeDailyQuestProgress": {
+    "description": "Daily quest progress label",
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "lessonsScreenTitle": "Lessons",
+  "@lessonsScreenTitle": { "description": "Lessons hub screen title" },
+
+  "lessonsScreenSubheading": "What would you like\nto learn today?",
+  "@lessonsScreenSubheading": { "description": "Subheading on lessons hub screen" },
+
+  "lessonCategoryAlphabetTitle": "සිංහල හෝඩිය",
+  "@lessonCategoryAlphabetTitle": { "description": "Alphabet category card title" },
+
+  "lessonCategoryAlphabetSubtitle": "Sinhala Alphabet",
+  "@lessonCategoryAlphabetSubtitle": { "description": "Alphabet category card subtitle" },
+
+  "lessonCategoryNounsTitle": "නාම පද",
+  "@lessonCategoryNounsTitle": { "description": "Nouns category card title" },
+
+  "lessonCategoryNounsSubtitle": "Nouns",
+  "@lessonCategoryNounsSubtitle": { "description": "Nouns category card subtitle" },
+
+  "lessonCategoryPhrasesTitle": "වාක්‍ය",
+  "@lessonCategoryPhrasesTitle": { "description": "Phrases category card title" },
+
+  "lessonCategoryPhrasesSubtitle": "Phrases",
+  "@lessonCategoryPhrasesSubtitle": { "description": "Phrases category card subtitle" },
+
+  "hodiyaScreenTitle": "සිංහල හෝඩිය",
+  "@hodiyaScreenTitle": { "description": "Hodiya screen AppBar title" },
+
+  "hodiyaBannerTag": "අකුරු හදනාගමු",
+  "@hodiyaBannerTag": { "description": "Hodiya banner tag label" },
+
+  "hodiyaBannerTitle": "ලස්සන සිංහල\nහෝඩිය ඉගෙන ගමු",
+  "@hodiyaBannerTitle": { "description": "Hodiya banner title" },
+
+  "nounsScreenTitle": "The Heritage Playroom",
+  "@nounsScreenTitle": { "description": "Nouns screen AppBar title" },
+
+  "nounsBannerChip": "VOCABULARY BUILDERS",
+  "@nounsBannerChip": { "description": "Nouns banner chip label" },
+
+  "nounsBannerTitle": "Nouns",
+  "@nounsBannerTitle": { "description": "Nouns banner title" },
+
+  "nounsBannerDescription": "Learn everyday Sinhala nouns with pronunciation.",
+  "@nounsBannerDescription": { "description": "Nouns banner description" },
+
+  "nounsListenButton": "Listen",
+  "@nounsListenButton": { "description": "Listen button on noun cards" },
+
+  "phrasesScreenTitle": "Phrases (වාක්‍ය)",
+  "@phrasesScreenTitle": { "description": "Phrases screen AppBar title" },
+
+  "phrasesHeaderTitle": "Let's talk!",
+  "@phrasesHeaderTitle": { "description": "Phrases screen header title" },
+
+  "phrasesHeaderSubtitle": "Learn common Sinhala phrases for everyday fun.",
+  "@phrasesHeaderSubtitle": { "description": "Phrases screen header subtitle" },
+
+  "phrasesCategoryGreeting": "GREETING",
+  "@phrasesCategoryGreeting": { "description": "Greeting category chip" },
+
+  "phrasesCategoryPolite": "POLITE",
+  "@phrasesCategoryPolite": { "description": "Polite category chip" },
+
+  "phrasesCategoryMorning": "MORNING",
+  "@phrasesCategoryMorning": { "description": "Morning category chip" },
+
+  "phrasesCategoryDaily": "DAILY",
+  "@phrasesCategoryDaily": { "description": "Daily category chip" },
+
+  "phrasesCategoryFarewell": "FAREWELL",
+  "@phrasesCategoryFarewell": { "description": "Farewell category chip" },
+
+  "phrasesCategoryQuestion": "QUESTION",
+  "@phrasesCategoryQuestion": { "description": "Question category chip" },
+
+  "phrasesRecordPracticeButton": "Record Practice",
+  "@phrasesRecordPracticeButton": { "description": "Record practice button on phrase cards" },
+
+  "phrasesTodayGoalTitle": "Today's Goal",
+  "@phrasesTodayGoalTitle": { "description": "Today's goal banner title on phrases screen" },
+
+  "phrasesGoalComplete": "🌟 Goal complete! Amazing work!",
+  "@phrasesGoalComplete": { "description": "Goal complete message on phrases screen" },
+
+  "phrasesGoalRemaining": "{count, plural, one{# more phrase to reach your star!} other{# more phrases to reach your star!}}",
+  "@phrasesGoalRemaining": {
+    "description": "Goal remaining message on phrases screen",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "gamesScreenTitle": "Games",
+  "@gamesScreenTitle": { "description": "Games screen AppBar title" },
+
+  "gamesComingSoonTitle": "Games Coming Soon",
+  "@gamesComingSoonTitle": { "description": "Games coming soon title" },
+
+  "gamesComingSoonSubtitle": "Fun vocabulary games are almost ready.",
+  "@gamesComingSoonSubtitle": { "description": "Games coming soon subtitle" },
+
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": { "description": "Settings screen AppBar title" },
+
+  "settingsGuestUserName": "Guest User",
+  "@settingsGuestUserName": { "description": "Guest user name in settings" },
+
+  "settingsGuestSubtitle": "Sign in to save progress",
+  "@settingsGuestSubtitle": { "description": "Guest user subtitle in settings" },
+
+  "settingsSectionAppearance": "Appearance",
+  "@settingsSectionAppearance": { "description": "Appearance section header in settings" },
+
+  "settingsThemeLabel": "Theme",
+  "@settingsThemeLabel": { "description": "Theme row label in settings" },
+
+  "settingsThemeModeSystem": "System",
+  "@settingsThemeModeSystem": { "description": "System theme mode option" },
+
+  "settingsThemeModeLight": "Light",
+  "@settingsThemeModeLight": { "description": "Light theme mode option" },
+
+  "settingsThemeModeDark": "Dark",
+  "@settingsThemeModeDark": { "description": "Dark theme mode option" },
+
+  "settingsSectionPreferences": "Preferences",
+  "@settingsSectionPreferences": { "description": "Preferences section header in settings" },
+
+  "settingsNotificationsLabel": "Notifications",
+  "@settingsNotificationsLabel": { "description": "Notifications toggle label in settings" },
+
+  "settingsSectionAbout": "About",
+  "@settingsSectionAbout": { "description": "About section header in settings" },
+
+  "settingsAppVersionLabel": "App Version",
+  "@settingsAppVersionLabel": { "description": "App version label in settings" },
+
+  "settingsSectionAccount": "Account",
+  "@settingsSectionAccount": { "description": "Account section header in settings" },
+
+  "settingsSignOutLabel": "Sign Out",
+  "@settingsSignOutLabel": { "description": "Sign out label in settings" },
+
+  "settingsSignOutDialogTitle": "Sign Out",
+  "@settingsSignOutDialogTitle": { "description": "Sign out confirmation dialog title" },
+
+  "settingsSignOutConfirmMessage": "Are you sure you want to sign out?",
+  "@settingsSignOutConfirmMessage": { "description": "Sign out confirmation message" },
+
+  "settingsSignOutCancel": "Cancel",
+  "@settingsSignOutCancel": { "description": "Cancel button in sign out dialog" },
+
+  "settingsSignOutConfirm": "Sign Out",
+  "@settingsSignOutConfirm": { "description": "Confirm sign out button in dialog" }
+}

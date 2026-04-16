@@ -1,0 +1,225 @@
+{
+  "@@locale": "si",
+
+  "appName": "සිංහලිකා",
+
+  "splashTagline": "අනාගතය වෙනුවෙන් අද ඉගෙන ගමු",
+
+  "splashLoadingLabel": "ලෝඩ් වෙමින්",
+
+  "splashLoadingSubtitle": "ලෝඩ් වෙමින් පවතිසි...",
+
+  "onboardingSkip": "මඟ හරිනු",
+
+  "onboardingCtaNext": "ඊළඟ",
+
+  "onboardingCtaGetStarted": "ආරම්භ කරන්න",
+
+  "onboardingPage1Tag": "ආයුබෝවන්",
+
+  "onboardingPage1Title": "ගවේෂණය කරන්න\n",
+
+  "onboardingPage1TitleBlue": "සිංහලේ\nජාදුව",
+
+  "onboardingPage1Body": "කතන්දර, ක්‍රීඩා සහ ශ්‍රී ලාංකික සංස්කෘතිය හරහා ගමනක් ආරම්භ කරන්න.",
+
+  "onboardingPage2TitleBlue": "ඉගෙනීම\nක්‍රීඩාවකි",
+
+  "onboardingPage2Body": "ළමුන් සඳහා සැලසුම් කළ අන්තර්ක්‍රියාකාරී ක්‍රීඩා හරහා වචන සහ ක්‍රියාපද ප්‍රගුණ කරන්න.",
+
+  "onboardingPage3Title": "ඔබේ\n",
+
+  "onboardingPage3TitleBlue": "ගමන හඹා යන්න",
+
+  "onboardingPage3Body": "ලකුණු ලබා ගන්න, මට්ටම් ඉහළ නංවන්න, සහ සිංහල ඉගෙනෙද්දී ඔබේ ප්‍රගතිය සැමරන්න.",
+
+  "onboardingStatsPointsLabel": "ලකුණු",
+
+  "onboardingStatsPointsValue": "1,250",
+
+  "onboardingStatsStreakLabel": "අඛණ්ඩව",
+
+  "onboardingStatsStreakValue": "දින 7",
+
+  "signInHeadline": "ආයුබෝවන්.",
+
+  "signInSubtitle": "ඔබේ සිංහල සාහසිකත්වය ඔබ බලා සිටී.",
+
+  "signInWithGoogle": "Google සමඟ පිවිසෙන්න",
+
+  "signInContinueAsGuest": "අමුත්තෙකු ලෙස ඉදිරියට යන්න",
+
+  "parentalDisclosureTitle": "දෙමාපිය හෙළිදරව්",
+
+  "parentalDisclosureBody": "සිංහලිකා ඔබේ දරුවාගේ ඩිජිටල් ආරක්ෂාවට ප්‍රමුඛතාව දෙයි. අපි පෞද්ගලික දත්ත විකිණීම හෝ තෙවන පාර්ශ්ව දැන්වීම් පෙන්වීම නොකරන්නෙමු.",
+
+  "childSafetyPolicy": "ළමා ආරක්ෂිත ප්‍රතිපත්තිය",
+
+  "navHome": "මුල් පිටුව",
+
+  "navLessons": "පාඩම්",
+
+  "navGames": "ක්‍රීඩා",
+
+  "navSettings": "සැකසීම්",
+
+  "homeGuestName": "ගවේෂකයා",
+
+  "homeLearnerName": "ඉගෙනුම්කරු",
+
+  "homeGreeting": "ආයුබෝවන්, {name}!",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+
+  "homeGreetingSubtitle": "අද ඔබේ උරුමය ගවේෂණය කිරීමට සූදානම්ද?",
+
+  "homeGameOfDayChip": "අද දිනයේ ක්‍රීඩාව",
+
+  "homeGameOfDayTitle": "නෙළුම් එකතු කරන්නා",
+
+  "homeGameOfDayDescription": "අමතර ලකුණු ජය ගන්නා ලෙස සිංහල ස්වර වැටෙන නෙළුම් මල් සමඟ ගළපන්න!",
+
+  "homeGameOfDayPlayButton": "දැන් ක්‍රීඩා කරන්න",
+
+  "homeVowelsTitle": "ස්වර",
+
+  "homeVowelsSinhalaLabel": "ස්වර (Swara)",
+
+  "homeConsonantsTitle": "ව්‍යංජන",
+
+  "homeConsonantsSinhalaLabel": "ව්‍යංජන (Wyanjana)",
+
+  "homeDiscoverMoreTitle": "තවත් සොයා ගන්න",
+
+  "homeDiscoverMoreSeeAll": "සියල්ල බලන්න",
+
+  "homeDiscoverWords": "වචන",
+
+  "homeDiscoverVocabulary": "පදමාලාව",
+
+  "homeDiscoverPhrases": "වාක්‍ය",
+
+  "homeDiscoverCulture": "සංස්කෘතිය",
+
+  "homeDailyQuestChip": "දෛනික ආරාධනය",
+
+  "homeDailyQuestTitle": "පස් දෙනෙකුට සුබ පතන්න",
+
+  "homeDailyQuestDescription": "අද ඔබේ පවුලේ අය හෝ හිතවතුන් සමඟ සිංහල සුභ පැතුම් පුරුදු කර \"නෙළුම් පදකම\" ලබා ගන්න!",
+
+  "homeDailyQuestProgress": "{done} / {total} සම්පූර්ණ",
+  "@homeDailyQuestProgress": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "lessonsScreenTitle": "පාඩම්",
+
+  "lessonsScreenSubheading": "අද ඔබ කුමක්\nඉගෙනීමට කැමතිද?",
+
+  "lessonCategoryAlphabetTitle": "සිංහල හෝඩිය",
+
+  "lessonCategoryAlphabetSubtitle": "Sinhala Alphabet",
+
+  "lessonCategoryNounsTitle": "නාම පද",
+
+  "lessonCategoryNounsSubtitle": "Nouns",
+
+  "lessonCategoryPhrasesTitle": "වාක්‍ය",
+
+  "lessonCategoryPhrasesSubtitle": "Phrases",
+
+  "hodiyaScreenTitle": "සිංහල හෝඩිය",
+
+  "hodiyaBannerTag": "අකුරු හදනාගමු",
+
+  "hodiyaBannerTitle": "ලස්සන සිංහල\nහෝඩිය ඉගෙන ගමු",
+
+  "nounsScreenTitle": "Heritage Playroom",
+
+  "nounsBannerChip": "වචන ගොඩ නංවමු",
+
+  "nounsBannerTitle": "නාම පද",
+
+  "nounsBannerDescription": "උච්චාරණය සහිතව දෛනික සිංහල නාම පද ඉගෙන ගන්න.",
+
+  "nounsListenButton": "සවන් දෙන්න",
+
+  "phrasesScreenTitle": "වාක්‍ය",
+
+  "phrasesHeaderTitle": "කතා කරමු!",
+
+  "phrasesHeaderSubtitle": "දෛනික විනෝදය සඳහා සාමාන්‍ය සිංහල වාක්‍ය ඉගෙන ගන්න.",
+
+  "phrasesCategoryGreeting": "සුභ පැතීම",
+
+  "phrasesCategoryPolite": "විනයගරුක",
+
+  "phrasesCategoryMorning": "උදෑසන",
+
+  "phrasesCategoryDaily": "දෛනික",
+
+  "phrasesCategoryFarewell": "සමුදීම",
+
+  "phrasesCategoryQuestion": "ප්‍රශ්නය",
+
+  "phrasesRecordPracticeButton": "ප්‍රිකෝඩ් කිරීම",
+
+  "phrasesTodayGoalTitle": "අදට ඉලක්කය",
+
+  "phrasesGoalComplete": "🌟 ඉලක්කය සම්පූර්ණයි! හොඳ වැඩ!",
+
+  "phrasesGoalRemaining": "{count, plural, one{ඔබේ තරුවට # ​​වාක්‍යයක් ලඟාවෙන්න!} other{ඔබේ තරුවට # ​​වාක්‍ය ලඟාවෙන්න!}}",
+  "@phrasesGoalRemaining": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "gamesScreenTitle": "ක්‍රීඩා",
+
+  "gamesComingSoonTitle": "ක්‍රීඩා ළඟදීම",
+
+  "gamesComingSoonSubtitle": "විනෝදජනක වචන ක්‍රීඩා ළඟදීම ලබා ගත හැකිය.",
+
+  "settingsScreenTitle": "සැකසීම්",
+
+  "settingsGuestUserName": "අමතු පරිශීලකයා",
+
+  "settingsGuestSubtitle": "ප්‍රගතිය සුරැකීමට පිවිසෙන්න",
+
+  "settingsSectionAppearance": "පෙනුම",
+
+  "settingsThemeLabel": "තේමාව",
+
+  "settingsThemeModeSystem": "පද්ධතිය",
+
+  "settingsThemeModeLight": "ආලෝකය",
+
+  "settingsThemeModeDark": "අඳුරු",
+
+  "settingsSectionPreferences": "මනාපයන්",
+
+  "settingsNotificationsLabel": "දැනුම්දීම්",
+
+  "settingsSectionAbout": "ගැන",
+
+  "settingsAppVersionLabel": "යෙදුම් අනුවාදය",
+
+  "settingsSectionAccount": "ගිණුම",
+
+  "settingsSignOutLabel": "ඉවත් වෙන්න",
+
+  "settingsSignOutDialogTitle": "ඉවත් වෙන්න",
+
+  "settingsSignOutConfirmMessage": "ඔබට ඉවත් වීමට අවශ්‍ය බව සහතිකද?",
+
+  "settingsSignOutCancel": "අවලංගු",
+
+  "settingsSignOutConfirm": "ඉවත් වෙන්න"
+}
