@@ -3,115 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/models/phrase_item.dart';
 import '../../core/providers/providers.dart';
 import '../../theme/app_theme.dart';
+import 'data/phrases_data.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Data
-// ─────────────────────────────────────────────────────────────────────────────
-
-enum _PhraseCategory { greeting, polite, morning, daily, farewell, question }
-
-class _PhraseData {
-  const _PhraseData({
-    required this.sinhala,
-    required this.english,
-    required this.category,
-  });
-  final String sinhala;
-  final String english;
-  final _PhraseCategory category;
-}
-
-const _phrases = [
-  _PhraseData(
-    sinhala: 'කොහොමද?',
-    english: 'Kohomada? (How are you?)',
-    category: _PhraseCategory.greeting,
-  ),
-  _PhraseData(
-    sinhala: 'ස්තුතියි',
-    english: 'Sthuthiyi (Thank you)',
-    category: _PhraseCategory.polite,
-  ),
-  _PhraseData(
-    sinhala: 'සුබ උදෑසනක්',
-    english: 'Suba Udhasanak (Good morning)',
-    category: _PhraseCategory.morning,
-  ),
-  _PhraseData(
-    sinhala: 'බඩගිනියි',
-    english: 'Badaginiyi (I am hungry)',
-    category: _PhraseCategory.daily,
-  ),
-  _PhraseData(
-    sinhala: 'ගිහිල්ල එන්නම්',
-    english: "Gihilla ennam (I'll be back)",
-    category: _PhraseCategory.farewell,
-  ),
-  _PhraseData(
-    sinhala: 'ඔයාගේ නම මොකද්ද?',
-    english: 'What is your name?',
-    category: _PhraseCategory.question,
-  ),
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Category helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-extension _CatExt on _PhraseCategory {
-  String get label {
-    switch (this) {
-      case _PhraseCategory.greeting:
-        return 'GREETING';
-      case _PhraseCategory.polite:
-        return 'POLITE';
-      case _PhraseCategory.morning:
-        return 'MORNING';
-      case _PhraseCategory.daily:
-        return 'DAILY';
-      case _PhraseCategory.farewell:
-        return 'FAREWELL';
-      case _PhraseCategory.question:
-        return 'QUESTION';
-    }
-  }
-
-  Color get chipColor {
-    switch (this) {
-      case _PhraseCategory.greeting:
-        return AppTheme.heritageRed;
-      case _PhraseCategory.polite:
-        return AppTheme.oceanBlue;
-      case _PhraseCategory.morning:
-        return const Color(0xFF2E7D32);
-      case _PhraseCategory.daily:
-        return AppTheme.neonCoral;
-      case _PhraseCategory.farewell:
-        return AppTheme.glowingAmber;
-      case _PhraseCategory.question:
-        return const Color(0xFF7B1FA2);
-    }
-  }
-
-  Color get cardBgLight {
-    switch (this) {
-      case _PhraseCategory.greeting:
-        return const Color(0xFFFDE8E8);
-      case _PhraseCategory.polite:
-        return const Color(0xFFE8F0FE);
-      case _PhraseCategory.morning:
-        return const Color(0xFFE8F5E9);
-      case _PhraseCategory.daily:
-        return const Color(0xFFFFF3E0);
-      case _PhraseCategory.farewell:
-        return const Color(0xFFFFF9C4);
-      case _PhraseCategory.question:
-        return const Color(0xFFF3E5F5);
-    }
-  }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
@@ -179,29 +75,29 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                   child: _FadeSlide(
                     animation: _stagger(i + 1),
                     child: _PhraseCard(
-                      phrase: _phrases[i],
+                      phrase: phraseItems[i],
                       isDark: isDark,
                       onSpeak: (text) =>
                           ref.read(ttsServiceProvider).speak(text),
                       onPractice: () {
                         HapticFeedback.mediumImpact();
                         setState(() {
-                          if (_practiced < _phrases.length) _practiced++;
+                            if (_practiced < phraseItems.length) _practiced++;
                         });
                       },
                     ),
                   ),
                 ),
-                childCount: _phrases.length,
+                childCount: phraseItems.length,
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: _FadeSlide(
-              animation: _stagger(_phrases.length + 1),
+              animation: _stagger(phraseItems.length + 1),
               child: _TodayGoalBanner(
                 practiced: _practiced,
-                total: _phrases.length,
+                total: phraseItems.length,
                 isDark: isDark,
               ),
             ),
@@ -285,7 +181,7 @@ class _PhraseCard extends StatelessWidget {
     required this.onSpeak,
     required this.onPractice,
   });
-  final _PhraseData phrase;
+  final PhraseItem phrase;
   final bool isDark;
   final void Function(String text) onSpeak;
   final VoidCallback onPractice;

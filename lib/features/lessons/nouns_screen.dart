@@ -3,106 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/models/noun_item.dart';
 import '../../core/providers/providers.dart';
 import '../../theme/app_theme.dart';
+import 'data/nouns_data.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Data
-// ─────────────────────────────────────────────────────────────────────────────
 
-class _NounData {
-  const _NounData({
-    required this.sinhala,
-    required this.english,
-    required this.pronunciation,
-    required this.emoji,
-    this.exampleSinhala,
-    this.exampleEnglish,
-    this.style = _NounCardStyle.plain,
-    this.accentColor,
-  });
-  final String sinhala;
-  final String english;
-  final String pronunciation;
-  final String emoji;
-  final String? exampleSinhala;
-  final String? exampleEnglish;
-  final _NounCardStyle style;
-  final Color? accentColor;
-}
-
-enum _NounCardStyle { plain, imageTop, withExample, tinted }
-
-const _nouns = [
-  _NounData(
-    sinhala: 'පොත',
-    english: 'Book',
-    pronunciation: '/potha/',
-    emoji: '📖',
-    style: _NounCardStyle.plain,
-    accentColor: AppTheme.oceanBlue,
-  ),
-  _NounData(
-    sinhala: 'මල',
-    english: 'Flower',
-    pronunciation: '/mala/',
-    emoji: '🌺',
-    style: _NounCardStyle.imageTop,
-    accentColor: AppTheme.neonCoral,
-  ),
-  _NounData(
-    sinhala: 'බල්ලා',
-    english: 'Dog',
-    pronunciation: '/balla/',
-    emoji: '🐕',
-    exampleSinhala: 'බල්ලා බුරයි',
-    exampleEnglish: 'The dog barks',
-    style: _NounCardStyle.withExample,
-    accentColor: Color(0xFF2E7D32),
-  ),
-  _NounData(
-    sinhala: 'ගෙදර',
-    english: 'Home / House',
-    pronunciation: '/gedara/',
-    emoji: '🏡',
-    style: _NounCardStyle.tinted,
-    accentColor: Color(0xFF2E7D32),
-  ),
-  _NounData(
-    sinhala: 'ගස',
-    english: 'Tree',
-    pronunciation: '/gasa/',
-    emoji: '🌳',
-    style: _NounCardStyle.plain,
-    accentColor: Color(0xFF2E7D32),
-  ),
-  _NounData(
-    sinhala: 'අහස',
-    english: 'Sky',
-    pronunciation: '/ahasa/',
-    emoji: '🌤️',
-    style: _NounCardStyle.imageTop,
-    accentColor: AppTheme.oceanBlue,
-  ),
-  _NounData(
-    sinhala: 'ඇස',
-    english: 'Eye',
-    pronunciation: '/esa/',
-    emoji: '👁️',
-    exampleSinhala: 'ඇස රතු යි',
-    exampleEnglish: 'The eye is red',
-    style: _NounCardStyle.withExample,
-    accentColor: AppTheme.heritageRed,
-  ),
-  _NounData(
-    sinhala: 'ජලය',
-    english: 'Water',
-    pronunciation: '/jalaya/',
-    emoji: '💧',
-    style: _NounCardStyle.tinted,
-    accentColor: AppTheme.oceanBlue,
-  ),
-];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
@@ -168,14 +74,14 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                   child: _FadeSlide(
                     animation: _stagger(i + 1),
                     child: _NounCard(
-                      noun: _nouns[i],
+                      noun: nounItems[i],
                       isDark: isDark,
                       onSpeak: (text) =>
                           ref.read(ttsServiceProvider).speak(text),
                     ),
                   ),
                 ),
-                childCount: _nouns.length,
+                childCount: nounItems.length,
               ),
             ),
           ),
@@ -303,7 +209,7 @@ class _NounCard extends StatelessWidget {
     required this.isDark,
     required this.onSpeak,
   });
-  final _NounData noun;
+  final NounItem noun;
   final bool isDark;
   final void Function(String text) onSpeak;
 
@@ -337,9 +243,9 @@ class _NounCard extends StatelessWidget {
 
   Color get _cardBackground {
     switch (noun.style) {
-      case _NounCardStyle.imageTop:
+      case NounCardStyle.imageTop:
         return isDark ? const Color(0xFF1A1016) : const Color(0xFFFDE8E8);
-      case _NounCardStyle.tinted:
+      case NounCardStyle.tinted:
         final color = noun.accentColor ?? AppTheme.oceanBlue;
         return isDark
             ? color.withValues(alpha: 0.12)
@@ -351,21 +257,21 @@ class _NounCard extends StatelessWidget {
 
   Widget _buildCardContent(BuildContext context) {
     switch (noun.style) {
-      case _NounCardStyle.imageTop:
+      case NounCardStyle.imageTop:
         return _ImageTopCard(
           noun: noun,
           isDark: isDark,
           accent: _accent,
           onSpeak: onSpeak,
         );
-      case _NounCardStyle.withExample:
+      case NounCardStyle.withExample:
         return _WithExampleCard(
           noun: noun,
           isDark: isDark,
           accent: _accent,
           onSpeak: onSpeak,
         );
-      case _NounCardStyle.tinted:
+      case NounCardStyle.tinted:
         return _TintedCard(
           noun: noun,
           isDark: isDark,
@@ -391,7 +297,7 @@ class _PlainCard extends StatelessWidget {
     required this.accent,
     required this.onSpeak,
   });
-  final _NounData noun;
+  final NounItem noun;
   final bool isDark;
   final Color accent;
   final void Function(String) onSpeak;
@@ -424,7 +330,7 @@ class _PlainCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  noun.pronunciation,
+                  noun.transliteration,
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -464,7 +370,7 @@ class _ImageTopCard extends StatelessWidget {
     required this.accent,
     required this.onSpeak,
   });
-  final _NounData noun;
+  final NounItem noun;
   final bool isDark;
   final Color accent;
   final void Function(String) onSpeak;
@@ -509,7 +415,7 @@ class _ImageTopCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      noun.pronunciation,
+                      noun.transliteration,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
@@ -553,7 +459,7 @@ class _WithExampleCard extends StatelessWidget {
     required this.accent,
     required this.onSpeak,
   });
-  final _NounData noun;
+  final NounItem noun;
   final bool isDark;
   final Color accent;
   final void Function(String) onSpeak;
@@ -653,7 +559,7 @@ class _TintedCard extends StatelessWidget {
     required this.accent,
     required this.onSpeak,
   });
-  final _NounData noun;
+  final NounItem noun;
   final bool isDark;
   final Color accent;
   final void Function(String) onSpeak;
@@ -690,7 +596,7 @@ class _TintedCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      noun.pronunciation,
+                      noun.transliteration,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: isDark ? AppTheme.dMuted : AppTheme.lMuted,

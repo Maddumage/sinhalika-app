@@ -3,63 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/models/hodiya_item.dart';
 import '../../core/providers/providers.dart';
 import '../../theme/app_theme.dart';
+import 'data/hodiya_data.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Data model
-// ─────────────────────────────────────────────────────────────────────────────
 
-class _LetterData {
-  const _LetterData({
-    required this.letter,
-    required this.word,
-    required this.emoji,
-    required this.colorIndex, // 0=red 1=blue 2=green
-  });
-  final String letter;
-  final String word;
-  final String emoji;
-  final int colorIndex;
-}
-
-const _letters = [
-  _LetterData(letter: 'අ', word: 'අම්මා', emoji: '👩', colorIndex: 0),
-  _LetterData(letter: 'ආ', word: 'ආච්චි', emoji: '👵', colorIndex: 1),
-  _LetterData(letter: 'ඇ', word: 'ඇතා', emoji: '🐘', colorIndex: 2),
-  _LetterData(letter: 'ඈ', word: 'ඈත', emoji: '🏔️', colorIndex: 0),
-  _LetterData(letter: 'ඉ', word: 'ඉරු', emoji: '☀️', colorIndex: 0),
-  _LetterData(letter: 'ඊ', word: 'ඊතලය', emoji: '🏹', colorIndex: 1),
-  _LetterData(letter: 'උ', word: 'උයන', emoji: '🌿', colorIndex: 2),
-  _LetterData(letter: 'ඌ', word: 'ඌරා', emoji: '🐗', colorIndex: 0),
-  _LetterData(letter: 'එ', word: 'එළවළු', emoji: '🥦', colorIndex: 0),
-  _LetterData(letter: 'ඒ', word: 'ඒකා', emoji: '🦁', colorIndex: 1),
-  _LetterData(letter: 'ඔ', word: 'ඔරුව', emoji: '⛵', colorIndex: 2),
-  _LetterData(letter: 'ඕ', word: 'ඕලු', emoji: '🌸', colorIndex: 0),
-  _LetterData(letter: 'ඖ', word: 'ඖෂධ', emoji: '💊', colorIndex: 1),
-  _LetterData(letter: 'අං', word: 'අංශය', emoji: '🔢', colorIndex: 2),
-  _LetterData(letter: 'අඃ', word: 'අඃස්ථාන', emoji: '📍', colorIndex: 0),
-  _LetterData(letter: 'ක', word: 'කළු', emoji: '⚫', colorIndex: 1),
-  _LetterData(letter: 'ඛ', word: 'ඛනිජ', emoji: '💎', colorIndex: 2),
-  _LetterData(letter: 'ග', word: 'ගස', emoji: '🌳', colorIndex: 0),
-  _LetterData(letter: 'ඝ', word: 'ඝෝෂා', emoji: '🔊', colorIndex: 1),
-  _LetterData(letter: 'ච', word: 'චොකලට්', emoji: '🍫', colorIndex: 2),
-  _LetterData(letter: 'ජ', word: 'ජලය', emoji: '💧', colorIndex: 0),
-  _LetterData(letter: 'ට', word: 'ටෙලිෆෝන', emoji: '📞', colorIndex: 1),
-  _LetterData(letter: 'ඩ', word: 'ඩොල්ෆින්', emoji: '🐬', colorIndex: 2),
-  _LetterData(letter: 'ත', word: 'තරු', emoji: '⭐', colorIndex: 0),
-  _LetterData(letter: 'ද', word: 'දව', emoji: '🌅', colorIndex: 1),
-  _LetterData(letter: 'න', word: 'නෙළුම', emoji: '🪷', colorIndex: 2),
-  _LetterData(letter: 'ප', word: 'පොත', emoji: '📖', colorIndex: 0),
-  _LetterData(letter: 'බ', word: 'බල්ලා', emoji: '🐕', colorIndex: 1),
-  _LetterData(letter: 'ම', word: 'මල', emoji: '🌺', colorIndex: 2),
-  _LetterData(letter: 'ය', word: 'යතුර', emoji: '🗝️', colorIndex: 0),
-  _LetterData(letter: 'ර', word: 'රෝදය', emoji: '🎡', colorIndex: 1),
-  _LetterData(letter: 'ල', word: 'ලිය', emoji: '🦚', colorIndex: 2),
-  _LetterData(letter: 'ව', word: 'වලිගය', emoji: '🦊', colorIndex: 0),
-  _LetterData(letter: 'ස', word: 'සෙල්ලම', emoji: '🎮', colorIndex: 1),
-  _LetterData(letter: 'හ', word: 'හදවත', emoji: '❤️', colorIndex: 2),
-];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
@@ -118,12 +67,12 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                 return _FadeSlide(
                   animation: _stagger(i + 2),
                   child: _LetterCard(
-                    data: _letters[i],
+                    data: hodiyaItems[i],
                     isDark: isDark,
                     onSpeak: (text) => ref.read(ttsServiceProvider).speak(text),
                   ),
                 );
-              }, childCount: _letters.length),
+              }, childCount: hodiyaItems.length),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
@@ -242,7 +191,7 @@ class _LetterCard extends StatelessWidget {
     required this.isDark,
     required this.onSpeak,
   });
-  final _LetterData data;
+  final HodiyaItem data;
   final bool isDark;
   final void Function(String text) onSpeak;
 
