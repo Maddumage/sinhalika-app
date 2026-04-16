@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/localization/generated/app_localizations.dart';
 import 'core/providers/providers.dart';
+import 'core/providers/user_preferences_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/services/notification_service.dart';
 import 'firebase_options.dart';
@@ -47,6 +48,8 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final themeMode = ref.watch(themeModeProvider);
+    final userPrefs = ref.watch(userPreferencesProvider);
+    final locale = Locale(userPrefs.language.name);
 
     return MaterialApp.router(
       title: 'සිංහලිකා',
@@ -55,6 +58,7 @@ class App extends ConsumerWidget {
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       routerConfig: router,
+      locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
