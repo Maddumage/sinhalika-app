@@ -60,6 +60,7 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
+        cacheExtent: 500,
         slivers: [
           _buildAppBar(isDark, l10n),
           SliverToBoxAdapter(child: _buildHeroBanner(isDark, l10n)),
@@ -207,6 +208,24 @@ class _LetterCard extends StatelessWidget {
   final HodiyaDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  // Cached statics — evaluated once per class, not per build()
+  static final _kLetterBase = GoogleFonts.notoSansSinhala(
+    fontSize: 64, fontWeight: FontWeight.w800);
+  static final _kHintBase = GoogleFonts.inter(
+    fontSize: 11, fontWeight: FontWeight.w600);
+  static final _kWordBase = GoogleFonts.notoSansSinhala(
+    fontSize: 11, fontWeight: FontWeight.w600);
+  static final _kWordHintBase = GoogleFonts.inter(fontSize: 8);
+  static final _kLightShadow = [
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.07),
+      blurRadius: 12,
+      offset: const Offset(0, 4),
+    )
+  ];
+  static const _kCardRadius = BorderRadius.all(Radius.circular(20));
+  static const _kEmptyList = <BoxShadow>[];
+
   Color get _letterColor {
     switch (data.colorIndex) {
       case 1:
@@ -228,16 +247,8 @@ class _LetterCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? AppTheme.dHigh : AppTheme.lSurf,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: isDark
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.07),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+          borderRadius: _kCardRadius,
+          boxShadow: isDark ? _kEmptyList : _kLightShadow,
         ),
         child: Stack(
           children: [
@@ -248,18 +259,12 @@ class _LetterCard extends StatelessWidget {
                 children: [
                   Text(
                     data.letter,
-                    style: GoogleFonts.notoSansSinhala(
-                      fontSize: 64,
-                      fontWeight: FontWeight.w800,
-                      color: _letterColor,
-                    ),
+                    style: _kLetterBase.copyWith(color: _letterColor),
                   ),
                   if (display.letterHint != null)
                     Text(
                       display.letterHint!,
-                      style: GoogleFonts.inter(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
+                      style: _kHintBase.copyWith(
                         color: (isDark ? AppTheme.dMuted : AppTheme.lMuted)
                             .withValues(alpha: 0.8),
                       ),
@@ -317,17 +322,14 @@ class _LetterCard extends StatelessWidget {
                 children: [
                   Text(
                     data.word,
-                    style: GoogleFonts.notoSansSinhala(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                    style: _kWordBase.copyWith(
                       color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                     ),
                   ),
                   if (display.wordHint != null)
                     Text(
                       display.wordHint!,
-                      style: GoogleFonts.inter(
-                        fontSize: 8,
+                      style: _kWordHintBase.copyWith(
                         color: (isDark ? AppTheme.dMuted : AppTheme.lMuted)
                             .withValues(alpha: 0.7),
                       ),

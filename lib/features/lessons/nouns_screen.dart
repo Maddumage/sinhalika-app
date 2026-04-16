@@ -60,6 +60,7 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
+        cacheExtent: 500,
         slivers: [
           _buildAppBar(isDark, l10n),
           SliverToBoxAdapter(
@@ -224,6 +225,16 @@ class _NounCard extends StatelessWidget {
   final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  static final _kLightShadow = [
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.07),
+      blurRadius: 12,
+      offset: const Offset(0, 4),
+    )
+  ];
+  static const _kCardRadius = BorderRadius.all(Radius.circular(20));
+  static const _kEmptyList = <BoxShadow>[];
+
   Color get _accent => noun.accentColor ?? AppTheme.oceanBlue;
 
   @override
@@ -236,16 +247,8 @@ class _NounCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: _cardBackground,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: isDark
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.07),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+          borderRadius: _kCardRadius,
+          boxShadow: isDark ? _kEmptyList : _kLightShadow,
         ),
         child: _buildCardContent(context, display),
       ),
@@ -319,6 +322,12 @@ class _PlainCard extends StatelessWidget {
   final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
+    fontSize: 36, fontWeight: FontWeight.w800);
+  static final _kEnglishBase = GoogleFonts.inter(
+    fontSize: 16, fontWeight: FontWeight.w700);
+  static final _kTranslitBase = GoogleFonts.inter(fontSize: 13);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -331,17 +340,11 @@ class _PlainCard extends StatelessWidget {
               children: [
                 Text(
                   noun.sinhala,
-                  style: GoogleFonts.notoSansSinhala(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w800,
-                    color: accent,
-                  ),
+                  style: _kSinhalaBase.copyWith(color: accent),
                 ),
                 Text(
                   noun.english,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  style: _kEnglishBase.copyWith(
                     color: isDark ? AppTheme.dText : AppTheme.lText,
                   ),
                 ),
@@ -349,8 +352,7 @@ class _PlainCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     display.transliteration!,
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
+                    style: _kTranslitBase.copyWith(
                       color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                     ),
                   ),
@@ -396,6 +398,12 @@ class _ImageTopCard extends StatelessWidget {
   final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
+    fontSize: 30, fontWeight: FontWeight.w800);
+  static final _kEnglishBase = GoogleFonts.inter(
+    fontSize: 15, fontWeight: FontWeight.w600);
+  static final _kTranslitBase = GoogleFonts.inter(fontSize: 12);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -421,25 +429,18 @@ class _ImageTopCard extends StatelessWidget {
                   children: [
                     Text(
                       noun.sinhala,
-                      style: GoogleFonts.notoSansSinhala(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w800,
-                        color: accent,
-                      ),
+                      style: _kSinhalaBase.copyWith(color: accent),
                     ),
                     Text(
                       noun.english,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                      style: _kEnglishBase.copyWith(
                         color: isDark ? AppTheme.dText : AppTheme.lText,
                       ),
                     ),
                     if (display.transliteration != null)
                       Text(
                         display.transliteration!,
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
+                        style: _kTranslitBase.copyWith(
                           color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                         ),
                       ),
@@ -488,6 +489,15 @@ class _WithExampleCard extends StatelessWidget {
   final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
+    fontSize: 26, fontWeight: FontWeight.w800);
+  static final _kEnglishBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w700);
+  static final _kExampleBase = GoogleFonts.inter(
+    fontSize: 12, fontStyle: FontStyle.italic);
+  static final _kButtonLabelBase = GoogleFonts.inter(
+    fontSize: 13, fontWeight: FontWeight.w600);
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -514,17 +524,11 @@ class _WithExampleCard extends StatelessWidget {
               children: [
                 Text(
                   noun.sinhala,
-                  style: GoogleFonts.notoSansSinhala(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    color: accent,
-                  ),
+                  style: _kSinhalaBase.copyWith(color: accent),
                 ),
                 Text(
                   noun.english,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                  style: _kEnglishBase.copyWith(
                     color: isDark ? AppTheme.dText : AppTheme.lText,
                   ),
                 ),
@@ -532,9 +536,7 @@ class _WithExampleCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     display.exampleLine!,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
+                    style: _kExampleBase.copyWith(
                       color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                     ),
                   ),
@@ -550,10 +552,7 @@ class _WithExampleCard extends StatelessWidget {
                     icon: const Icon(Icons.hearing_rounded, size: 16),
                     label: Text(
                       l10n.nounsListenButton,
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: _kButtonLabelBase,
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: accent,
@@ -588,6 +587,14 @@ class _TintedCard extends StatelessWidget {
   final NounDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
 
+  static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
+    fontSize: 32, fontWeight: FontWeight.w800);
+  static final _kEnglishBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w600);
+  static final _kTranslitBase = GoogleFonts.inter(fontSize: 12);
+  static final _kButtonLabelBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w600);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -605,25 +612,18 @@ class _TintedCard extends StatelessWidget {
                   children: [
                     Text(
                       noun.sinhala,
-                      style: GoogleFonts.notoSansSinhala(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800,
-                        color: accent,
-                      ),
+                      style: _kSinhalaBase.copyWith(color: accent),
                     ),
                     Text(
                       noun.english,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                      style: _kEnglishBase.copyWith(
                         color: isDark ? AppTheme.dText : AppTheme.lText,
                       ),
                     ),
                     if (display.transliteration != null)
                       Text(
                         display.transliteration!,
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
+                        style: _kTranslitBase.copyWith(
                           color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                         ),
                       ),
@@ -644,10 +644,7 @@ class _TintedCard extends StatelessWidget {
               icon: const Icon(Icons.volume_up_rounded, size: 18),
               label: Text(
                 'Hear Pronunciation',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: _kButtonLabelBase,
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: accent,

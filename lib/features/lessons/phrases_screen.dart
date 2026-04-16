@@ -62,6 +62,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
       backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
       floatingActionButton: _SearchFab(),
       body: CustomScrollView(
+        cacheExtent: 500,
         slivers: [
           _buildAppBar(isDark, l10n),
           SliverToBoxAdapter(
@@ -215,6 +216,23 @@ class _PhraseCard extends StatelessWidget {
   final void Function(String ttsText, String? audioPath) onSpeak;
   final VoidCallback onPractice;
 
+  static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
+    fontSize: 30, fontWeight: FontWeight.w800, height: 1.4);
+  static final _kTranslitBase = GoogleFonts.inter(
+    fontSize: 13, fontWeight: FontWeight.w500);
+  static final _kEnglishBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w500);
+  static final _kPracticeBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w600);
+  static final _kLightShadow = [
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.06),
+      blurRadius: 10,
+      offset: const Offset(0, 3),
+    )
+  ];
+  static const _kEmptyList = <BoxShadow>[];
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -240,15 +258,7 @@ class _PhraseCard extends StatelessWidget {
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(4),
               ),
-              boxShadow: isDark
-                  ? []
-                  : [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.06),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+              boxShadow: isDark ? _kEmptyList : _kLightShadow,
             ),
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -282,20 +292,13 @@ class _PhraseCard extends StatelessWidget {
                       // Sinhala phrase (large)
                       Text(
                         display.sinhala,
-                        style: GoogleFonts.notoSansSinhala(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: cat.chipColor,
-                          height: 1.4,
-                        ),
+                        style: _kSinhalaBase.copyWith(color: cat.chipColor),
                       ),
                       if (display.transliteration != null) ...[
                         const SizedBox(height: 4),
                         Text(
                           display.transliteration!,
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                          style: _kTranslitBase.copyWith(
                             color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
                           ),
                         ),
@@ -304,10 +307,8 @@ class _PhraseCard extends StatelessWidget {
                       // English translation
                       Text(
                         display.english,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
+                        style: _kEnglishBase.copyWith(
                           color: isDark ? AppTheme.dText : AppTheme.lText,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -359,11 +360,7 @@ class _PhraseCard extends StatelessWidget {
             icon: Icon(Icons.mic_rounded, size: 18, color: cat.chipColor),
             label: Text(
               l10n.phrasesRecordPracticeButton,
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: cat.chipColor,
-              ),
+              style: _kPracticeBase.copyWith(color: cat.chipColor),
             ),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: cat.chipColor.withValues(alpha: 0.5)),
@@ -392,6 +389,21 @@ class _TodayGoalBanner extends StatelessWidget {
   final int total;
   final bool isDark;
 
+  static final _kTitleBase = GoogleFonts.inter(
+    fontSize: 16, fontWeight: FontWeight.w700);
+  static final _kCountBase = GoogleFonts.inter(
+    fontSize: 14, fontWeight: FontWeight.w700);
+  static final _kSubtitleBase = GoogleFonts.inter(fontSize: 12);
+  static final _kLightShadow = [
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.06),
+      blurRadius: 10,
+      offset: const Offset(0, 3),
+    )
+  ];
+  static const _kCardRadius = BorderRadius.all(Radius.circular(20));
+  static const _kEmptyList = <BoxShadow>[];
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -402,25 +414,15 @@ class _TodayGoalBanner extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isDark ? AppTheme.dHigh : AppTheme.lSurf,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: isDark
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.06),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+          borderRadius: _kCardRadius,
+          boxShadow: isDark ? _kEmptyList : _kLightShadow,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               l10n.phrasesTodayGoalTitle,
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+              style: _kTitleBase.copyWith(
                 color: isDark ? AppTheme.dText : AppTheme.lText,
               ),
             ),
@@ -445,9 +447,7 @@ class _TodayGoalBanner extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   '$practiced/$total',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                  style: _kCountBase.copyWith(
                     color: isDark ? AppTheme.dText : AppTheme.lText,
                   ),
                 ),
@@ -458,8 +458,7 @@ class _TodayGoalBanner extends StatelessWidget {
               practiced >= total
                   ? l10n.phrasesGoalComplete
                   : l10n.phrasesGoalRemaining(total - practiced),
-              style: GoogleFonts.inter(
-                fontSize: 12,
+              style: _kSubtitleBase.copyWith(
                 color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
               ),
             ),
