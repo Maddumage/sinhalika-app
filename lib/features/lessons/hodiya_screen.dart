@@ -210,18 +210,24 @@ class _LetterCard extends StatelessWidget {
 
   // Cached statics — evaluated once per class, not per build()
   static final _kLetterBase = GoogleFonts.notoSansSinhala(
-    fontSize: 64, fontWeight: FontWeight.w800);
+    fontSize: 64,
+    fontWeight: FontWeight.w800,
+  );
   static final _kHintBase = GoogleFonts.inter(
-    fontSize: 11, fontWeight: FontWeight.w600);
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+  );
   static final _kWordBase = GoogleFonts.notoSansSinhala(
-    fontSize: 11, fontWeight: FontWeight.w600);
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+  );
   static final _kWordHintBase = GoogleFonts.inter(fontSize: 8);
   static final _kLightShadow = [
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.07),
       blurRadius: 12,
       offset: const Offset(0, 4),
-    )
+    ),
   ];
   static const _kCardRadius = BorderRadius.all(Radius.circular(20));
   static const _kEmptyList = <BoxShadow>[];

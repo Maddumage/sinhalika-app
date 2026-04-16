@@ -74,8 +74,7 @@ class UserPreferencesNotifier extends Notifier<UserPreferences> {
   /// Persists the result to SharedPreferences so subsequent cold starts do
   /// not need a network round-trip.
   Future<void> _syncFromFirestore(String uid) async {
-    final data =
-        await ref.read(firestoreServiceProvider).fetchUserPrefs(uid);
+    final data = await ref.read(firestoreServiceProvider).fetchUserPrefs(uid);
     if (data == null) {
       // No doc yet — push the local defaults so the document is created.
       ref.read(firestoreServiceProvider).saveUserPrefs(uid, state);
@@ -95,7 +94,11 @@ class UserPreferencesNotifier extends Notifier<UserPreferences> {
       orElse: () => state.level,
     );
 
-    final merged = UserPreferences(language: language, mode: mode, level: level);
+    final merged = UserPreferences(
+      language: language,
+      mode: mode,
+      level: level,
+    );
 
     // Persist locally to avoid a round-trip on next cold start.
     final prefs = ref.read(sharedPrefsProvider);

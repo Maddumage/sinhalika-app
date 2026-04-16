@@ -89,15 +89,18 @@ class WordsCacheNotifier extends AsyncNotifier<List<WordDocument>> {
     if (raw == null) return const [];
     try {
       final list = jsonDecode(raw) as List<dynamic>;
-      return list.cast<Map<String, dynamic>>().map((m) {
-        return WordDocument(
-          id: m['id'] as String,
-          sinhala: m['sinhala'] as String,
-          english: m['english'] as String,
-          transliteration: m['transliteration'] as String,
-          audioUrl: m['audioUrl'] as String?,
-        );
-      }).toList(growable: false);
+      return list
+          .cast<Map<String, dynamic>>()
+          .map((m) {
+            return WordDocument(
+              id: m['id'] as String,
+              sinhala: m['sinhala'] as String,
+              english: m['english'] as String,
+              transliteration: m['transliteration'] as String,
+              audioUrl: m['audioUrl'] as String?,
+            );
+          })
+          .toList(growable: false);
     } catch (_) {
       return const [];
     }
@@ -105,13 +108,17 @@ class WordsCacheNotifier extends AsyncNotifier<List<WordDocument>> {
 
   static String _encode(List<WordDocument> words) {
     return jsonEncode(
-      words.map((w) => {
-        'id': w.id,
-        'sinhala': w.sinhala,
-        'english': w.english,
-        'transliteration': w.transliteration,
-        if (w.audioUrl != null) 'audioUrl': w.audioUrl,
-      }).toList(),
+      words
+          .map(
+            (w) => {
+              'id': w.id,
+              'sinhala': w.sinhala,
+              'english': w.english,
+              'transliteration': w.transliteration,
+              if (w.audioUrl != null) 'audioUrl': w.audioUrl,
+            },
+          )
+          .toList(),
     );
   }
 }

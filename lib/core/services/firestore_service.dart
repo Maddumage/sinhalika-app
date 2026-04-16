@@ -25,14 +25,11 @@ class FirestoreService {
   /// Writes language, mode, and level to `users/{uid}` using merge so
   /// unrelated fields in the document are preserved.
   Future<void> saveUserPrefs(String uid, UserPreferences prefs) =>
-      _db.collection('users').doc(uid).set(
-        {
-          'language': prefs.language.name,
-          'mode': prefs.mode.name,
-          'level': prefs.level.name,
-        },
-        SetOptions(merge: true),
-      );
+      _db.collection('users').doc(uid).set({
+        'language': prefs.language.name,
+        'mode': prefs.mode.name,
+        'level': prefs.level.name,
+      }, SetOptions(merge: true));
 
   // ── Words ────────────────────────────────────────────────────────────────────
 
