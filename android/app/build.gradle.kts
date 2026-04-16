@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.maddumage.sinhalika.sinhalika"
+    namespace = "com.maddumage.sinhalika"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
