@@ -8,7 +8,6 @@ import '../../core/providers/providers.dart';
 import '../../theme/app_theme.dart';
 import 'data/phrases_data.dart';
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
 // ─────────────────────────────────────────────────────────────────────────────
@@ -82,7 +81,7 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                       onPractice: () {
                         HapticFeedback.mediumImpact();
                         setState(() {
-                            if (_practiced < phraseItems.length) _practiced++;
+                          if (_practiced < phraseItems.length) _practiced++;
                         });
                       },
                     ),
