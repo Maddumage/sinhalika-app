@@ -90,12 +90,6 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                           ref.read(ttsServiceProvider).speak(text);
                         }
                       },
-                      onPractice: () {
-                        HapticFeedback.mediumImpact();
-                        setState(() {
-                          if (_practiced < phraseItems.length) _practiced++;
-                        });
-                      },
                     ),
                   ),
                 ),
@@ -208,28 +202,31 @@ class _PhraseCard extends StatelessWidget {
     required this.isDark,
     required this.display,
     required this.onSpeak,
-    required this.onPractice,
   });
   final PhraseItem phrase;
   final bool isDark;
   final PhraseDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
-  final VoidCallback onPractice;
 
   static final _kSinhalaBase = GoogleFonts.notoSansSinhala(
-    fontSize: 30, fontWeight: FontWeight.w800, height: 1.4);
+    fontSize: 30,
+    fontWeight: FontWeight.w800,
+    height: 1.4,
+  );
   static final _kTranslitBase = GoogleFonts.inter(
-    fontSize: 13, fontWeight: FontWeight.w500);
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+  );
   static final _kEnglishBase = GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w500);
-  static final _kPracticeBase = GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w600);
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
   static final _kLightShadow = [
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.06),
       blurRadius: 10,
       offset: const Offset(0, 3),
-    )
+    ),
   ];
   static const _kEmptyList = <BoxShadow>[];
 
@@ -350,26 +347,6 @@ class _PhraseCard extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        // Record practice button
-        SizedBox(
-          width: double.infinity,
-          height: 44,
-          child: OutlinedButton.icon(
-            onPressed: onPractice,
-            icon: Icon(Icons.mic_rounded, size: 18, color: cat.chipColor),
-            label: Text(
-              l10n.phrasesRecordPracticeButton,
-              style: _kPracticeBase.copyWith(color: cat.chipColor),
-            ),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: cat.chipColor.withValues(alpha: 0.5)),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22),
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -390,16 +367,20 @@ class _TodayGoalBanner extends StatelessWidget {
   final bool isDark;
 
   static final _kTitleBase = GoogleFonts.inter(
-    fontSize: 16, fontWeight: FontWeight.w700);
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
   static final _kCountBase = GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w700);
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+  );
   static final _kSubtitleBase = GoogleFonts.inter(fontSize: 12);
   static final _kLightShadow = [
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.06),
       blurRadius: 10,
       offset: const Offset(0, 3),
-    )
+    ),
   ];
   static const _kCardRadius = BorderRadius.all(Radius.circular(20));
   static const _kEmptyList = <BoxShadow>[];
