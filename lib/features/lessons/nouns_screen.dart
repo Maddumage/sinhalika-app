@@ -81,8 +81,13 @@ class _NounsScreenState extends ConsumerState<NounsScreen>
                       noun: nounItems[i],
                       isDark: isDark,
                       prefs: prefs,
-                      onSpeak: (text) =>
-                          ref.read(ttsServiceProvider).speak(text),
+                      onSpeak: (text, audioPath) {
+                          if (audioPath != null) {
+                            ref.read(audioServiceProvider).play(audioPath);
+                          } else {
+                            ref.read(ttsServiceProvider).speak(text);
+                          }
+                        },
                     ),
                   ),
                 ),
@@ -218,7 +223,7 @@ class _NounCard extends StatelessWidget {
   final NounItem noun;
   final bool isDark;
   final UserPreferences prefs;
-  final void Function(String text) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   Color get _accent => noun.accentColor ?? AppTheme.oceanBlue;
 
@@ -228,7 +233,7 @@ class _NounCard extends StatelessWidget {
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();
-        onSpeak(display.ttsText);
+        onSpeak(display.ttsText, display.audioPath);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -314,7 +319,7 @@ class _PlainCard extends StatelessWidget {
   final bool isDark;
   final Color accent;
   final NounDisplay display;
-  final void Function(String) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   @override
   Widget build(BuildContext context) {
@@ -359,7 +364,7 @@ class _PlainCard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               HapticFeedback.selectionClick();
-              onSpeak(display.ttsText);
+              onSpeak(display.ttsText, display.audioPath);
             },
             child: Container(
               width: 48,
@@ -391,7 +396,7 @@ class _ImageTopCard extends StatelessWidget {
   final bool isDark;
   final Color accent;
   final NounDisplay display;
-  final void Function(String) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   @override
   Widget build(BuildContext context) {
@@ -446,7 +451,7 @@ class _ImageTopCard extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  onSpeak(display.ttsText);
+                  onSpeak(display.ttsText, display.audioPath);
                 },
                 child: Container(
                   width: 44,
@@ -483,7 +488,7 @@ class _WithExampleCard extends StatelessWidget {
   final bool isDark;
   final Color accent;
   final NounDisplay display;
-  final void Function(String) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   @override
   Widget build(BuildContext context) {
@@ -542,7 +547,7 @@ class _WithExampleCard extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       HapticFeedback.selectionClick();
-                      onSpeak(display.ttsText);
+                      onSpeak(display.ttsText, display.audioPath);
                     },
                     icon: const Icon(Icons.hearing_rounded, size: 16),
                     label: Text(
@@ -583,7 +588,7 @@ class _TintedCard extends StatelessWidget {
   final bool isDark;
   final Color accent;
   final NounDisplay display;
-  final void Function(String) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   @override
   Widget build(BuildContext context) {
@@ -636,7 +641,7 @@ class _TintedCard extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () {
                 HapticFeedback.selectionClick();
-                onSpeak(display.ttsText);
+                onSpeak(display.ttsText, display.audioPath);
               },
               icon: const Icon(Icons.volume_up_rounded, size: 18),
               label: Text(

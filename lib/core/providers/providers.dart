@@ -4,10 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/auth_service.dart';
+import '../services/audio_service.dart';
 import '../services/tts_service.dart';
 
 // ── TTS ───────────────────────────────────────────────────────────────────────
 final ttsServiceProvider = Provider<TtsService>((_) => TtsService.instance);
+
+// ── Audio ─────────────────────────────────────────────────────────────────────
+final audioServiceProvider = Provider<AudioService>((_) => AudioService.instance);
 
 // ── SharedPreferences (overridden in main) ───────────────────────────────────
 final sharedPrefsProvider = Provider<SharedPreferences>(

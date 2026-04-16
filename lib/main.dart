@@ -9,6 +9,7 @@ import 'core/localization/generated/app_localizations.dart';
 import 'core/providers/providers.dart';
 import 'core/providers/user_preferences_provider.dart';
 import 'core/router/app_router.dart';
+import 'core/services/audio_service.dart';
 import 'core/services/notification_service.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
@@ -30,6 +31,9 @@ void main() async {
 
   // Notifications (silently skipped on iOS Simulator — no APNs)
   await NotificationService.instance.init();
+
+  // Audio service (cache directory setup)
+  await AudioService.instance.init();
 
   final prefs = await SharedPreferences.getInstance();
 

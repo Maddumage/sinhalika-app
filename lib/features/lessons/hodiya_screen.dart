@@ -74,7 +74,13 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                     data: hodiyaItems[i],
                     isDark: isDark,
                     prefs: prefs,
-                    onSpeak: (text) => ref.read(ttsServiceProvider).speak(text),
+                      onSpeak: (text, audioPath) {
+                        if (audioPath != null) {
+                          ref.read(audioServiceProvider).play(audioPath);
+                        } else {
+                          ref.read(ttsServiceProvider).speak(text);
+                        }
+                      },
                   ),
                 );
               }, childCount: hodiyaItems.length),
@@ -200,7 +206,7 @@ class _LetterCard extends StatelessWidget {
   final HodiyaItem data;
   final bool isDark;
   final UserPreferences prefs;
-  final void Function(String text) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
 
   Color get _letterColor {
     switch (data.colorIndex) {
@@ -219,7 +225,7 @@ class _LetterCard extends StatelessWidget {
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();
-        onSpeak(display.ttsText);
+        onSpeak(display.ttsText, display.audioPath);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -270,7 +276,7 @@ class _LetterCard extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  onSpeak(display.ttsText);
+                  onSpeak(display.ttsText, display.audioPath);
                 },
                 child: Container(
                   width: 32,

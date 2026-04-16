@@ -83,8 +83,13 @@ class _PhrasesScreenState extends ConsumerState<PhrasesScreen>
                       phrase: phraseItems[i],
                       isDark: isDark,
                       prefs: prefs,
-                      onSpeak: (text) =>
-                          ref.read(ttsServiceProvider).speak(text),
+                      onSpeak: (text, audioPath) {
+                          if (audioPath != null) {
+                            ref.read(audioServiceProvider).play(audioPath);
+                          } else {
+                            ref.read(ttsServiceProvider).speak(text);
+                          }
+                        },
                       onPractice: () {
                         HapticFeedback.mediumImpact();
                         setState(() {
@@ -208,7 +213,7 @@ class _PhraseCard extends StatelessWidget {
   final PhraseItem phrase;
   final bool isDark;
   final UserPreferences prefs;
-  final void Function(String text) onSpeak;
+  final void Function(String ttsText, String? audioPath) onSpeak;
   final VoidCallback onPractice;
 
   @override
@@ -226,7 +231,7 @@ class _PhraseCard extends StatelessWidget {
         _TapScale(
           onTap: () {
             HapticFeedback.lightImpact();
-            onSpeak(display.ttsText);
+            onSpeak(display.ttsText, display.audioPath);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -315,7 +320,7 @@ class _PhraseCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    onSpeak(display.ttsText);
+                    onSpeak(display.ttsText, display.audioPath);
                   },
                   child: Container(
                     width: 44,

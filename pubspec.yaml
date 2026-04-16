@@ -64,6 +64,10 @@ dependencies:
   # Text-to-speech
   flutter_tts: ^4.2.0
 
+  # Audio file playback with caching
+  audioplayers: ^6.1.0
+  path_provider: ^2.1.5
+
   # App info
   package_info_plus: ^8.1.1
 

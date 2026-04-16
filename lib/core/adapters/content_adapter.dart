@@ -14,6 +14,7 @@ class HodiyaDisplay {
     required this.wordLabel,
     this.wordHint,
     required this.ttsText,
+    this.audioPath,
   });
 
   /// Roman transliteration of the letter, e.g. 'a', 'ka'.
@@ -29,6 +30,10 @@ class HodiyaDisplay {
 
   /// Text to pass to TTS when the user taps the card.
   final String ttsText;
+
+  /// URL or local path of a pre-recorded audio file.
+  /// When non-null, [AudioService] plays this instead of TTS.
+  final String? audioPath;
 }
 
 /// Resolved display properties for a [NounItem] card.
@@ -39,6 +44,7 @@ class NounDisplay {
     this.transliteration,
     this.exampleLine,
     required this.ttsText,
+    this.audioPath,
   });
 
   final String sinhala;
@@ -53,6 +59,10 @@ class NounDisplay {
   final String? exampleLine;
 
   final String ttsText;
+
+  /// URL or local path of a pre-recorded audio file.
+  /// When non-null, [AudioService] plays this instead of TTS.
+  final String? audioPath;
 }
 
 /// Resolved display properties for a [PhraseItem] card.
@@ -62,6 +72,7 @@ class PhraseDisplay {
     required this.english,
     this.transliteration,
     required this.ttsText,
+    this.audioPath,
   });
 
   final String sinhala;
@@ -72,6 +83,10 @@ class PhraseDisplay {
   final String? transliteration;
 
   final String ttsText;
+
+  /// URL or local path of a pre-recorded audio file.
+  /// When non-null, [AudioService] plays this instead of TTS.
+  final String? audioPath;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -100,6 +115,7 @@ class ContentAdapter {
       wordHint:
           show ? '${item.wordTransliteration} · ${item.english}' : null,
       ttsText: '${item.letter} ${item.word}',
+      audioPath: item.audioPath,
     );
   }
 
@@ -124,6 +140,7 @@ class ContentAdapter {
       ttsText: item.exampleSinhala != null
           ? '${item.sinhala}. ${item.exampleSinhala}'
           : item.sinhala,
+      audioPath: item.audioPath,
     );
   }
 
@@ -134,6 +151,7 @@ class ContentAdapter {
       english: item.english,
       transliteration: show ? item.transliteration : null,
       ttsText: item.sinhala,
+      audioPath: item.audioPath,
     );
   }
 }
