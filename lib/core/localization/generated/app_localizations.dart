@@ -656,6 +656,30 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeModeDark;
 
+  /// Language section header in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsSectionLanguage;
+
+  /// App language row label in settings
+  ///
+  /// In en, this message translates to:
+  /// **'App Language'**
+  String get settingsLanguageLabel;
+
+  /// English language option in settings
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageOptionEn;
+
+  /// Sinhala language option in settings
+  ///
+  /// In en, this message translates to:
+  /// **'සිංහල'**
+  String get settingsLanguageOptionSi;
+
   /// Preferences section header in settings
   ///
   /// In en, this message translates to:

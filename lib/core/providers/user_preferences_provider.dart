@@ -50,3 +50,10 @@ final userPreferencesProvider =
     NotifierProvider<UserPreferencesNotifier, UserPreferences>(
       UserPreferencesNotifier.new,
     );
+
+/// Convenience provider — exposes just the [AppLanguage] from
+/// [userPreferencesProvider]. Used by [MaterialApp.router]'s locale and
+/// the language switcher in SettingsScreen.
+final languageProvider = Provider<AppLanguage>(
+  (ref) => ref.watch(userPreferencesProvider).language,
+);

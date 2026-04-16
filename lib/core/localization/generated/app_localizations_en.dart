@@ -309,6 +309,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeModeDark => 'Dark';
 
   @override
+  String get settingsSectionLanguage => 'Language';
+
+  @override
+  String get settingsLanguageLabel => 'App Language';
+
+  @override
+  String get settingsLanguageOptionEn => 'English';
+
+  @override
+  String get settingsLanguageOptionSi => 'සිංහල';
+
+  @override
   String get settingsSectionPreferences => 'Preferences';
 
   @override

@@ -52,8 +52,8 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final themeMode = ref.watch(themeModeProvider);
-    final userPrefs = ref.watch(userPreferencesProvider);
-    final locale = Locale(userPrefs.language.name);
+    final language = ref.watch(languageProvider);
+    final locale = Locale(language.name);
 
     return MaterialApp.router(
       title: 'සිංහලිකා',

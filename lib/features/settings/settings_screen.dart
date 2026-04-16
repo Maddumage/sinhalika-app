@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
+import '../../core/models/user_preferences.dart';
 import '../../core/providers/providers.dart';
+import '../../core/providers/user_preferences_provider.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
@@ -19,6 +21,7 @@ class SettingsScreen extends ConsumerWidget {
     final user = FirebaseAuth.instance.currentUser;
     final themeMode = ref.watch(themeModeProvider);
     final notifsEnabled = ref.watch(notificationsEnabledProvider);
+    final language = ref.watch(languageProvider);
     final isGuest = user?.isAnonymous ?? true;
 
     return Scaffold(
@@ -83,6 +86,37 @@ class SettingsScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          // ── Language ───────────────────────────────────────────────────
+          _SectionHeader(l10n.settingsSectionLanguage, isDark: isDark),
+          _Section(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.settingsLanguageLabel,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: isDark ? AppTheme.dText : AppTheme.lText,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _LanguageSelector(
+                      current: language,
+                      isDark: isDark,
+                      ref: ref,
                     ),
                   ],
                 ),
@@ -220,6 +254,72 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── Language selector segmented control ──────────────────────────────────────
+class _LanguageSelector extends StatelessWidget {
+  const _LanguageSelector({
+    required this.current,
+    required this.isDark,
+    required this.ref,
+  });
+  final AppLanguage current;
+  final bool isDark;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final options = [
+      (AppLanguage.en, l10n.settingsLanguageOptionEn),
+      (AppLanguage.si, l10n.settingsLanguageOptionSi),
+    ];
+
+    return Row(
+      children: options.map((opt) {
+        final selected = current == opt.$1;
+        final accent = isDark ? AppTheme.electricBlue : AppTheme.oceanBlue;
+        return Expanded(
+          child: GestureDetector(
+            onTap: () => ref
+                .read(userPreferencesProvider.notifier)
+                .setLanguage(opt.$1),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              decoration: BoxDecoration(
+                color: selected
+                    ? accent.withValues(alpha: 0.15)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: selected
+                      ? accent
+                      : (isDark
+                            ? const Color(0xFF46484B)
+                            : const Color(0xFFD0CEC5)),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  opt.$2,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight:
+                        selected ? FontWeight.w700 : FontWeight.w500,
+                    color: selected
+                        ? accent
+                        : (isDark ? AppTheme.dMuted : AppTheme.lMuted),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

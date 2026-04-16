@@ -296,6 +296,18 @@
   "settingsThemeModeDark": "Dark",
   "@settingsThemeModeDark": { "description": "Dark theme mode option" },
 
+  "settingsSectionLanguage": "Language",
+  "@settingsSectionLanguage": { "description": "Language section header in settings" },
+
+  "settingsLanguageLabel": "App Language",
+  "@settingsLanguageLabel": { "description": "App language row label in settings" },
+
+  "settingsLanguageOptionEn": "English",
+  "@settingsLanguageOptionEn": { "description": "English language option in settings" },
+
+  "settingsLanguageOptionSi": "සිංහල",
+  "@settingsLanguageOptionSi": { "description": "Sinhala language option in settings" },
+
   "settingsSectionPreferences": "Preferences",
   "@settingsSectionPreferences": { "description": "Preferences section header in settings" },
 
