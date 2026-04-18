@@ -92,9 +92,7 @@ class _LetterWritePracticeScreenState
                 surfColor: surfColor,
                 onSpeak: () {
                   HapticFeedback.lightImpact();
-                  ref
-                      .read(ttsServiceProvider)
-                      .speak(hodiyaItems[index].letter);
+                  ref.read(ttsServiceProvider).speak(hodiyaItems[index].letter);
                 },
               );
             },
@@ -329,8 +327,9 @@ class _PracticePageState extends State<_PracticePage>
     final hasStrokes = _strokes.isNotEmpty || _currentStroke.isNotEmpty;
     final strokeColor = widget.isDark ? Colors.white : const Color(0xFF1A1A2E);
     final topPad = MediaQuery.of(context).padding.top + 72;
-    final canvasColor =
-        widget.isDark ? AppTheme.dHigh : const Color(0xFFF8F6F0);
+    final canvasColor = widget.isDark
+        ? AppTheme.dHigh
+        : const Color(0xFFF8F6F0);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 120),
@@ -349,9 +348,7 @@ class _PracticePageState extends State<_PracticePage>
                   width: 72,
                   height: 72,
                   decoration: BoxDecoration(
-                    color: accent.withValues(
-                      alpha: widget.isDark ? 0.15 : 0.1,
-                    ),
+                    color: accent.withValues(alpha: widget.isDark ? 0.15 : 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
@@ -497,10 +494,11 @@ class _PracticePageState extends State<_PracticePage>
                                 Icon(
                                   Icons.gesture_rounded,
                                   size: 28,
-                                  color: (widget.isDark
-                                          ? Colors.white
-                                          : Colors.black)
-                                      .withValues(alpha: 0.12),
+                                  color:
+                                      (widget.isDark
+                                              ? Colors.white
+                                              : Colors.black)
+                                          .withValues(alpha: 0.12),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
@@ -508,10 +506,11 @@ class _PracticePageState extends State<_PracticePage>
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
                                     fontSize: 13,
-                                    color: (widget.isDark
-                                            ? Colors.white
-                                            : Colors.black)
-                                        .withValues(alpha: 0.15),
+                                    color:
+                                        (widget.isDark
+                                                ? Colors.white
+                                                : Colors.black)
+                                            .withValues(alpha: 0.15),
                                   ),
                                 ),
                               ],
@@ -591,9 +590,7 @@ class _PracticePageState extends State<_PracticePage>
                 decoration: BoxDecoration(
                   color: _completedCount == 0
                       ? (widget.isDark ? AppTheme.dHigh : widget.surfColor)
-                      : accent.withValues(
-                          alpha: widget.isDark ? 0.15 : 0.1,
-                        ),
+                      : accent.withValues(alpha: widget.isDark ? 0.15 : 0.1),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: _completedCount == 0
@@ -618,15 +615,14 @@ class _PracticePageState extends State<_PracticePage>
                         _completedCount == 0
                             ? 'Write the letter, then tap Done to save your attempt.'
                             : _completedCount == 1
-                                ? 'Great! Written 1 time. Keep practising!'
-                                : _completedCount < 5
-                                    ? 'Written $_completedCount times — you\'re getting better!'
-                                    : 'You\'ve written it $_completedCount times. Amazing! ⭐',
+                            ? 'Great! Written 1 time. Keep practising!'
+                            : _completedCount < 5
+                            ? 'Written $_completedCount times — you\'re getting better!'
+                            : 'You\'ve written it $_completedCount times. Amazing! ⭐',
                         style: GoogleFonts.inter(
                           fontSize: 13,
                           height: 1.4,
-                          color:
-                              _completedCount == 0 ? widget.muted : accent,
+                          color: _completedCount == 0 ? widget.muted : accent,
                           fontWeight: _completedCount >= 5
                               ? FontWeight.w600
                               : FontWeight.normal,
@@ -797,8 +793,7 @@ class _CrosshairPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color =
-          (isDark ? Colors.white : Colors.black).withValues(alpha: 0.06)
+      ..color = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.06)
       ..strokeWidth = 1;
     canvas.drawLine(
       Offset(size.width / 2, 0),

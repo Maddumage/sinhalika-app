@@ -937,11 +937,7 @@ class _WriteItCardState extends State<_WriteItCard> {
                   ),
                 ),
                 const SizedBox(width: 6),
-                Icon(
-                  Icons.open_in_full_rounded,
-                  size: 13,
-                  color: widget.muted,
-                ),
+                Icon(Icons.open_in_full_rounded, size: 13, color: widget.muted),
                 const Spacer(),
               ],
             ),
@@ -972,11 +968,7 @@ class _WriteItCardState extends State<_WriteItCard> {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.edit_note_rounded,
-                    size: 18,
-                    color: widget.accent,
-                  ),
+                  Icon(Icons.edit_note_rounded, size: 18, color: widget.accent),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
