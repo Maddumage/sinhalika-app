@@ -219,6 +219,12 @@
   "lessonCategoryPhrasesSubtitle": "Phrases",
   "@lessonCategoryPhrasesSubtitle": { "description": "Phrases category card subtitle" },
 
+  "lessonCategoryQuizTitle": "ප්‍රශ්න පතුය",
+  "@lessonCategoryQuizTitle": { "description": "Quiz category card title" },
+
+  "lessonCategoryQuizSubtitle": "Quiz",
+  "@lessonCategoryQuizSubtitle": { "description": "Quiz category card subtitle" },
+
   "hodiyaScreenTitle": "සිංහල හෝඩිය",
   "@hodiyaScreenTitle": { "description": "Hodiya screen AppBar title" },
 

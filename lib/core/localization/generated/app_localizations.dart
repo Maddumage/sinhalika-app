@@ -512,6 +512,18 @@ abstract class AppLocalizations {
   /// **'Phrases'**
   String get lessonCategoryPhrasesSubtitle;
 
+  /// Quiz category card title
+  ///
+  /// In en, this message translates to:
+  /// **'ප්‍රශ්න පතුය'**
+  String get lessonCategoryQuizTitle;
+
+  /// Quiz category card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get lessonCategoryQuizSubtitle;
+
   /// Hodiya screen AppBar title
   ///
   /// In en, this message translates to:

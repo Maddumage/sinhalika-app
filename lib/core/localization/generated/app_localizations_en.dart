@@ -229,6 +229,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lessonCategoryPhrasesSubtitle => 'Phrases';
 
   @override
+  String get lessonCategoryQuizTitle => 'ප්‍රශ්න පතුය';
+
+  @override
+  String get lessonCategoryQuizSubtitle => 'Quiz';
+
+  @override
   String get hodiyaScreenTitle => 'සිංහල හෝඩිය';
 
   @override

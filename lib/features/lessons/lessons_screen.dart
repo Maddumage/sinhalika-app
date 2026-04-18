@@ -31,6 +31,13 @@ class LessonsScreen extends StatelessWidget {
       accentDark: Color(0xFF0A1F0D),
       textColor: Color(0xFF2E7D32),
     ),
+    (
+      emoji: '🧩',
+      route: '/lessons/quiz',
+      accentLight: Color(0xFFF0ECFF),
+      accentDark: Color(0xFF150E2E),
+      textColor: AppTheme.electricBlue,
+    ),
   ];
 
   @override
@@ -49,6 +56,10 @@ class LessonsScreen extends StatelessWidget {
       (
         title: l10n.lessonCategoryPhrasesTitle,
         subtitle: l10n.lessonCategoryPhrasesSubtitle,
+      ),
+      (
+        title: l10n.lessonCategoryQuizTitle,
+        subtitle: l10n.lessonCategoryQuizSubtitle,
       ),
     ];
 

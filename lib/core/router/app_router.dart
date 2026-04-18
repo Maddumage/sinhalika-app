@@ -13,6 +13,7 @@ import '../../features/lessons/lessons_screen.dart';
 import '../../features/lessons/hodiya_screen.dart';
 import '../../features/lessons/nouns_screen.dart';
 import '../../features/lessons/phrases_screen.dart';
+import '../../features/lessons/quiz_screen.dart';
 import '../../features/games/games_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/celebrations/celebrations_screen.dart';
@@ -108,6 +109,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: 'phrases',
                     builder: (_, __) => const PhrasesScreen(),
                   ),
+                  GoRoute(path: 'quiz', builder: (_, __) => const QuizScreen()),
                 ],
               ),
             ],
