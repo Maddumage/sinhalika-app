@@ -10,6 +10,7 @@ import '../../core/providers/providers.dart';
 import '../../core/localization/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'data/hodiya_data.dart';
+import 'hodiya_detail_screen.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
@@ -80,6 +81,13 @@ class _HodiyaScreenState extends ConsumerState<HodiyaScreen>
                       } else {
                         ref.read(ttsServiceProvider).speak(text);
                       }
+                    },
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => HodiyaDetailScreen(initialIndex: i),
+                        ),
+                      );
                     },
                   ),
                 );
@@ -202,11 +210,13 @@ class _LetterCard extends StatelessWidget {
     required this.isDark,
     required this.display,
     required this.onSpeak,
+    required this.onTap,
   });
   final HodiyaItem data;
   final bool isDark;
   final HodiyaDisplay display;
   final void Function(String ttsText, String? audioPath) onSpeak;
+  final VoidCallback onTap;
 
   // Cached statics — evaluated once per class, not per build()
   static final _kLetterBase = GoogleFonts.notoSansSinhala(
@@ -248,7 +258,7 @@ class _LetterCard extends StatelessWidget {
     return _TapScale(
       onTap: () {
         HapticFeedback.lightImpact();
-        onSpeak(display.ttsText, display.audioPath);
+        onTap();
       },
       child: Container(
         decoration: BoxDecoration(
