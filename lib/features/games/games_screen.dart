@@ -1,61 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../core/models/traditional_game_item.dart';
 import '../../theme/app_theme.dart';
-import 'data/games_data.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GamesScreen — Traditional Sri Lankan cultural games & activities
-// Design: search bar, filter chips, featured hero card, vertical game list
+// GamesScreen — Interactive mini-games hub
+// Traditional cultural items have been moved to Lessons > Traditional Items
 // ─────────────────────────────────────────────────────────────────────────────
 
-class GamesScreen extends StatefulWidget {
+class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
-
-  @override
-  State<GamesScreen> createState() => _GamesScreenState();
-}
-
-class _GamesScreenState extends State<GamesScreen> {
-  final TextEditingController _searchCtrl = TextEditingController();
-  GameCategory? _selectedCategory; // null = all
-  String _query = '';
-
-  static const List<_FilterChipData> _filters = [
-    _FilterChipData(null, 'සියල්ල'),
-    _FilterChipData(GameCategory.games, 'ක්‍රීඩා'),
-    _FilterChipData(GameCategory.arts, 'කලා'),
-    _FilterChipData(GameCategory.food, 'ආහාර'),
-    _FilterChipData(GameCategory.dance, 'නැටුම්'),
-    _FilterChipData(GameCategory.ritual, 'චාරිත්‍ර'),
-  ];
-
-  List<TraditionalGameItem> get _filtered {
-    return traditionalGames.where((g) {
-      final matchCat =
-          _selectedCategory == null || g.category == _selectedCategory;
-      final matchQuery =
-          _query.isEmpty ||
-          g.titleSinhala.contains(_query) ||
-          g.titleEnglish.toLowerCase().contains(_query.toLowerCase()) ||
-          g.descriptionSinhala.contains(_query);
-      return matchCat && matchQuery;
-    }).toList();
-  }
-
-  TraditionalGameItem? get _featured =>
-      _filtered.firstWhere((g) => g.isFeatured, orElse: () => _filtered.first);
-
-  List<TraditionalGameItem> get _listItems =>
-      _filtered.where((g) => !g.isFeatured).toList();
-
-  @override
-  void dispose() {
-    _searchCtrl.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +19,6 @@ class _GamesScreenState extends State<GamesScreen> {
     final bg = isDark ? AppTheme.dBg : AppTheme.lBg;
     final textColor = isDark ? AppTheme.dText : AppTheme.lText;
     final muted = isDark ? AppTheme.dMuted : AppTheme.lMuted;
-    final surfColor = isDark ? AppTheme.dHigh : AppTheme.lSurf;
-    final filtered = _filtered;
-    final featured = _featured;
-    final listItems = _listItems;
 
     return Scaffold(
       backgroundColor: bg,
@@ -79,11 +31,15 @@ class _GamesScreenState extends State<GamesScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
                 child: Row(
                   children: [
-                    Icon(Icons.menu_rounded, size: 26, color: textColor),
+                    Icon(
+                      Icons.sports_esports_rounded,
+                      size: 28,
+                      color: AppTheme.electricBlue,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'සංස්කෘතිය',
+                        'ක්‍රීඩා',
                         style: GoogleFonts.notoSansSinhala(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -91,135 +47,67 @@ class _GamesScreenState extends State<GamesScreen> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Icon(Icons.search_rounded, size: 24, color: muted),
+                  ],
+                ),
+              ),
+            ),
+
+            // ── Heading ────────────────────────────────────────────────────
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Interactive ',
+                            style: GoogleFonts.inter(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: textColor,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Games',
+                            style: GoogleFonts.inter(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              fontStyle: FontStyle.italic,
+                              color: AppTheme.electricBlue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Learn Sinhala through play — choose a game and start your adventure!',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: muted,
+                        height: 1.5,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
 
-            // ── Search bar ─────────────────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-                child: Container(
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: surfColor,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: isDark ? AppTheme.dHst : const Color(0xFFE8E4DC),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 14),
-                      Icon(Icons.search_rounded, size: 20, color: muted),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          controller: _searchCtrl,
-                          onChanged: (v) => setState(() => _query = v),
-                          style: GoogleFonts.notoSansSinhala(
-                            fontSize: 14,
-                            color: textColor,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: 'සොයන්න, සොයන්න...',
-                            hintStyle: GoogleFonts.notoSansSinhala(
-                              fontSize: 14,
-                              color: muted,
-                            ),
-                            border: InputBorder.none,
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                          ),
-                        ),
-                      ),
-                      Icon(Icons.mic_rounded, size: 20, color: muted),
-                      const SizedBox(width: 14),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 28)),
 
-            // ── Filter chips ───────────────────────────────────────────────
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 52,
-                child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _filters.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
-                  itemBuilder: (context, i) {
-                    final f = _filters[i];
-                    final selected = _selectedCategory == f.category;
-                    return GestureDetector(
-                      onTap: () {
-                        HapticFeedback.selectionClick();
-                        setState(() => _selectedCategory = f.category);
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: selected ? AppTheme.heritageRed : surfColor,
-                          borderRadius: BorderRadius.circular(99),
-                          border: Border.all(
-                            color: selected
-                                ? AppTheme.heritageRed
-                                : (isDark
-                                      ? AppTheme.dHst
-                                      : const Color(0xFFE0DCD4)),
-                          ),
-                        ),
-                        child: Text(
-                          f.label,
-                          style: GoogleFonts.notoSansSinhala(
-                            fontSize: 13,
-                            fontWeight: selected
-                                ? FontWeight.w700
-                                : FontWeight.w500,
-                            color: selected
-                                ? Colors.white
-                                : (isDark ? AppTheme.dText : AppTheme.lText),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 18)),
-
-            // ── Featured card ──────────────────────────────────────────────
-            if (featured != null && filtered.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _FeaturedCard(item: featured, isDark: isDark),
-                ),
-              ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 20)),
-
-            // ── Game list ──────────────────────────────────────────────────
+            // ── Game cards ─────────────────────────────────────────────────
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
               sliver: SliverList.separated(
-                itemCount: listItems.length,
+                itemCount: _gameEntries.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 16),
-                itemBuilder: (context, i) =>
-                    _GameListItem(item: listItems[i], isDark: isDark),
+                itemBuilder: (context, i) {
+                  final g = _gameEntries[i];
+                  return _GameCard(entry: g, isDark: isDark);
+                },
               ),
             ),
           ],
@@ -230,356 +118,175 @@ class _GamesScreenState extends State<GamesScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Filter chip metadata
+// Game entry data
 // ─────────────────────────────────────────────────────────────────────────────
-class _FilterChipData {
-  const _FilterChipData(this.category, this.label);
-  final GameCategory? category;
-  final String label;
+class _GameEntry {
+  const _GameEntry({
+    required this.emoji,
+    required this.title,
+    required this.titleSinhala,
+    required this.description,
+    required this.levelLabel,
+    required this.accentColor,
+    required this.bgDark,
+    required this.bgLight,
+    required this.route,
+  });
+
+  final String emoji;
+  final String title;
+  final String titleSinhala;
+  final String description;
+  final String levelLabel;
+  final Color accentColor;
+  final Color bgDark;
+  final Color bgLight;
+  final String route;
 }
 
+const List<_GameEntry> _gameEntries = [
+  _GameEntry(
+    emoji: '🔤',
+    title: 'Match the Words',
+    titleSinhala: 'ශබ්ද ගැළපීම',
+    description:
+        'Drag Sinhala word blocks onto their matching picture cards. '
+        'Test your vocabulary across 5 themed levels!',
+    levelLabel: '5 levels · Drag & Drop',
+    accentColor: AppTheme.electricBlue,
+    bgDark: Color(0xFF0D2137),
+    bgLight: Color(0xFFEAF3FF),
+    route: '/games/match-words',
+  ),
+  _GameEntry(
+    emoji: '✏️',
+    title: 'Letter Drawing',
+    titleSinhala: 'අකුරු ඇදීම',
+    description:
+        'Trace the glowing guide paths to learn how to write Sinhala letters. '
+        'Complete 5 progressive lessons with accuracy tracking!',
+    levelLabel: '5 lessons · Trace & Learn',
+    accentColor: AppTheme.glowingAmber,
+    bgDark: Color(0xFF1A1000),
+    bgLight: Color(0xFFFFF8E1),
+    route: '/games/letter-drawing',
+  ),
+];
+
 // ─────────────────────────────────────────────────────────────────────────────
-// _FeaturedCard — large hero card at the top
+// _GameCard — full-detail card for each interactive game
 // ─────────────────────────────────────────────────────────────────────────────
-class _FeaturedCard extends StatelessWidget {
-  const _FeaturedCard({required this.item, required this.isDark});
-  final TraditionalGameItem item;
+class _GameCard extends StatelessWidget {
+  const _GameCard({required this.entry, required this.isDark});
+  final _GameEntry entry;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: isDark ? const Color(0xFF1A1208) : const Color(0xFFFFF8EE),
-        border: Border.all(
-          color: isDark ? const Color(0xFF332810) : const Color(0xFFEDD9A3),
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        context.push(entry.route);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isDark ? entry.bgDark : entry.bgLight,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: entry.accentColor.withValues(alpha: isDark ? 0.25 : 0.35),
+          ),
         ),
-      ),
-      child: Stack(
-        children: [
-          // Decorative circles
-          Positioned(
-            right: -20,
-            top: -20,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.glowingAmber.withValues(
-                  alpha: isDark ? 0.06 : 0.08,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 30,
-            bottom: -30,
-            child: Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.heritageRed.withValues(
-                  alpha: isDark ? 0.05 : 0.07,
-                ),
-              ),
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                // ── Left: text content ──────────────────────────────────
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: entry.accentColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Center(
+                    child: Text(
+                      entry.emoji,
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.heritageRed,
-                          borderRadius: BorderRadius.circular(99),
-                        ),
-                        child: Text(
-                          'ජනප්‍රිය',
-                          style: GoogleFonts.notoSansSinhala(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      // Title
                       Text(
-                        item.titleSinhala,
-                        style: GoogleFonts.notoSansSinhala(
-                          fontSize: 22,
+                        entry.title,
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
                           fontWeight: FontWeight.w800,
-                          color: isDark ? AppTheme.dText : AppTheme.lText,
-                          height: 1.2,
+                          color: isDark ? Colors.white : AppTheme.lText,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      // Description
+                      const SizedBox(height: 2),
                       Text(
-                        item.descriptionSinhala,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                        entry.titleSinhala,
                         style: GoogleFonts.notoSansSinhala(
-                          fontSize: 12,
-                          color: isDark ? AppTheme.dMuted : AppTheme.lMuted,
-                          height: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // CTA button
-                      GestureDetector(
-                        onTap: () => HapticFeedback.lightImpact(),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                            vertical: 9,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.heritageRed,
-                            borderRadius: BorderRadius.circular(99),
-                          ),
-                          child: Text(
-                            'වැඩිදේ දෙස් »',
-                            style: GoogleFonts.notoSansSinhala(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
+                          fontSize: 14,
+                          color: entry.accentColor,
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                const SizedBox(width: 12),
-
-                // ── Right: illustration ────────────────────────────────
-                if (item.imageAsset != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      item.imageAsset!,
-                      width: 110,
-                      height: 130,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                else
-                  Container(
-                    width: 110,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      color: isDark ? AppTheme.dHst : const Color(0xFFEDE8D8),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(
-                      Icons.sports_esports_rounded,
-                      size: 48,
-                      color: AppTheme.glowingAmber,
-                    ),
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: entry.accentColor.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
                   ),
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: entry.accentColor,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// _GameListItem — horizontal card with thumbnail, info, and add button
-// ─────────────────────────────────────────────────────────────────────────────
-class _GameListItem extends StatelessWidget {
-  const _GameListItem({required this.item, required this.isDark});
-  final TraditionalGameItem item;
-  final bool isDark;
-
-  Color get _categoryColor {
-    switch (item.category) {
-      case GameCategory.games:
-        return const Color(0xFF2E7D32);
-      case GameCategory.arts:
-        return AppTheme.heritageRed;
-      case GameCategory.food:
-        return AppTheme.glowingAmber;
-      case GameCategory.dance:
-        return AppTheme.oceanBlue;
-      case GameCategory.ritual:
-        return const Color(0xFF6A1B9A);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final textColor = isDark ? AppTheme.dText : AppTheme.lText;
-    final muted = isDark ? AppTheme.dMuted : AppTheme.lMuted;
-    final surfColor = isDark ? AppTheme.dHigh : AppTheme.lSurf;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: surfColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isDark ? AppTheme.dHst : const Color(0xFFE8E4DC),
+            const SizedBox(height: 14),
+            Text(
+              entry.description,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.6)
+                    : AppTheme.lMuted,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: entry.accentColor.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(
+                  color: entry.accentColor.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Text(
+                entry.levelLabel,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: entry.accentColor,
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── Thumbnail ─────────────────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // Image area
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: item.imageAsset != null
-                      ? Image.asset(
-                          item.imageAsset!,
-                          width: 88,
-                          height: 88,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          width: 88,
-                          height: 88,
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? AppTheme.dHst
-                                : const Color(0xFFEDE8D8),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Icon(
-                            Icons.image_rounded,
-                            size: 36,
-                            color: isDark
-                                ? AppTheme.dMuted
-                                : const Color(0xFFAFA89C),
-                          ),
-                        ),
-                ),
-                // Category badge
-                Positioned(
-                  top: -6,
-                  right: -6,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _categoryColor,
-                      borderRadius: BorderRadius.circular(99),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _categoryColor.withValues(alpha: 0.4),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      item.categoryLabelSinhala,
-                      style: GoogleFonts.notoSansSinhala(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // ── Info ──────────────────────────────────────────────────────
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 14, 12, 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.titleSinhala,
-                    style: GoogleFonts.notoSansSinhala(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: textColor,
-                      height: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    item.descriptionSinhala,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.notoSansSinhala(
-                      fontSize: 12,
-                      color: muted,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.remove_red_eye_outlined,
-                        size: 14,
-                        color: muted,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${item.viewCountLabel} views',
-                        style: GoogleFonts.inter(fontSize: 12, color: muted),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // ── Add button ────────────────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 14, 14, 14),
-            child: GestureDetector(
-              onTap: () => HapticFeedback.lightImpact(),
-              child: Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: isDark ? AppTheme.electricBlue : AppTheme.oceanBlue,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.add_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

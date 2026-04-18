@@ -225,6 +225,12 @@
   "lessonCategoryQuizSubtitle": "Quiz",
   "@lessonCategoryQuizSubtitle": { "description": "Quiz category card subtitle" },
 
+  "lessonCategoryTraditionalTitle": "සංස්කෘතික වටිනාකම්",
+  "@lessonCategoryTraditionalTitle": { "description": "Traditional items category card title" },
+
+  "lessonCategoryTraditionalSubtitle": "Traditional Items",
+  "@lessonCategoryTraditionalSubtitle": { "description": "Traditional items category card subtitle" },
+
   "hodiyaScreenTitle": "සිංහල හෝඩිය",
   "@hodiyaScreenTitle": { "description": "Hodiya screen AppBar title" },
 

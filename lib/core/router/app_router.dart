@@ -14,7 +14,10 @@ import '../../features/lessons/hodiya_screen.dart';
 import '../../features/lessons/nouns_screen.dart';
 import '../../features/lessons/phrases_screen.dart';
 import '../../features/lessons/quiz_screen.dart';
+import '../../features/lessons/traditional_items_screen.dart';
 import '../../features/games/games_screen.dart';
+import '../../features/games/match_words_screen.dart';
+import '../../features/games/letter_drawing_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/celebrations/celebrations_screen.dart';
 import '../../features/stories/janaktha_ekathuwa_screen.dart';
@@ -110,13 +113,30 @@ final routerProvider = Provider<GoRouter>((ref) {
                     builder: (_, __) => const PhrasesScreen(),
                   ),
                   GoRoute(path: 'quiz', builder: (_, __) => const QuizScreen()),
+                  GoRoute(
+                    path: 'traditional',
+                    builder: (_, __) => const TraditionalItemsScreen(),
+                  ),
                 ],
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/games', builder: (_, __) => const GamesScreen()),
+              GoRoute(
+                path: '/games',
+                builder: (_, __) => const GamesScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'match-words',
+                    builder: (_, __) => const MatchWordsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'letter-drawing',
+                    builder: (_, __) => const LetterDrawingScreen(),
+                  ),
+                ],
+              ),
             ],
           ),
           StatefulShellBranch(

@@ -524,6 +524,18 @@ abstract class AppLocalizations {
   /// **'Quiz'**
   String get lessonCategoryQuizSubtitle;
 
+  /// Traditional items category card title
+  ///
+  /// In en, this message translates to:
+  /// **'සංස්කෘතික වටිනාකම්'**
+  String get lessonCategoryTraditionalTitle;
+
+  /// Traditional items category card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional Items'**
+  String get lessonCategoryTraditionalSubtitle;
+
   /// Hodiya screen AppBar title
   ///
   /// In en, this message translates to:

@@ -236,6 +236,12 @@ class AppLocalizationsSi extends AppLocalizations {
   String get lessonCategoryQuizSubtitle => 'Quiz';
 
   @override
+  String get lessonCategoryTraditionalTitle => 'සංස්කෘතික වටිනාකම්';
+
+  @override
+  String get lessonCategoryTraditionalSubtitle => 'Traditional Items';
+
+  @override
   String get hodiyaScreenTitle => 'සිංහල හෝඩිය';
 
   @override
