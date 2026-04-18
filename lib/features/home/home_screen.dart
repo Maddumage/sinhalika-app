@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,15 +61,14 @@ class _HomeScreenState extends State<HomeScreen>
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 120,
+            expandedHeight: 280,
             pinned: true,
+            stretch: true,
             backgroundColor: isDark ? AppTheme.dBg : AppTheme.lBg,
             scrolledUnderElevation: 0,
             surfaceTintColor: Colors.transparent,
             flexibleSpace: FlexibleSpaceBar(
-              background: ColoredBox(
-                color: isDark ? AppTheme.dBg : AppTheme.lBg,
-              ),
+              background: _HomeSliderHeader(isDark: isDark),
               title: Text(
                 'සිංහලිකා',
                 style: GoogleFonts.inter(
@@ -77,6 +78,8 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+              stretchModes: const [StretchMode.zoomBackground],
+              collapseMode: CollapseMode.parallax,
             ),
           ),
 
@@ -980,6 +983,243 @@ class _DailyQuestCardState extends State<_DailyQuestCard>
           ),
         ],
       ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Image slider header — auto-advancing PageView with gradient + text + dots
+// ─────────────────────────────────────────────────────────────────────────────
+class _SlideData {
+  const _SlideData({
+    required this.image,
+    required this.titleSinhala,
+    required this.subtitle,
+    required this.gradientStart,
+    required this.gradientEnd,
+  });
+  final String image;
+  final String titleSinhala;
+  final String subtitle;
+  final Color gradientStart;
+  final Color gradientEnd;
+}
+
+class _HomeSliderHeader extends StatefulWidget {
+  const _HomeSliderHeader({required this.isDark});
+  final bool isDark;
+
+  @override
+  State<_HomeSliderHeader> createState() => _HomeSliderHeaderState();
+}
+
+class _HomeSliderHeaderState extends State<_HomeSliderHeader>
+    with SingleTickerProviderStateMixin {
+  static const List<_SlideData> _slides = [
+    _SlideData(
+      image: 'assets/images/drawing_kid.png',
+      titleSinhala: 'සිංහල ඉගෙනගනිමු',
+      subtitle: 'Learn Sinhala through art',
+      gradientStart: Color(0xFF4A148C),
+      gradientEnd: Color(0xFF880E4F),
+    ),
+    _SlideData(
+      image: 'assets/images/learning_kid.png',
+      titleSinhala: 'ශ්‍රී ලංකාවේ භාෂාව',
+      subtitle: 'Your language, your identity',
+      gradientStart: Color(0xFF0067AD),
+      gradientEnd: Color(0xFF1565C0),
+    ),
+    _SlideData(
+      image: 'assets/images/study_room.png',
+      titleSinhala: 'ඉගෙනීමේ ලෝකය',
+      subtitle: 'Explore the world of learning',
+      gradientStart: Color(0xFFBF360C),
+      gradientEnd: Color(0xFFE64A19),
+    ),
+    _SlideData(
+      image: 'assets/images/treasure_box.png',
+      titleSinhala: 'දැනුම් භාණ්ඩය',
+      subtitle: 'Unlock knowledge treasures',
+      gradientStart: Color(0xFF4E342E),
+      gradientEnd: Color(0xFF6D4C41),
+    ),
+  ];
+
+  late final PageController _pageCtrl = PageController();
+  late final AnimationController _textAnim = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 480),
+  )..forward();
+  Timer? _timer;
+  int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted) return;
+      _pageCtrl.animateToPage(
+        (_page + 1) % _slides.length,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeInOutCubic,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageCtrl.dispose();
+    _textAnim.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int i) {
+    setState(() => _page = i);
+    _textAnim.forward(from: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final slide = _slides[_page];
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // ── PageView of slides ──────────────────────────────────────────
+        PageView.builder(
+          controller: _pageCtrl,
+          onPageChanged: _onPageChanged,
+          itemCount: _slides.length,
+          itemBuilder: (context, i) {
+            final s = _slides[i];
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [s.gradientStart, s.gradientEnd],
+                ),
+              ),
+              child: SizedBox.expand(
+                child: Image.asset(
+                  s.image,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.centerRight,
+                ),
+              ),
+            );
+          },
+        ),
+
+        // ── Left-to-right gradient for text readability ─────────────────
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xB3000000), Color(0x00000000)],
+              stops: [0.0, 0.62],
+            ),
+          ),
+        ),
+
+        // ── Bottom gradient for dots ────────────────────────────────────
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 80,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [Color(0x80000000), Color(0x00000000)],
+              ),
+            ),
+          ),
+        ),
+
+        // ── Animated slide text ─────────────────────────────────────────
+        Positioned(
+          left: 20,
+          right: 160,
+          bottom: 52,
+          child: AnimatedBuilder(
+            animation: _textAnim,
+            builder: (context, child) {
+              final t = CurvedAnimation(
+                parent: _textAnim,
+                curve: Curves.easeOut,
+              ).value;
+              return Opacity(
+                opacity: t,
+                child: Transform.translate(
+                  offset: Offset(0, (1.0 - t) * 14.0),
+                  child: child,
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  slide.titleSinhala,
+                  style: GoogleFonts.notoSansSinhala(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    height: 1.25,
+                    shadows: const [
+                      Shadow(
+                        color: Color(0x66000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  slide.subtitle,
+                  style: GoogleFonts.inter(
+                    fontSize: 12.5,
+                    color: Colors.white70,
+                    shadows: const [
+                      Shadow(color: Color(0x44000000), blurRadius: 6),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // ── Dot indicators ──────────────────────────────────────────────
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 18,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_slides.length, (i) {
+              final active = i == _page;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: active ? 22 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(99),
+                  color: active ? Colors.white : Colors.white38,
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
     );
   }
 }
