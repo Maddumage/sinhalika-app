@@ -377,4 +377,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirm => 'Sign Out';
+
+  @override
+  String get celebrationsScreenTitle => 'සැමරුම්';
+
+  @override
+  String get celebrationsScreenTitleEn => 'Celebrations';
+
+  @override
+  String get celebrationsBannerChip => 'CULTURAL HERITAGE';
+
+  @override
+  String get celebrationsBannerDescription =>
+      'Discover Sri Lanka\'s vibrant festivals and cultural traditions.';
+
+  @override
+  String get celebrationsExploreLabel => 'Explore';
+
+  @override
+  String celebrationsFunFacts(int count) {
+    return '$count fun facts';
+  }
+
+  @override
+  String get celebrationsTryAtHome => 'Try at Home!';
+
+  @override
+  String get celebrationsFunFactsTitle => 'Fun Facts 🌟';
+
+  @override
+  String get janakthaScreenTitle => 'ජනකතා එකතුව';
+
+  @override
+  String get janakthaBannerChip => 'FOLK TALES';
+
+  @override
+  String janakthaStoriesCount(int count) {
+    return '$count stories to explore';
+  }
+
+  @override
+  String get janakthaFeaturedLabel => 'Featured';
+
+  @override
+  String get janakthaAllStoriesLabel => 'All Stories';
+
+  @override
+  String get janakthaReadNow => 'Read Now →';
+
+  @override
+  String get storyDetailsListenFull => 'Listen to Full Story';
+
+  @override
+  String get storyDetailsStopListening => 'Stop Listening';
+
+  @override
+  String get storyDetailsReadingProgress => 'Reading Progress';
+
+  @override
+  String get storyDetailsTapHint => 'Tap a paragraph to hear it read aloud';
+
+  @override
+  String get storyDetailsMoralTitle => 'Moral of the Story';
+
+  @override
+  String storyDetailsMinRead(int minutes) {
+    return '$minutes min read';
+  }
+
+  @override
+  String storyDetailsParts(int count) {
+    return '$count parts';
+  }
 }

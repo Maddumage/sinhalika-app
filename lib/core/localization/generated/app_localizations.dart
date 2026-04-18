@@ -787,6 +787,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign Out'**
   String get settingsSignOutConfirm;
+
+  /// Celebrations screen AppBar title (Sinhala)
+  ///
+  /// In en, this message translates to:
+  /// **'සැමරුම්'**
+  String get celebrationsScreenTitle;
+
+  /// Celebrations screen title (English)
+  ///
+  /// In en, this message translates to:
+  /// **'Celebrations'**
+  String get celebrationsScreenTitleEn;
+
+  /// Banner chip on celebrations screen
+  ///
+  /// In en, this message translates to:
+  /// **'CULTURAL HERITAGE'**
+  String get celebrationsBannerChip;
+
+  /// Banner description on celebrations screen
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Sri Lanka\'s vibrant festivals and cultural traditions.'**
+  String get celebrationsBannerDescription;
+
+  /// Explore button label on celebration cards
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get celebrationsExploreLabel;
+
+  /// Fun facts badge on celebration cards
+  ///
+  /// In en, this message translates to:
+  /// **'{count} fun facts'**
+  String celebrationsFunFacts(int count);
+
+  /// Activity CTA heading in celebration detail sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Try at Home!'**
+  String get celebrationsTryAtHome;
+
+  /// Fun facts section heading in celebration detail sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Fun Facts 🌟'**
+  String get celebrationsFunFactsTitle;
+
+  /// Janaktha Ekathuwa screen AppBar title
+  ///
+  /// In en, this message translates to:
+  /// **'ජනකතා එකතුව'**
+  String get janakthaScreenTitle;
+
+  /// Banner chip on Janaktha screen
+  ///
+  /// In en, this message translates to:
+  /// **'FOLK TALES'**
+  String get janakthaBannerChip;
+
+  /// Stories count on Janaktha banner
+  ///
+  /// In en, this message translates to:
+  /// **'{count} stories to explore'**
+  String janakthaStoriesCount(int count);
+
+  /// Featured section label on Janaktha screen
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get janakthaFeaturedLabel;
+
+  /// All stories section label on Janaktha screen
+  ///
+  /// In en, this message translates to:
+  /// **'All Stories'**
+  String get janakthaAllStoriesLabel;
+
+  /// Read now CTA on featured story card
+  ///
+  /// In en, this message translates to:
+  /// **'Read Now →'**
+  String get janakthaReadNow;
+
+  /// Listen to full story button on story details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to Full Story'**
+  String get storyDetailsListenFull;
+
+  /// Stop listening button on story details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Listening'**
+  String get storyDetailsStopListening;
+
+  /// Reading progress label on story details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Progress'**
+  String get storyDetailsReadingProgress;
+
+  /// Hint text on story details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a paragraph to hear it read aloud'**
+  String get storyDetailsTapHint;
+
+  /// Moral section title on story details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Moral of the Story'**
+  String get storyDetailsMoralTitle;
+
+  /// Minutes read label on story details
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min read'**
+  String storyDetailsMinRead(int minutes);
+
+  /// Parts count label on story details
+  ///
+  /// In en, this message translates to:
+  /// **'{count} parts'**
+  String storyDetailsParts(int count);
 }
 
 class _AppLocalizationsDelegate

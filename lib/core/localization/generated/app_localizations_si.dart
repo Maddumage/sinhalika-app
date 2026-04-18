@@ -377,4 +377,76 @@ class AppLocalizationsSi extends AppLocalizations {
 
   @override
   String get settingsSignOutConfirm => 'ඉවත් වෙන්න';
+
+  @override
+  String get celebrationsScreenTitle => 'සැමරුම්';
+
+  @override
+  String get celebrationsScreenTitleEn => 'Celebrations';
+
+  @override
+  String get celebrationsBannerChip => 'සංස්කෘතික උරුමය';
+
+  @override
+  String get celebrationsBannerDescription =>
+      'ශ්‍රී ලංකාවේ ශ්‍රේෂ්ඨ උත්සව සහ සංස්කෘතික සම්ප්‍රදායන් සොයා ගන්න.';
+
+  @override
+  String get celebrationsExploreLabel => 'ගවේෂණය';
+
+  @override
+  String celebrationsFunFacts(int count) {
+    return '$count විනෝදජනක කරුණු';
+  }
+
+  @override
+  String get celebrationsTryAtHome => 'නිවෙදී උත්සාහ කරන්න!';
+
+  @override
+  String get celebrationsFunFactsTitle => 'විනෝදජනක කරුණු 🌟';
+
+  @override
+  String get janakthaScreenTitle => 'ජනකතා එකතුව';
+
+  @override
+  String get janakthaBannerChip => 'ජන කතා';
+
+  @override
+  String janakthaStoriesCount(int count) {
+    return 'ගවේෂණය කිරීමට කතා $count ක්';
+  }
+
+  @override
+  String get janakthaFeaturedLabel => 'විශේෂිත';
+
+  @override
+  String get janakthaAllStoriesLabel => 'සියලු කතා';
+
+  @override
+  String get janakthaReadNow => 'දැන් කියවන්න →';
+
+  @override
+  String get storyDetailsListenFull => 'සම්පූර්ණ කතාව සවන් දෙන්න';
+
+  @override
+  String get storyDetailsStopListening => 'සවන් දීම නවත්වන්න';
+
+  @override
+  String get storyDetailsReadingProgress => 'කියවීමේ ප්‍රගතිය';
+
+  @override
+  String get storyDetailsTapHint => 'හඬ නගා කියවීමට ඡේදයක් ස්පර්ශ කරන්න';
+
+  @override
+  String get storyDetailsMoralTitle => 'කතාවේ ආදර්ශය';
+
+  @override
+  String storyDetailsMinRead(int minutes) {
+    return 'මිනිත්තු $minutes කියවීම';
+  }
+
+  @override
+  String storyDetailsParts(int count) {
+    return 'කොටස් $count';
+  }
 }

@@ -2,11 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/localization/generated/app_localizations.dart';
-import '../../core/services/auth_service.dart';
 import '../../theme/app_theme.dart';
+import 'terms_and_conditions_screen.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -16,49 +17,13 @@ class SignInScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
-  bool _loading = false;
+  void _signInWithGoogle() => context.push('/terms', extra: AuthMethod.google);
 
-  Future<void> _signInWithGoogle() async {
-    setState(() => _loading = true);
-    try {
-      await AuthService.instance.signInWithGoogle();
-      // Router redirect will handle navigation to /home
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _loading = false);
-    }
-  }
-
-  Future<void> _continueAsGuest() async {
-    setState(() => _loading = true);
-    try {
-      await AuthService.instance.signInAsGuest();
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _loading = false);
-    }
-  }
+  void _continueAsGuest() => context.push('/terms', extra: AuthMethod.guest);
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
@@ -120,7 +85,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
                     // ── Google sign-in button ─────────────────────────────
                     _AuthButton(
-                      onTap: _loading ? null : _signInWithGoogle,
+                      onTap: _signInWithGoogle,
                       backgroundColor: Colors.white,
                       foregroundColor: const Color(0xFF1F1F1F),
                       child: Row(
@@ -144,7 +109,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
                     // ── Guest button ──────────────────────────────────────
                     _AuthButton(
-                      onTap: _loading ? null : _continueAsGuest,
+                      onTap: _continueAsGuest,
                       backgroundColor: isDark
                           ? const Color(0xFF1D2024)
                           : const Color(0xFFEFECE4),
@@ -231,13 +196,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
             ),
-
-            // ── Loading indicator ─────────────────────────────────────────
-            if (_loading)
-              LinearProgressIndicator(
-                color: cs.primary,
-                backgroundColor: cs.primary.withOpacity(0.1),
-              ),
           ],
         ),
       ),

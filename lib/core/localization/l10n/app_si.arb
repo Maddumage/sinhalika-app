@@ -245,5 +245,67 @@
 
   "settingsSignOutCancel": "අවලංගු",
 
-  "settingsSignOutConfirm": "ඉවත් වෙන්න"
+  "settingsSignOutConfirm": "ඉවත් වෙන්න",
+
+  "celebrationsScreenTitle": "සැමරුම්",
+
+  "celebrationsScreenTitleEn": "Celebrations",
+
+  "celebrationsBannerChip": "සංස්කෘතික උරුමය",
+
+  "celebrationsBannerDescription": "ශ්‍රී ලංකාවේ ශ්‍රේෂ්ඨ උත්සව සහ සංස්කෘතික සම්ප්‍රදායන් සොයා ගන්න.",
+
+  "celebrationsExploreLabel": "ගවේෂණය",
+
+  "celebrationsFunFacts": "{count} විනෝදජනක කරුණු",
+  "@celebrationsFunFacts": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "celebrationsTryAtHome": "නිවෙදී උත්සාහ කරන්න!",
+
+  "celebrationsFunFactsTitle": "විනෝදජනක කරුණු 🌟",
+
+  "janakthaScreenTitle": "ජනකතා එකතුව",
+
+  "janakthaBannerChip": "ජන කතා",
+
+  "janakthaStoriesCount": "ගවේෂණය කිරීමට කතා {count} ක්",
+  "@janakthaStoriesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "janakthaFeaturedLabel": "විශේෂිත",
+
+  "janakthaAllStoriesLabel": "සියලු කතා",
+
+  "janakthaReadNow": "දැන් කියවන්න →",
+
+  "storyDetailsListenFull": "සම්පූර්ණ කතාව සවන් දෙන්න",
+
+  "storyDetailsStopListening": "සවන් දීම නවත්වන්න",
+
+  "storyDetailsReadingProgress": "කියවීමේ ප්‍රගතිය",
+
+  "storyDetailsTapHint": "හඬ නගා කියවීමට ඡේදයක් ස්පර්ශ කරන්න",
+
+  "storyDetailsMoralTitle": "කතාවේ ආදර්ශය",
+
+  "storyDetailsMinRead": "මිනිත්තු {minutes} කියවීම",
+  "@storyDetailsMinRead": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+
+  "storyDetailsParts": "කොටස් {count}",
+  "@storyDetailsParts": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }

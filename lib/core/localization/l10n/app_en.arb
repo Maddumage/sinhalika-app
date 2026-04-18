@@ -360,5 +360,88 @@
   "@settingsSignOutCancel": { "description": "Cancel button in sign out dialog" },
 
   "settingsSignOutConfirm": "Sign Out",
-  "@settingsSignOutConfirm": { "description": "Confirm sign out button in dialog" }
+  "@settingsSignOutConfirm": { "description": "Confirm sign out button in dialog" },
+
+  "celebrationsScreenTitle": "සැමරුම්",
+  "@celebrationsScreenTitle": { "description": "Celebrations screen AppBar title (Sinhala)" },
+
+  "celebrationsScreenTitleEn": "Celebrations",
+  "@celebrationsScreenTitleEn": { "description": "Celebrations screen title (English)" },
+
+  "celebrationsBannerChip": "CULTURAL HERITAGE",
+  "@celebrationsBannerChip": { "description": "Banner chip on celebrations screen" },
+
+  "celebrationsBannerDescription": "Discover Sri Lanka's vibrant festivals and cultural traditions.",
+  "@celebrationsBannerDescription": { "description": "Banner description on celebrations screen" },
+
+  "celebrationsExploreLabel": "Explore",
+  "@celebrationsExploreLabel": { "description": "Explore button label on celebration cards" },
+
+  "celebrationsFunFacts": "{count} fun facts",
+  "@celebrationsFunFacts": {
+    "description": "Fun facts badge on celebration cards",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "celebrationsTryAtHome": "Try at Home!",
+  "@celebrationsTryAtHome": { "description": "Activity CTA heading in celebration detail sheet" },
+
+  "celebrationsFunFactsTitle": "Fun Facts 🌟",
+  "@celebrationsFunFactsTitle": { "description": "Fun facts section heading in celebration detail sheet" },
+
+  "janakthaScreenTitle": "ජනකතා එකතුව",
+  "@janakthaScreenTitle": { "description": "Janaktha Ekathuwa screen AppBar title" },
+
+  "janakthaBannerChip": "FOLK TALES",
+  "@janakthaBannerChip": { "description": "Banner chip on Janaktha screen" },
+
+  "janakthaStoriesCount": "{count} stories to explore",
+  "@janakthaStoriesCount": {
+    "description": "Stories count on Janaktha banner",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "janakthaFeaturedLabel": "Featured",
+  "@janakthaFeaturedLabel": { "description": "Featured section label on Janaktha screen" },
+
+  "janakthaAllStoriesLabel": "All Stories",
+  "@janakthaAllStoriesLabel": { "description": "All stories section label on Janaktha screen" },
+
+  "janakthaReadNow": "Read Now →",
+  "@janakthaReadNow": { "description": "Read now CTA on featured story card" },
+
+  "storyDetailsListenFull": "Listen to Full Story",
+  "@storyDetailsListenFull": { "description": "Listen to full story button on story details screen" },
+
+  "storyDetailsStopListening": "Stop Listening",
+  "@storyDetailsStopListening": { "description": "Stop listening button on story details screen" },
+
+  "storyDetailsReadingProgress": "Reading Progress",
+  "@storyDetailsReadingProgress": { "description": "Reading progress label on story details screen" },
+
+  "storyDetailsTapHint": "Tap a paragraph to hear it read aloud",
+  "@storyDetailsTapHint": { "description": "Hint text on story details screen" },
+
+  "storyDetailsMoralTitle": "Moral of the Story",
+  "@storyDetailsMoralTitle": { "description": "Moral section title on story details screen" },
+
+  "storyDetailsMinRead": "{minutes} min read",
+  "@storyDetailsMinRead": {
+    "description": "Minutes read label on story details",
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+
+  "storyDetailsParts": "{count} parts",
+  "@storyDetailsParts": {
+    "description": "Parts count label on story details",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }

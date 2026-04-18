@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/localization/generated/app_localizations.dart';
@@ -93,12 +94,18 @@ class _HomeScreenState extends State<HomeScreen>
                   animation: _stagger(0.10, 0.55),
                   child: _GameOfDayCard(isDark: isDark),
                 ),
+                const SizedBox(height: 20),
+
+                _FadeSlide(
+                  animation: _stagger(0.14, 0.58),
+                  child: _FeatureBannersRow(isDark: isDark),
+                ),
                 const SizedBox(height: 28),
 
                 _FadeSlide(
                   animation: _stagger(0.20, 0.65),
                   child: _TapScale(
-                    onTap: () {},
+                    onTap: () => context.push('/lessons/hodiya'),
                     child: _LetterSection(
                       title: l10n.homeVowelsTitle,
                       sinhalaLabel: l10n.homeVowelsSinhalaLabel,
@@ -113,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
                 _FadeSlide(
                   animation: _stagger(0.28, 0.72),
                   child: _TapScale(
-                    onTap: () {},
+                    onTap: () => context.push('/lessons/hodiya'),
                     child: _LetterSection(
                       title: l10n.homeConsonantsTitle,
                       sinhalaLabel: l10n.homeConsonantsSinhalaLabel,
@@ -141,6 +148,127 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Feature Banners Row — Stories + Celebrations quick-access cards
+// ─────────────────────────────────────────────────────────────────────────────
+class _FeatureBannersRow extends StatelessWidget {
+  const _FeatureBannersRow({required this.isDark});
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _FeatureBannerTile(
+            emoji: '📖',
+            labelSinhala: 'ජනකතා',
+            labelEnglish: 'Folk Tales',
+            route: '/stories',
+            gradientColors: isDark
+                ? [const Color(0xFF1A0A08), const Color(0xFF2C1008)]
+                : [const Color(0xFFFFF0EE), const Color(0xFFFFE4E0)],
+            accentColor: AppTheme.heritageRed,
+            isDark: isDark,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _FeatureBannerTile(
+            emoji: '🎊',
+            labelSinhala: 'සැමරුම්',
+            labelEnglish: 'Celebrations',
+            route: '/celebrations',
+            gradientColors: isDark
+                ? [const Color(0xFF0A1520), const Color(0xFF0C1E2E)]
+                : [const Color(0xFFEEF4FF), const Color(0xFFE0ECFF)],
+            accentColor: AppTheme.oceanBlue,
+            isDark: isDark,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FeatureBannerTile extends StatelessWidget {
+  const _FeatureBannerTile({
+    required this.emoji,
+    required this.labelSinhala,
+    required this.labelEnglish,
+    required this.route,
+    required this.gradientColors,
+    required this.accentColor,
+    required this.isDark,
+  });
+  final String emoji;
+  final String labelSinhala;
+  final String labelEnglish;
+  final String route;
+  final List<Color> gradientColors;
+  final Color accentColor;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return _TapScale(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        context.push(route);
+      },
+      child: Container(
+        height: 90,
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: accentColor.withValues(alpha: isDark ? 0.20 : 0.15),
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 30)),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    labelSinhala,
+                    style: GoogleFonts.notoSansSinhala(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: accentColor,
+                    ),
+                  ),
+                  Text(
+                    labelEnglish,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: accentColor.withValues(alpha: 0.70),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 14,
+              color: accentColor.withValues(alpha: 0.60),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -279,7 +407,7 @@ class _GreetingCard extends StatelessWidget {
             tween: Tween(begin: 0.0, end: 240 / 500),
             duration: const Duration(milliseconds: 1400),
             curve: Curves.easeOutCubic,
-            builder: (_, value, __) => ClipRRect(
+            builder: (context, value, child) => ClipRRect(
               borderRadius: BorderRadius.circular(99),
               child: LinearProgressIndicator(
                 value: value,
@@ -562,28 +690,32 @@ class _DiscoverMore extends StatelessWidget {
 
   static List<_DiscItem> _buildItems(AppLocalizations l10n) => [
     _DiscItem(
-      l10n.homeDiscoverWords,
-      'වජන',
-      Icons.abc_rounded,
-      const Color(0xFFE53935),
+      'ජනකතා',
+      'Folk Tales',
+      Icons.auto_stories_rounded,
+      AppTheme.heritageRed,
+      route: '/stories',
     ),
     _DiscItem(
       l10n.homeDiscoverVocabulary,
-      'වජන භාගුව',
+      'වචන',
       Icons.menu_book_rounded,
       const Color(0xFF1565C0),
+      route: '/lessons',
     ),
     _DiscItem(
       l10n.homeDiscoverPhrases,
-      'වාකිය',
+      'වාක්‍ය',
       Icons.chat_bubble_outline_rounded,
       const Color(0xFF2E7D32),
+      route: '/lessons/phrases',
     ),
     _DiscItem(
       l10n.homeDiscoverCulture,
-      'සංස්කූතිය',
+      'සංස්කෘතිය',
       Icons.temple_hindu_rounded,
       const Color(0xFFE65100),
+      route: '/celebrations',
     ),
   ];
 
@@ -646,11 +778,18 @@ class _DiscoverMore extends StatelessWidget {
 }
 
 class _DiscItem {
-  const _DiscItem(this.title, this.sinhala, this.icon, this.color);
+  const _DiscItem(
+    this.title,
+    this.sinhala,
+    this.icon,
+    this.color, {
+    this.route,
+  });
   final String title;
   final String sinhala;
   final IconData icon;
   final Color color;
+  final String? route;
 }
 
 class _DiscCard extends StatelessWidget {
@@ -661,7 +800,12 @@ class _DiscCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _TapScale(
-      onTap: () {},
+      onTap: () {
+        if (item.route != null) {
+          HapticFeedback.lightImpact();
+          context.push(item.route!);
+        }
+      },
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(

@@ -6,6 +6,7 @@ import '../providers/providers.dart';
 import '../../screens/splash_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/auth/sign_in_screen.dart';
+import '../../features/auth/terms_and_conditions_screen.dart';
 import '../../features/shell/main_shell.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/lessons/lessons_screen.dart';
@@ -14,6 +15,10 @@ import '../../features/lessons/nouns_screen.dart';
 import '../../features/lessons/phrases_screen.dart';
 import '../../features/games/games_screen.dart';
 import '../../features/settings/settings_screen.dart';
+import '../../features/celebrations/celebrations_screen.dart';
+import '../../features/stories/janaktha_ekathuwa_screen.dart';
+import '../../features/stories/story_details_screen.dart';
+import '../../core/models/story_item.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final notifier = _RouterNotifier(ref);
@@ -34,7 +39,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           loc.startsWith('/home') ||
           loc.startsWith('/lessons') ||
           loc.startsWith('/games') ||
-          loc.startsWith('/settings');
+          loc.startsWith('/settings') ||
+          loc.startsWith('/celebrations') ||
+          loc.startsWith('/stories');
 
       if (isAppRoute && !signedIn) {
         return onboarded ? '/sign-in' : '/onboarding';
@@ -50,6 +57,31 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const OnboardingScreen(),
       ),
       GoRoute(path: '/sign-in', builder: (_, __) => const SignInScreen()),
+      GoRoute(
+        path: '/terms',
+        builder: (_, state) {
+          final method = state.extra as AuthMethod;
+          return TermsAndConditionsScreen(authMethod: method);
+        },
+      ),
+      // ── Standalone full-screen routes (outside shell) ────────────────────
+      GoRoute(
+        path: '/celebrations',
+        builder: (_, __) => const CelebrationsScreen(),
+      ),
+      GoRoute(
+        path: '/stories',
+        builder: (_, __) => const JanakthaEkathuwaScreen(),
+        routes: [
+          GoRoute(
+            path: 'details',
+            builder: (_, state) {
+              final story = state.extra as StoryItem;
+              return StoryDetailsScreen(story: story);
+            },
+          ),
+        ],
+      ),
       StatefulShellRoute.indexedStack(
         builder: (_, __, shell) => MainShell(shell: shell),
         branches: [
