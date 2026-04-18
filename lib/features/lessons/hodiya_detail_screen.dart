@@ -7,6 +7,7 @@ import '../../core/models/hodiya_item.dart';
 import '../../core/providers/providers.dart';
 import '../../theme/app_theme.dart';
 import 'data/hodiya_data.dart';
+import 'letter_write_practice_screen.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HodiyaDetailScreen — full-screen detail view for a single Sinhala letter
@@ -470,6 +471,7 @@ class _LetterDetailPage extends StatelessWidget {
                   ),
                   child: _WriteItCard(
                     letter: item.letter,
+                    letterIndex: index,
                     accent: accent,
                     isDark: isDark,
                     surfColor: surfColor,
@@ -831,12 +833,13 @@ class _FactRow extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// _WriteItCard — practice section with letter and stroke order hint
+// _WriteItCard — interactive practice section (4 drawable canvases)
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _WriteItCard extends StatelessWidget {
+class _WriteItCard extends StatefulWidget {
   const _WriteItCard({
     required this.letter,
+    required this.letterIndex,
     required this.accent,
     required this.isDark,
     required this.surfColor,
@@ -845,6 +848,7 @@ class _WriteItCard extends StatelessWidget {
   });
 
   final String letter;
+  final int letterIndex;
   final Color accent;
   final bool isDark;
   final Color surfColor;
@@ -852,16 +856,40 @@ class _WriteItCard extends StatelessWidget {
   final Color muted;
 
   @override
+  State<_WriteItCard> createState() => _WriteItCardState();
+}
+
+class _WriteItCardState extends State<_WriteItCard> {
+  // One strokes list per box
+  final List<List<List<Offset>>> _boxStrokes = List.generate(4, (_) => []);
+
+  void _clearBox(int i) {
+    setState(() => _boxStrokes[i] = []);
+    HapticFeedback.lightImpact();
+  }
+
+  void _clearAll() {
+    setState(() {
+      for (var i = 0; i < 4; i++) {
+        _boxStrokes[i] = [];
+      }
+    });
+    HapticFeedback.mediumImpact();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final filledCount = _boxStrokes.where((s) => s.isNotEmpty).length;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: surfColor,
+        color: widget.surfColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark ? AppTheme.dHst : const Color(0xFFECE8DE),
+          color: widget.isDark ? AppTheme.dHst : const Color(0xFFECE8DE),
         ),
-        boxShadow: isDark
+        boxShadow: widget.isDark
             ? null
             : [
                 BoxShadow(
@@ -874,61 +902,194 @@ class _WriteItCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
-          Row(
-            children: [
-              Container(
-                width: 4,
-                height: 16,
-                decoration: BoxDecoration(
-                  color: accent,
-                  borderRadius: BorderRadius.circular(2),
+          // ── Header ────────────────────────────────────────────────────
+          // Tap anywhere on the header to open the full-screen practice
+          GestureDetector(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => LetterWritePracticeScreen(
+                    initialIndex: widget.letterIndex,
+                  ),
+                ),
+              );
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: widget.accent,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'WRITE IT',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: widget.muted,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Icon(
+                  Icons.open_in_full_rounded,
+                  size: 13,
+                  color: widget.muted,
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
+          // Quick-practice strip (tap card below opens full screen)
+          GestureDetector(
+            onTap: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => LetterWritePracticeScreen(
+                    initialIndex: widget.letterIndex,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              decoration: BoxDecoration(
+                color: widget.accent.withValues(
+                  alpha: widget.isDark ? 0.12 : 0.07,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: widget.accent.withValues(alpha: 0.25),
                 ),
               ),
-              const SizedBox(width: 10),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.edit_note_rounded,
+                    size: 18,
+                    color: widget.accent,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Open full-screen practice to write the letter',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: widget.accent,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 20,
+                    color: widget.accent,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          // ── Inline quick-practice row (header label) ───────────────────
+          Row(
+            children: [
               Text(
-                'WRITE IT',
+                'Quick Practice',
                 style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: muted,
-                  letterSpacing: 0.8,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: widget.muted,
+                  letterSpacing: 0.5,
                 ),
               ),
               const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: isDark ? 0.15 : 0.1),
-                  borderRadius: BorderRadius.circular(99),
-                ),
-                child: Text(
-                  'Practice',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: accent,
+              // Clear all button
+              if (filledCount > 0)
+                GestureDetector(
+                  onTap: _clearAll,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.heritageRed.withValues(
+                        alpha: widget.isDark ? 0.15 : 0.1,
+                      ),
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.refresh_rounded,
+                          size: 12,
+                          color: AppTheme.heritageRed,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Clear all',
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.heritageRed,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: widget.accent.withValues(
+                      alpha: widget.isDark ? 0.15 : 0.1,
+                    ),
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                  child: Text(
+                    'Practice',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: widget.accent,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: 14),
 
-          // Grid of 4 practice boxes
+          // ── 4 interactive drawing boxes ────────────────────────────────
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(4, (i) {
               return Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(right: i < 3 ? 8 : 0),
-                  child: _TracingBox(
-                    letter: letter,
+                  child: _InteractiveTracingBox(
+                    key: ValueKey('box_${widget.letter}_$i'),
+                    letter: widget.letter,
                     showGuide: i == 0,
-                    accent: accent,
-                    isDark: isDark,
+                    accent: widget.accent,
+                    isDark: widget.isDark,
+                    strokes: _boxStrokes[i],
+                    onStrokeAdded: (stroke) {
+                      setState(() => _boxStrokes[i].add(stroke));
+                    },
+                    onClear: () => _clearBox(i),
                   ),
                 ),
               );
@@ -936,9 +1097,48 @@ class _WriteItCard extends StatelessWidget {
           ),
 
           const SizedBox(height: 12),
-          Text(
-            'Trace over the guide (first box), then write it yourself!',
-            style: GoogleFonts.inter(fontSize: 12, color: muted, height: 1.4),
+
+          // ── Progress row ───────────────────────────────────────────────
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  filledCount == 0
+                      ? 'Trace the guide (box 1), then fill the rest!'
+                      : filledCount < 4
+                      ? 'Great! Keep going — $filledCount / 4 done.'
+                      : 'Amazing! You wrote it 4 times! ⭐',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: filledCount == 4 ? widget.accent : widget.muted,
+                    height: 1.4,
+                    fontWeight: filledCount == 4
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                  ),
+                ),
+              ),
+              // Mini progress pip strip
+              Row(
+                children: List.generate(4, (i) {
+                  final done = _boxStrokes[i].isNotEmpty;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    margin: const EdgeInsets.only(left: 4),
+                    width: done ? 16 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: done
+                          ? widget.accent
+                          : (widget.isDark
+                                ? AppTheme.dHst
+                                : const Color(0xFFE0DCD4)),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  );
+                }),
+              ),
+            ],
           ),
         ],
       ),
@@ -947,75 +1147,251 @@ class _WriteItCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// _TracingBox — individual practice box
+// _InteractiveTracingBox — single drawable canvas
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _TracingBox extends StatelessWidget {
-  const _TracingBox({
+class _InteractiveTracingBox extends StatefulWidget {
+  const _InteractiveTracingBox({
+    super.key,
     required this.letter,
     required this.showGuide,
     required this.accent,
     required this.isDark,
+    required this.strokes,
+    required this.onStrokeAdded,
+    required this.onClear,
   });
 
   final String letter;
   final bool showGuide;
   final Color accent;
   final bool isDark;
+  final List<List<Offset>> strokes;
+  final void Function(List<Offset> stroke) onStrokeAdded;
+  final VoidCallback onClear;
+
+  @override
+  State<_InteractiveTracingBox> createState() => _InteractiveTracingBoxState();
+}
+
+class _InteractiveTracingBoxState extends State<_InteractiveTracingBox>
+    with SingleTickerProviderStateMixin {
+  List<Offset> _currentStroke = [];
+  late AnimationController _starCtrl;
+  late Animation<double> _starAnim;
+  bool _justCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _starCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _starAnim = CurvedAnimation(parent: _starCtrl, curve: Curves.elasticOut);
+  }
+
+  @override
+  void dispose() {
+    _starCtrl.dispose();
+    super.dispose();
+  }
+
+  void _startStroke(Offset pos) {
+    setState(() => _currentStroke = [pos]);
+  }
+
+  void _addPoint(Offset pos) {
+    if (_currentStroke.isEmpty) return;
+    setState(() => _currentStroke.add(pos));
+  }
+
+  void _endStroke() {
+    if (_currentStroke.length < 2) {
+      setState(() => _currentStroke = []);
+      return;
+    }
+    final wasEmpty = widget.strokes.isEmpty;
+    widget.onStrokeAdded(List.of(_currentStroke));
+    setState(() => _currentStroke = []);
+    if (wasEmpty) {
+      _justCompleted = true;
+      _starCtrl.forward(from: 0);
+    }
+  }
+
+  @override
+  void didUpdateWidget(_InteractiveTracingBox old) {
+    super.didUpdateWidget(old);
+    // Reset star animation when cleared
+    if (old.strokes.isNotEmpty && widget.strokes.isEmpty) {
+      _justCompleted = false;
+      _starCtrl.reset();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bg = isDark ? AppTheme.dHst : const Color(0xFFF8F6F0);
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: showGuide
-                ? accent.withValues(alpha: 0.5)
-                : (isDark ? AppTheme.dHst : const Color(0xFFE0DCD2)),
-            width: showGuide ? 1.5 : 1,
-          ),
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Cross-hair guide lines
-            Positioned.fill(
-              child: CustomPaint(painter: _CrosshairPainter(isDark: isDark)),
-            ),
-            // Guide letter (faded) or empty
-            Text(
-              letter,
-              style: GoogleFonts.notoSansSinhala(
-                fontSize: 36,
-                fontWeight: FontWeight.w800,
-                color: showGuide
-                    ? accent.withValues(alpha: 0.25)
-                    : Colors.transparent,
-              ),
-            ),
-            // "Guide" label top-left when first box
-            if (showGuide)
-              Positioned(
-                top: 5,
-                left: 6,
-                child: Text(
-                  'Guide',
-                  style: GoogleFonts.inter(
-                    fontSize: 8,
-                    fontWeight: FontWeight.w600,
-                    color: accent.withValues(alpha: 0.6),
-                  ),
+    final hasStrokes = widget.strokes.isNotEmpty || _currentStroke.isNotEmpty;
+    final bg = widget.isDark ? AppTheme.dHst : const Color(0xFFF8F6F0);
+    final strokeColor = widget.isDark ? Colors.white : const Color(0xFF1A1A2E);
+
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: GestureDetector(
+            onPanStart: (d) => _startStroke(d.localPosition),
+            onPanUpdate: (d) => _addPoint(d.localPosition),
+            onPanEnd: (_) => _endStroke(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: hasStrokes
+                      ? widget.accent.withValues(alpha: 0.6)
+                      : widget.showGuide
+                      ? widget.accent.withValues(alpha: 0.4)
+                      : (widget.isDark
+                            ? AppTheme.dHst
+                            : const Color(0xFFE0DCD2)),
+                  width: hasStrokes || widget.showGuide ? 1.5 : 1,
                 ),
               ),
-          ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(13),
+                child: Stack(
+                  children: [
+                    // Crosshair
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: _CrosshairPainter(isDark: widget.isDark),
+                      ),
+                    ),
+                    // Faded guide letter
+                    if (widget.showGuide)
+                      Center(
+                        child: Text(
+                          widget.letter,
+                          style: GoogleFonts.notoSansSinhala(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w800,
+                            color: widget.accent.withValues(alpha: 0.2),
+                          ),
+                        ),
+                      ),
+                    // User strokes (committed)
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: _StrokesPainter(
+                          strokes: widget.strokes,
+                          currentStroke: _currentStroke,
+                          strokeColor: strokeColor,
+                        ),
+                      ),
+                    ),
+                    // Star on first stroke
+                    if (_justCompleted || widget.strokes.isNotEmpty)
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: ScaleTransition(
+                          scale: _starAnim,
+                          child: const Text(
+                            '⭐',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    // "Guide" label
+                    if (widget.showGuide)
+                      Positioned(
+                        top: 5,
+                        left: 6,
+                        child: Text(
+                          'Guide',
+                          style: GoogleFonts.inter(
+                            fontSize: 8,
+                            fontWeight: FontWeight.w600,
+                            color: widget.accent.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
+        // Clear button below each box (visible only when has content)
+        AnimatedCrossFade(
+          duration: const Duration(milliseconds: 200),
+          crossFadeState: hasStrokes
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          firstChild: GestureDetector(
+            onTap: widget.onClear,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Icon(
+                Icons.close_rounded,
+                size: 16,
+                color: widget.isDark ? AppTheme.dMuted : AppTheme.lMuted,
+              ),
+            ),
+          ),
+          secondChild: const SizedBox(height: 21),
+        ),
+      ],
     );
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Painters
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _StrokesPainter extends CustomPainter {
+  const _StrokesPainter({
+    required this.strokes,
+    required this.currentStroke,
+    required this.strokeColor,
+  });
+
+  final List<List<Offset>> strokes;
+  final List<Offset> currentStroke;
+  final Color strokeColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = strokeColor
+      ..strokeWidth = 3.0
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+
+    for (final stroke in strokes) {
+      _drawStroke(canvas, stroke, paint);
+    }
+    if (currentStroke.length >= 2) {
+      _drawStroke(canvas, currentStroke, paint);
+    }
+  }
+
+  void _drawStroke(Canvas canvas, List<Offset> pts, Paint paint) {
+    if (pts.length < 2) return;
+    final path = Path()..moveTo(pts[0].dx, pts[0].dy);
+    for (var i = 1; i < pts.length; i++) {
+      path.lineTo(pts[i].dx, pts[i].dy);
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_StrokesPainter old) =>
+      old.strokes != strokes || old.currentStroke != currentStroke;
 }
 
 class _CrosshairPainter extends CustomPainter {
